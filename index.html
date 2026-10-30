@@ -399,43 +399,67 @@
   html, body { height: 100%; overflow: hidden; }
   body { display: flex; flex-direction: column; }
 
-  /* 顶部悬浮切换与自适应缩放工具栏（打印时自动隐藏） */
+  /* 顶部悬浮切换与自适应缩放工具栏（严格固定两排布局，绝不折成三排，打印时自动隐藏） */
   .topbar {
     flex: none;
     position: relative;
     z-index: 100;
     background: linear-gradient(90deg, #0D1F18 0%, #132A20 55%, #0F231B 100%);
     color: #fff;
-    padding: 9px 18px;
+    padding: 8px 16px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
     box-shadow: 0 4px 18px rgba(0,0,0,0.26);
     border-bottom: 2px solid #2FA36B;
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
-  .tb-group { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-  .tb-title { font-size:15px; font-weight:900; color:#6EE7B7; margin-right:4px; letter-spacing:1px; }
+  .tb-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tb-row::-webkit-scrollbar { display: none; }
+  .tb-title {
+    font-size: 14.8px;
+    font-weight: 900;
+    color: #6EE7B7;
+    margin-right: 4px;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    flex: none;
+  }
   .tb-btn {
     background: rgba(255,255,255,0.09);
     color: #E2E8F0;
     border: 1px solid rgba(255,255,255,0.18);
-    padding: 5px 10.5px;
+    padding: 4.5px 9.5px;
     border-radius: 7px;
-    font-size: 12.5px;
+    font-size: 12.2px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5.5px;
+    white-space: nowrap;
+    flex: none;
   }
   .tb-btn:hover { background: rgba(47,163,107,0.32); color:#fff; border-color:rgba(110,231,183,0.45); }
   .tb-btn.active { background: #2FA36B; color: #fff; border-color: #6EE7B7; font-weight:800; box-shadow:0 2px 8px rgba(47,163,107,0.38); }
-  .tb-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
+  .tb-dot { width:7.5px; height:7.5px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
   body.classic-theme .tb-dot { background:#34D399 !important; }
+  @media (max-width: 1480px) {
+    .topbar { padding: 7px 12px; gap: 6px; }
+    .tb-row { gap: 4.5px; }
+    .tb-title { font-size: 13.8px; letter-spacing: 0.4px; margin-right: 2px; }
+    .tb-row-nav .tb-btn { padding: 4px 7.5px; font-size: 11.7px; gap: 4.5px; }
+  }
   /* 赛道按钮命中计数角标 */
   .tb-hit-cnt {
     background:#EF4444;
@@ -459,6 +483,7 @@
     border-radius:8px;
     padding:2px 6px 2px 9px;
     transition:border-color 0.15s, background 0.15s;
+    flex:none;
   }
   .search-wrap:focus-within {
     border-color:#6EE7B7;
@@ -471,7 +496,7 @@
     background:transparent;
     color:#fff;
     font-size:12.5px;
-    width:170px;
+    width:176px;
     outline:none;
   }
   .tb-search::placeholder { color:rgba(255,255,255,0.65); }
@@ -563,33 +588,40 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* 顶部常驻横向快速定位栏（任何缩放模式下均常驻可用：自适应模式下点击自动放大聚焦并聚光灯高亮目标区段） */
+  /* 顶部常驻横向快速定位栏（单行不折行） */
   .panbar {
     flex: none;
     z-index: 95;
     background: #163125;
     border-bottom: 1px solid rgba(110,231,183,0.24);
     color: #D1FAE5;
-    padding: 6px 18px;
+    padding: 5.5px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
     font-size: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.14);
   }
-  .pan-jumps { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .pan-lbl { color: #6EE7B7; font-weight: 800; margin-right: 2px; }
+  .panbar::-webkit-scrollbar { display: none; }
+  .pan-jumps { display: inline-flex; align-items: center; gap: 5.5px; flex-wrap: nowrap; flex: none; }
+  .pan-lbl { color: #6EE7B7; font-weight: 800; margin-right: 2px; white-space: nowrap; }
   .pan-btn {
     background: rgba(255,255,255,0.09);
     color: #E2E8F0;
     border: 1px solid rgba(255,255,255,0.17);
-    padding: 3.5px 10px;
+    padding: 3px 9.5px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11.8px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.14s;
+    white-space: nowrap;
+  }
+  @media (max-width: 1420px) {
+    .pan-tip { display: none; }
   }
   .pan-btn:hover, .pan-btn.active {
     background: #2FA36B;
@@ -702,18 +734,18 @@
 <body>
 
 <div class="topbar">
-  <div class="tb-group">
+  <div class="tb-row tb-row-nav">
     <span class="tb-title">🧬 十五五生物医药产业链图谱</span>
     <button class="tb-btn active" data-idx="0" onclick="selectPoster(0)"><span class="tb-dot" style="background:#3B82F6;"></span>1. 小分子化学药</button><button class="tb-btn " data-idx="1" onclick="selectPoster(1)"><span class="tb-dot" style="background:#8B5CF6;"></span>2. 抗体创新药</button><button class="tb-btn " data-idx="2" onclick="selectPoster(2)"><span class="tb-dot" style="background:#EC4899;"></span>3. ADC创新药</button><button class="tb-btn " data-idx="3" onclick="selectPoster(3)"><span class="tb-dot" style="background:#10B981;"></span>4. 多肽创新药（含环肽）</button><button class="tb-btn " data-idx="4" onclick="selectPoster(4)"><span class="tb-dot" style="background:#F59E0B;"></span>5. 核药</button><button class="tb-btn " data-idx="5" onclick="selectPoster(5)"><span class="tb-dot" style="background:#06B6D4;"></span>6. 细胞/基因疗法</button><button class="tb-btn " data-idx="6" onclick="selectPoster(6)"><span class="tb-dot" style="background:#34D399;"></span>7. 疫苗</button><button class="tb-btn " data-idx="7" onclick="selectPoster(7)"><span class="tb-dot" style="background:#F87171;"></span>8. 血液制品</button>
     <button class="tb-btn" id="btnAll" onclick="selectAllPosters()">📚 八大赛道全览</button>
   </div>
-  <div class="tb-group">
+  <div class="tb-row tb-row-tools">
     <div class="search-wrap" id="searchWrap">
-      <input type="text" id="searchInput" class="tb-search" placeholder="🔍 搜索企业/项目/趋势 (回车定位)…" autocomplete="off" />
+      <input type="text" id="searchInput" class="tb-search" placeholder="🔍 搜索企业/项目/趋势…" autocomplete="off" />
       <span class="search-stat" id="searchStat"></span>
       <button type="button" class="search-nav-btn" id="searchPrevBtn" onclick="stepSearchHit(-1)" title="上一处 (Shift+Enter)">▲</button>
       <button type="button" class="search-nav-btn" id="searchNextBtn" onclick="stepSearchHit(1)" title="下一处 (Enter)">▼</button>
-      <button type="button" class="search-go-btn" onclick="triggerSearchNow()" title="搜索并自动跳转定位">定位</button>
+      <button type="button" class="search-go-btn" onclick="triggerSearchNow()" title="搜索并自动跳转定位 (Enter)">定位</button>
       <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="清空搜索 (Esc)">✕</button>
     </div>
     <button class="tb-btn active" id="btnTheme" onclick="toggleClassicTheme()" title="一键切换八赛道专属配色 / 经典统一翠绿">🎨 多彩分轨</button>
