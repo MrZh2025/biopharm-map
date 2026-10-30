@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>十五五生物医药产业链图谱（全八赛道标准海报版）</title>
+<style>
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { background:#E6EBF0; }
+  body { font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; -webkit-font-smoothing:antialiased; }
+  .canvas {
+    --track-grad: linear-gradient(180deg,#2FA36B 0%,#1C7A4A 100%);
+    --track-accent: #1C7A4A;
+    width:3480px; margin:0 auto; background:#FFFFFF; display:flex; overflow:hidden;
+    box-shadow:0 10px 36px rgba(15,23,42,0.10); border-radius:4px;
+  }
+  body.classic-theme .canvas {
+    --track-grad: linear-gradient(180deg,#2FA36B 0%,#1C7A4A 100%) !important;
+    --track-accent: #1C7A4A !important;
+  }
+
+  /* 左侧赛道专属色带 + 序列徽标 */
+  .strip {
+    width:62px; flex:none; background:var(--track-grad);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+    padding:22px 0; position:relative;
+    box-shadow:inset -3px 0 10px rgba(0,0,0,0.14);
+  }
+  .strip-seq {
+    width:40px; height:40px; border-radius:11px;
+    background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.34);
+    color:#fff; font-size:16px; font-weight:900; letter-spacing:1px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"DIN Alternate","Segoe UI","Microsoft YaHei",sans-serif;
+    box-shadow:0 2px 6px rgba(0,0,0,0.12);
+  }
+  .strip span.strip-txt {
+    writing-mode:vertical-rl; color:#fff; font-size:30px; font-weight:800;
+    text-shadow:0 2px 6px rgba(0,0,0,0.18);
+  }
+  .strip-deco { width:26px; height:26px; color:rgba(255,255,255,0.45); }
+
+  .main { flex:1; padding:26px 34px 20px; display:flex; flex-direction:column; min-width:0; }
+
+  /* 顶部标题行 */
+  .title-row { display:grid; grid-template-columns:1fr 640px; gap:26px; align-items:end; margin-bottom:16px; }
+  .tr-l { display:flex; align-items:end; }
+  .t-left {
+    font-size:38px; font-weight:900; color:#0F172A; letter-spacing:2px; line-height:1.1;
+    border-left:7px solid var(--track-accent); padding-left:15px;
+    display:flex; align-items:center;
+  }
+  .t-left .sub {
+    font-size:15.5px; font-weight:700; color:var(--track-accent);
+    background:rgba(15,23,42,0.035); border:1px solid rgba(15,23,42,0.10);
+    padding:4px 12px; border-radius:999px; letter-spacing:1.2px; margin-left:14px;
+  }
+  .t-mid { font-size:28px; font-weight:800; color:#0F172A; letter-spacing:8px; margin:0 auto; padding:0 0 4px 60px; }
+  .t-right { font-size:28px; font-weight:800; text-align:center; color:#0F172A; letter-spacing:8px; padding-bottom:4px; }
+
+  /* 两栏内容：中链条 + 右趋势 */
+  .content { display:grid; grid-template-columns:1fr 640px; gap:26px; align-items:stretch; }
+
+  /* ===== 中部：矩阵（外框 + 11列共享网格） ===== */
+  .ct {
+    background:linear-gradient(180deg,#FCFDFD 0%,#F8FBF9 100%);
+    border:1.5px solid #DAE6DF; border-radius:14px; padding:14px 14px 8px;
+    display:flex; flex-direction:column; min-width:0;
+    box-shadow:inset 0 1px 0 #FFFFFF;
+  }
+  .grid11, .mrow { display:grid; grid-template-columns:56px repeat(10,1fr); gap:12px; }
+  .mrow { margin-bottom:12px; }
+  .mrow:last-child { margin-bottom:0; }
+
+  .gc-up   { grid-column:2 / span 3; }
+  .gc-mid  { grid-column:5 / span 4; }
+  .gc-down { grid-column:9 / span 3; }
+  .ga1 { grid-column:2 / span 3; } .ga2 { grid-column:5 / span 3; }
+  .ga3 { grid-column:8 / span 1; } .ga4 { grid-column:9 / span 3; }
+  .sp3a { grid-column:2 / span 3; } .sp2a { grid-column:5 / span 3; }
+  .sp2b { grid-column:8 / span 1; } .sp3b { grid-column:9 / span 3; }
+
+  /* 上中下游徽章 */
+  .badges { margin-bottom:9px; }
+  .badge { text-align:center; font-size:14px; font-weight:800; padding:3.5px 0; border-radius:20px; letter-spacing:3px; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+  .b-up   { color:#0B7E5F; background:linear-gradient(90deg,#E6F7EE,#D7F0E4); border:1.5px solid #57C292; }
+  .b-mid  { color:#2563EB; background:linear-gradient(90deg,#E8F1FE,#DCEAFB); border:1.5px solid #75AAEC; }
+  .b-down { color:#C25E09; background:linear-gradient(90deg,#FEF3E4,#FCE8CE); border:1.5px solid #F0AD57; }
+
+  /* 环节大类箭头（首段平直圆角起笔 + 后续精密咬合流） */
+  .arrows { margin-bottom:12px; filter:drop-shadow(0 3px 6px rgba(15,55,48,0.12)); }
+  .arrow {
+    height:56px; color:#fff; font-size:21.5px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    letter-spacing:4px; padding-left:10px;
+    text-shadow:0 1px 2px rgba(0,0,0,0.16);
+    clip-path:polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%, 17px 50%);
+  }
+  .arrow.ga1 {
+    border-radius:9px 0 0 9px; padding-left:0;
+    clip-path:polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%);
+  }
+  .arrow.ga3 { letter-spacing:5px; padding-left:11px; }
+  .a-teal { background:linear-gradient(95deg,#1BB89B 0%,#11967E 55%,#0A7563 100%); }
+  .a-blue { background:linear-gradient(95deg,#55A3EE 0%,#367ED8 55%,#235FB5 100%); }
+
+  /* 行标（左侧竖排彩条） */
+  .rail {
+    writing-mode:vertical-rl; display:flex; align-items:center; justify-content:center;
+    border-radius:8px; color:#fff; font-size:15px; font-weight:800; letter-spacing:6px; padding:10px 0;
+    box-shadow:0 2px 5px rgba(15,23,42,0.08);
+  }
+  .rail-head { background:transparent; color:#8A9892; font-size:13px; font-weight:700; letter-spacing:4px; box-shadow:none; }
+  .r-ent  { background:linear-gradient(180deg,#EDA909,#D69306); }
+  .r-prj  { background:linear-gradient(180deg,#EF8626,#D96E12); }
+  .r-dir  { background:linear-gradient(180deg,#5297E8,#3577C8); }
+  .r-feat { background:linear-gradient(180deg,#249A6C,#177952); }
+  .r-inv  { background:linear-gradient(180deg,#187359,#0F5440); }
+
+  /* 细分环节名称条（首段圆角 + 10级咬合箭头 + 图标） */
+  .seg {
+    height:54px; color:#fff; font-size:16.2px; font-weight:800;
+    display:flex; align-items:center; justify-content:center;
+    letter-spacing:1px; padding-left:7px;
+    text-shadow:0 1px 2px rgba(0,0,0,0.14);
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
+  }
+  .seg.seg-first {
+    border-radius:8px 0 0 8px; padding-left:0;
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+  }
+  .seg svg { width:19px; height:19px; margin-right:6px; flex:none; }
+  .c1, .c3 { background:linear-gradient(120deg,#20B89C 0%,#12947D 55%,#0B7664 100%); }
+  .c2, .c4 { background:linear-gradient(120deg,#5BA8F0 0%,#3980D8 55%,#2662B8 100%); }
+
+  /* 内容行（浅色底 + 白格 + 顶部类别色条 + 悬停微浮起） */
+  .dim { padding:10px; border-radius:10px; align-items:stretch; }
+  .dim-ent  { background:#FAF1D9; }
+  .dim-prj  { background:#FBEFE1; }
+  .dim-dir  { background:#E8F1FB; }
+  .dim-feat { background:#E9F5EE; }
+  .dim-inv  { background:#E1EFE7; }
+  .cell {
+    background:#fff; border:1px solid #DCE7E0; border-top-width:3px; border-radius:8px;
+    padding:11px 13px; font-size:13.8px; line-height:1.68; color:#374151; min-width:0;
+    box-shadow:0 1px 2px rgba(15,23,42,0.03);
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    cursor:zoom-in;
+  }
+  .cell:hover {
+    transform:translateY(-1.5px);
+    box-shadow:0 6px 16px rgba(15,23,42,0.10);
+    border-color:#8FC5AE;
+  }
+  .cat1, .cat3 { border-top-color:#17A88E; }
+  .cat2, .cat4 { border-top-color:#4E9BE8; }
+  .fcat1, .fcat3 { background:#FBFEFC; border-top-color:#9ED4C2; }
+  .fcat2, .fcat4 { background:#FAFCFF; border-top-color:#AECDF0; }
+  .lbl2 { font-weight:800; color:#166B43; }
+  .cell b { font-weight:800; color:#1F2937; }
+
+  /* 空值单元格（/ 或 无）高级居中斜纹底纹设计 */
+  .cell:has(.empty-box) {
+    background:repeating-linear-gradient(-45deg,#FAFCFB 0px,#FAFCFB 7px,#F2F6F4 7px,#F2F6F4 14px);
+    display:flex; align-items:center; justify-content:center; padding:8px;
+  }
+  .empty-box {
+    width:100%; height:100%; min-height:48px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .empty-badge {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:44px; padding:3px 14px; border-radius:999px;
+    background:rgba(255,255,255,0.90); border:1px dashed #CBD5E1;
+    color:#94A3B8; font-size:13px; font-weight:700; letter-spacing:1px;
+    box-shadow:0 1px 2px rgba(15,23,42,0.03);
+  }
+
+  /* 代表企业：金色胶囊 */
+  .chips { display:flex; flex-wrap:wrap; gap:5.5px; align-content:flex-start; }
+  .pill {
+    background:linear-gradient(180deg,#FFFDF6 0%,#FFF8E4 100%);
+    border:1px solid #EAD596; border-radius:6px; padding:2.5px 8px;
+    font-size:12.5px; line-height:1.48; color:#6B5A22;
+    box-shadow:0 1px 1px rgba(180,140,30,0.06);
+  }
+  .pill b { color:#7A5B00; }
+  .pill i { font-style:normal; color:#9E8640; font-size:11.5px; }
+  .pill-note { background:rgba(255,255,255,0.55); border:1px dashed #DEC684; border-radius:6px; padding:2.5px 8px; font-size:12px; line-height:1.48; color:#8A7638; }
+
+  /* 重点项目 / 发展方向：条目列表 + 四色地域徽章 */
+  .blts { display:flex; flex-direction:column; gap:6.5px; }
+  .blt { display:flex; gap:6px; align-items:flex-start; }
+  .mk { flex:none; font-size:11px; line-height:22px; }
+  .mk-a { color:#E67E22; }
+  .mk-s { color:#E74C3C; }
+  .mk-d { color:#4A8FE2; font-size:10px; }
+  .geo {
+    flex:none; font-size:10.5px; font-weight:800; color:#B05A0A; background:#FDEBD3; border:1px solid #F0C48A;
+    border-radius:4px; padding:1px 5.5px; margin-top:3px; min-width:24px; text-align:center; letter-spacing:0.8px;
+    box-shadow:0 1px 1px rgba(0,0,0,0.04);
+  }
+  .geo-sc { color:#0B6B4D; background:#E3F7EE; border-color:#84D9B3; }
+  .geo-cq { color:#B45309; background:#FEF1DC; border-color:#F5C37E; }
+  .geo-cy { color:#0F5132; background:linear-gradient(105deg,#DCFCE7 0%,#FEF3C7 100%); border-color:#94D3AC; }
+  .geo-yn { color:#3730A3; background:#EEF2FF; border-color:#A5B4FC; }
+
+  /* ===== 右侧：方向趋势（微图标 + 呼吸行距 + 关键指标浅金微标签） ===== */
+  .rp {
+    background:linear-gradient(180deg,#FDF6E7 0%,#FBF0D9 100%);
+    border:2px solid #EFC77E; border-radius:14px; padding:14px;
+    display:flex; flex-direction:column; gap:12px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+  .rp-head {
+    background:linear-gradient(95deg,#F59E0B 0%,#EA580C 100%);
+    color:#fff; font-size:21px; font-weight:800; text-align:center; padding:10px;
+    border-radius:9px; letter-spacing:4px;
+    box-shadow:0 3px 8px rgba(234,88,12,0.18);
+  }
+  .rp-block {
+    background:linear-gradient(180deg,#FFFFFF 0%,#FFFDF8 100%);
+    border:1px solid #F1DCAD; border-radius:10px; overflow:hidden; flex:1;
+    display:flex; flex-direction:column;
+    box-shadow:0 2px 6px rgba(160,110,30,0.06);
+    transition:transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    cursor:zoom-in;
+  }
+  .rp-block:hover {
+    transform:translateY(-1.5px);
+    box-shadow:0 6px 16px rgba(180,110,20,0.14);
+    border-color:#E5B45B;
+  }
+  .rp-block h3 {
+    background:linear-gradient(90deg,#F59E0B 0%,#E67E22 100%);
+    color:#fff; font-size:15.8px; font-weight:800; padding:7.5px 13px; letter-spacing:1px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .rp-block h3 svg.rp-ico { width:16px; height:16px; flex:none; opacity:0.95; }
+  .rp-block .bd {
+    padding:11px 14px 10px; font-size:13.8px; line-height:1.74; color:#43351E;
+    text-align:justify; flex:1;
+  }
+  .rp-block .hl {
+    color:#9A3412; font-weight:800;
+    background:linear-gradient(180deg,#FEF3C7 0%,#FDE68A 100%);
+    padding:0.5px 5.5px; border-radius:4px;
+    border-bottom:1.5px solid #F59E0B;
+    margin:0 1px;
+    box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  }
+
+  /* 底部图例 */
+  .legend { margin-top:14px; padding-top:10px; border-top:2px solid #E3E8EC; display:flex; gap:24px; font-size:13.8px; color:#475569; align-items:center; flex-wrap:wrap; }
+  .lg { display:flex; align-items:center; gap:6px; }
+  .chip { width:13px; height:13px; border-radius:3px; display:inline-block; }
+  .chp-ent { background:#E5A50A; } .chp-prj { background:#E67E22; } .chp-dir { background:#4A8FE2; }
+  .chp-feat { background:#1F8F63; } .chp-inv { background:#14664F; }
+  .lg .geo { margin-top:0; }
+  .lg-zoom-tip { color:#0F766E; font-weight:700; background:#F0FDFA; border:1px solid #99F6E4; padding:2px 10px; border-radius:999px; font-size:12.5px; }
+  .lg-note { margin-left:auto; color:#64748B; font-size:13px; }
+
+  .search-hit { outline:2.5px solid #E74C3C !important; background:#FFF0ED !important; }
+
+  /* ===== 大屏汇报级高清放大弹窗（Lightbox Modal，独立于 canvas zoom 之外） ===== */
+  .cm-overlay {
+    position:fixed; inset:0; z-index:9999;
+    background:rgba(15,23,42,0.68); backdrop-filter:blur(6px);
+    display:none; align-items:center; justify-content:center; padding:28px;
+  }
+  .cm-overlay.open { display:flex; animation:cmFadeIn 0.16s ease-out; }
+  @keyframes cmFadeIn { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
+  .cm-card {
+    width:min(1120px, 94vw); max-height:88vh;
+    background:#FFFFFF; border-radius:18px; overflow:hidden;
+    box-shadow:0 25px 70px rgba(0,0,0,0.42);
+    display:flex; flex-direction:column; border:1px solid rgba(255,255,255,0.4);
+  }
+  .cm-head {
+    padding:18px 24px; color:#fff;
+    background:linear-gradient(95deg,#0F172A 0%,#1E293B 100%);
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    border-bottom:3px solid #2FA36B;
+  }
+  .cm-title-wrap { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .cm-badge {
+    font-size:13px; font-weight:800; padding:4px 11px; border-radius:999px;
+    background:rgba(47,163,107,0.25); border:1px solid #4FBD8B; color:#A7F3D0; letter-spacing:1px;
+  }
+  .cm-title { font-size:22px; font-weight:900; letter-spacing:1.5px; color:#F8FAFC; }
+  .cm-sub { font-size:14px; color:#94A3B8; font-weight:600; }
+  .cm-actions { display:flex; align-items:center; gap:8px; }
+  .cm-nav-btn, .cm-close {
+    background:rgba(255,255,255,0.12); color:#F1F5F9; border:1px solid rgba(255,255,255,0.22);
+    padding:7px 14px; border-radius:8px; font-size:13.5px; font-weight:700; cursor:pointer;
+    transition:all 0.15s;
+  }
+  .cm-nav-btn:hover { background:rgba(47,163,107,0.45); border-color:#6EE7B7; color:#fff; }
+  .cm-close:hover { background:#EF4444; border-color:#FCA5A5; color:#fff; }
+  .cm-body {
+    padding:22px 26px 26px; overflow-y:auto; display:flex; flex-direction:column; gap:16px;
+    background:#F8FAFC;
+  }
+  .cm-sec {
+    background:#FFFFFF; border:1px solid #E2E8F0; border-left:6px solid #CBD5E1;
+    border-radius:12px; padding:16px 20px; box-shadow:0 2px 8px rgba(15,23,42,0.04);
+  }
+  .cm-sec.focused {
+    box-shadow:0 6px 20px rgba(15,118,110,0.12);
+    outline:2px solid rgba(47,163,107,0.35);
+  }
+  .cm-sec-ent { border-left-color:#E5A50A; background:#FFFDF7; }
+  .cm-sec-prj { border-left-color:#E67E22; background:#FFFBF7; }
+  .cm-sec-dir { border-left-color:#4A8FE2; background:#F8FBFF; }
+  .cm-sec-feat { border-left-color:#1F8F63; background:#F7FCF9; }
+  .cm-sec-inv { border-left-color:#14664F; background:#F4FAF7; }
+  .cm-sec-rp { border-left-color:#F59E0B; background:#FFFDF8; }
+  .cm-sec-hd {
+    font-size:15px; font-weight:900; letter-spacing:2px; margin-bottom:11px;
+    display:flex; align-items:center; justify-content:space-between; color:#1E293B;
+  }
+  .cm-sec-tag { font-size:11.5px; font-weight:700; color:#0F766E; background:#CCFBF1; padding:2px 9px; border-radius:999px; letter-spacing:0.5px; }
+  /* 放大弹窗内字号全面升级至 17.5~19px 后排汇报可读级 */
+  .cm-sec-bd { font-size:18px; line-height:1.82; color:#1E293B; }
+  .cm-sec-bd .chips { gap:9px; }
+  .cm-sec-bd .pill { font-size:17px; padding:5px 13px; border-radius:8px; }
+  .cm-sec-bd .pill i { font-size:15.5px; }
+  .cm-sec-bd .pill-note { font-size:16px; padding:5px 13px; }
+  .cm-sec-bd .blts { gap:11px; }
+  .cm-sec-bd .blt { gap:10px; }
+  .cm-sec-bd .mk { font-size:15px; line-height:30px; }
+  .cm-sec-bd .geo { font-size:13.5px; padding:2px 8px; margin-top:4px; border-radius:5px; }
+  .cm-sec-bd .hl {
+    color:#9A3412; font-weight:800;
+    background:linear-gradient(180deg,#FEF3C7 0%,#FDE68A 100%);
+    padding:1px 7px; border-radius:5px; border-bottom:2px solid #F59E0B;
+  }
+  .cm-sec-bd .empty-box { min-height:56px; justify-content:flex-start; }
+  .cm-sec-bd .empty-badge { font-size:16px; padding:4px 18px; }
+
+  @page { size:36.4in 14.2in; margin:0; }
+  @media print {
+    html, body { background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .topbar, .cm-overlay, .pres-hud { display:none !important; }
+    .stage-viewport { padding:0 !important; overflow:visible !important; }
+    .poster-slot { margin:0 !important; break-after:page; page-break-after:always; }
+    .poster-slot:last-child { break-after:auto; page-break-after:auto; }
+    .canvas { zoom:0.5 !important; box-shadow:none !important; margin:0 auto !important; }
+  }
+
+
+  /* 顶部悬浮切换与自适应缩放工具栏（打印时自动隐藏） */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(90deg, #0D1F18 0%, #132A20 55%, #0F231B 100%);
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.26);
+    border-bottom: 2px solid #2FA36B;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .tb-group { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .tb-title { font-size:15px; font-weight:900; color:#6EE7B7; margin-right:6px; letter-spacing:1px; }
+  .tb-btn {
+    background: rgba(255,255,255,0.09);
+    color: #E2E8F0;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 5.5px 11px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tb-btn:hover { background: rgba(47,163,107,0.32); color:#fff; border-color:rgba(110,231,183,0.45); }
+  .tb-btn.active { background: #2FA36B; color: #fff; border-color: #6EE7B7; font-weight:800; box-shadow:0 2px 8px rgba(47,163,107,0.38); }
+  .tb-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
+  body.classic-theme .tb-dot { background:#34D399 !important; }
+  .tb-search {
+    padding: 5.5px 11px;
+    border-radius: 7px;
+    border: 1px solid rgba(255,255,255,0.26);
+    background: rgba(255,255,255,0.11);
+    color: #fff;
+    font-size: 12.5px;
+    width: 195px;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .tb-search:focus { border-color:#6EE7B7; background:rgba(255,255,255,0.17); }
+  .tb-search::placeholder { color: rgba(255,255,255,0.62); }
+
+  .stage-viewport {
+    padding: 18px 0 36px;
+    overflow-x: auto;
+    transition: padding 0.2s ease;
+  }
+  .poster-slot {
+    margin-bottom: 28px;
+    transform-origin: top left;
+  }
+  .poster-slot.fade-in {
+    animation: posterFade 0.22s ease-out;
+  }
+  @keyframes posterFade {
+    from { opacity: 0.45; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== 沉浸式全屏汇报模式 ===== */
+  body.immersive, body.immersive html { background:#0B1320 !important; }
+  body.immersive { background:#0B1320 !important; }
+  body.immersive .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  body.immersive .topbar.peek,
+  body.immersive .topbar:hover {
+    transform: translateY(0);
+    opacity: 0.98;
+  }
+  body.immersive .stage-viewport {
+    min-height: 100vh;
+    padding: 14px 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.immersive .poster-slot { margin-bottom: 16px; }
+  body.immersive .canvas { box-shadow: 0 18px 60px rgba(0,0,0,0.55); }
+
+  /* 沉浸汇报右下角悬浮翻页控制器 */
+  .pres-hud {
+    position: fixed;
+    right: 22px;
+    bottom: 18px;
+    z-index: 250;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.86);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.42);
+    color: #F8FAFC;
+    font-size: 13px;
+  }
+  body.immersive .pres-hud { display: inline-flex; }
+  .hud-btn {
+    background: rgba(255,255,255,0.12);
+    color: #F1F5F9;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .hud-btn:hover { background: #2FA36B; border-color: #6EE7B7; color: #fff; }
+  .hud-label { font-weight: 800; padding: 0 6px; color: #A7F3D0; letter-spacing: 0.8px; }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-group">
+    <span class="tb-title">🧬 十五五生物医药产业链图谱</span>
+    <button class="tb-btn active" data-idx="0" onclick="selectPoster(0)"><span class="tb-dot" style="background:#3B82F6;"></span>1. 小分子化学药</button><button class="tb-btn " data-idx="1" onclick="selectPoster(1)"><span class="tb-dot" style="background:#8B5CF6;"></span>2. 抗体创新药</button><button class="tb-btn " data-idx="2" onclick="selectPoster(2)"><span class="tb-dot" style="background:#EC4899;"></span>3. ADC创新药</button><button class="tb-btn " data-idx="3" onclick="selectPoster(3)"><span class="tb-dot" style="background:#10B981;"></span>4. 多肽创新药（含环肽）</button><button class="tb-btn " data-idx="4" onclick="selectPoster(4)"><span class="tb-dot" style="background:#F59E0B;"></span>5. 核药</button><button class="tb-btn " data-idx="5" onclick="selectPoster(5)"><span class="tb-dot" style="background:#06B6D4;"></span>6. 细胞/基因疗法</button><button class="tb-btn " data-idx="6" onclick="selectPoster(6)"><span class="tb-dot" style="background:#34D399;"></span>7. 疫苗</button><button class="tb-btn " data-idx="7" onclick="selectPoster(7)"><span class="tb-dot" style="background:#F87171;"></span>8. 血液制品</button>
+    <button class="tb-btn" id="btnAll" onclick="selectAllPosters()">📚 八大赛道全览</button>
+  </div>
+  <div class="tb-group">
+    <input type="text" class="tb-search" placeholder="🔍 高亮企业/项目关键词…" oninput="highlightKeyword(this.value)" />
+    <button class="tb-btn active" id="btnTheme" onclick="toggleClassicTheme()" title="一键切换八赛道专属配色 / 经典统一翠绿">🎨 多彩分轨</button>
+    <button class="tb-btn active" id="btnFit" onclick="toggleFit(true)">🗖 自适应屏宽</button>
+    <button class="tb-btn" id="btnRaw" onclick="toggleFit(false)">🔍 1:1 超清(3480px)</button>
+    <button class="tb-btn" id="btnImmersive" onclick="toggleImmersive()" title="进入大屏沉浸汇报模式（支持 ←/→ 键盘翻页）">🖥️ 沉浸汇报</button>
+    <button class="tb-btn" onclick="window.print()">🖨️ 导出PDF</button>
+  </div>
+</div>
+
+<div class="stage-viewport" id="viewport">
+  <div class="poster-slot" id="slot-0" style="display:block;">
+<div class="canvas" id="poster-0" data-track="小分子化学药" data-seq="01" style="--track-grad:linear-gradient(180deg,#2563EB 0%,#1D4ED8 52%,#1E3A8A 100%);--track-accent:#1D4ED8;">
+  <div class="strip">
+    <div class="strip-seq">01</div>
+    <span class="strip-txt" style="letter-spacing:14px;">小分子化药</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">小分子化学药产业链<span class="sub">十五五生物医药产业图谱 · 一部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>纳微科技</b><i>（色谱填料/色谱柱）</i></span><span class="pill"><b>赛分科技</b><i>（分析色谱柱/填料）</i></span><span class="pill"><b>阿拉丁</b><i>（科研试剂/分子砌块）</i></span><span class="pill"><b>山东药玻</b><i>（中硼硅瓶/预灌封）</i></span><span class="pill"><b>正川股份</b><i>（药用玻管/瓶，渝）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>安捷伦</b><i>（HPLC/LC-MS）</i></span><span class="pill"><b>赛默飞</b><i>（LC-MS/制备色谱）</i></span><span class="pill"><b>岛津</b><i>（HPLC/GC）</i></span><span class="pill"><b>福立仪器</b><i>（国产GC/HPLC）</i></span><span class="pill"><b>聚光科技</b><i>（在线分析与质谱）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>昭衍新药</b><i>（安评+实验猴）</i></span><span class="pill"><b>药康生物</b><i>（基因编辑小鼠）</i></span><span class="pill"><b>百奥赛图</b><i>（靶点人源化小鼠）</i></span><span class="pill"><b>成都达硕</b><i>（SPF猪/犬/兔，川）</i></span><span class="pill"><b>维通利华</b><i>（SPF大鼠小鼠）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明康德</b><i>（小分子CRDMO）</i></span><span class="pill"><b>康龙化成</b><i>（发现+CMC）</i></span><span class="pill"><b>成都先导</b><i>（DEL库筛选，川）</i></span><span class="pill"><b>美迪西</b><i>（临床前安评）</i></span><span class="pill"><b>泰格医药</b><i>（临床CRO）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>华海药业</b><i>（沙坦/普利API）</i></span><span class="pill"><b>普洛药业</b><i>（抗生素API+CDMO）</i></span><span class="pill"><b>九洲药业</b><i>（特色API+CDMO）</i></span><span class="pill"><b>联邦制药</b><i>（抗生素/中间体）</i></span><span class="pill"><b>科伦药业</b><i>（输液+API，川）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>恒瑞医药</b><i>（创新药/高端仿制）</i></span><span class="pill"><b>中国生物制药</b><i>（肿瘤/肝病）</i></span><span class="pill"><b>翰森制药</b><i>（仿创结合）</i></span><span class="pill"><b>苑东生物</b><i>（高端化学药，川）</i></span><span class="pill"><b>倍特药业</b><i>（注射剂/固体制剂，川）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>药明康德</b><i>（合全药业CDMO）</i></span><span class="pill"><b>凯莱英</b><i>（连续反应/多肽）</i></span><span class="pill"><b>博腾股份</b><i>（小分子+ADC，渝）</i></span><span class="pill"><b>九洲药业</b><i>（API+CDMO）</i></span><span class="pill"><b>皓元医药</b><i>（CMC/CDMO）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>康哲药业</b><i>（专科药推广）</i></span><span class="pill"><b>上海医药</b><i>（分销+CSO）</i></span><span class="pill"><b>国药控股</b><i>（全国准入）</i></span><span class="pill"><b>九州通</b><i>（总代/基层覆盖）</i></span><span class="pill"><b>亿腾医药</b><i>（专科药商业化）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b><i>（全国分销第一）</i></span><span class="pill"><b>上海医药</b><i>（分销+零售）</i></span><span class="pill"><b>华润医药</b><i>（分销+并购）</i></span><span class="pill"><b>九州通</b><i>（民营分销龙头）</i></span><span class="pill"><b>重药控股</b><i>（渝，全国前五）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>益丰药房</b><i>（超1.47万家门店）</i></span><span class="pill"><b>老百姓</b><i>（全国连锁）</i></span><span class="pill"><b>大参林</b><i>（华南龙头）</i></span><span class="pill"><b>一心堂</b><i>（西南龙头）</i></span><span class="pill"><b>京东健康</b><i>（线上医药零售）</i></span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>正川股份</b>：拉管—制瓶—瓶盖一体化，主攻中硼硅管制瓶与预灌封、卡式瓶</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span>天府国际生物城已引入赛多利斯等上游企业，化学药专用色谱柱、高纯试剂本地配套仍薄弱</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>依托福安、博腾等中间体产能，配套化学合成溶剂、催化剂与手性中间体</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>赛多利斯成都基地</b>（天府国际生物城）：生物工艺与实验室仪器本地化供应</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川省药品检验研究院</b>：承担进口化学药品检验，大型分析仪器共享服务</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>重庆食品药品检验检测研究院＋生物城共享仪器平台，服务园区质量研究</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都达硕</b>：天府生命科技园＋东部新区基地，年供动物超400万只，西部最大</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>（国家成都新药安全性评价中心）：GLP安评＋动物实验，新基地2027年7月投用</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cy">川·渝</span><span>重庆国际生物城企业自建动物实验设施，专业化SPF动物供应仍依赖川、粤</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都先导</b>：万亿级DNA编码化合物库（DEL）筛选平台，服务全球药企</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>：NMPA＋FDA双GLP安评，补齐西南临床前评价短板</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>天府国际生物城</b>：27个共性技术平台，覆盖靶点发现至有效性评价</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>重庆国际生物城依托博腾、药友提供工艺开发与注册申报服务</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>科伦药业</b>（成都）：原料药—制剂一体化，川宁生物中间体配套</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>福安药业</b>（重庆）：抗生素与特色原料药全产业链，2026年转向首仿与创新</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（重庆长寿）：小分子API CDMO，长寿工厂三度通过FDA零缺陷检查</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>华邦健康</b>：专科用药与原料药协同</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>苑东生物</b>（成都）：原料药—制剂一体化，改良型新药与高难度首仿</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>倍特药业</b>（成都）：注射剂与口服固体制剂规模化，集采主力供应商</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康弘药业</b>（成都）：康柏西普（生物药）＋化学药双线，推进国际化</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>药友制药</b>（重庆）：60%以上产品中美双申报，制剂出口平台</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（重庆长寿）：小分子CDMO＋ADC，ADC新签订单同比增66%</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆国际生物城</b>：依托博腾、药友形成“原料药—制剂”代工集群</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都天府国际生物城、成都医学城</b>：承接小分子工艺放大与临床样品生产</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重药控股</b>：依托覆盖30省178市的网络承接院外与基层学术推广</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川麦德凯</b>（天府国际生物城控股）：DTP渠道，在售创新药200余个</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国药控股四川、科伦医贸</b>：承担省内等级医院准入与配送一体化</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重药控股</b>（000950）：2026H1营收401亿元，11个省级物流基地、184个仓储中心</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆进口药品口岸与重药进口分销物流一、二期</b>：打通进口药械西南分拨</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国药控股四川、成都药品进口口岸</b>：承担全省生物制品与进口药配送</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川麦德凯</b>：DTP药房在售创新药200余个，服务肿瘤与慢病患者6.4万余人</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>重药控股“和平药房/和平新健康/诚信大药房”矩阵，231家DTP门店</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">川·渝·滇</span><span>一心堂、健之佳等连锁加速川渝下沉市场布点，区域整合提速</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>色谱填料/色谱柱、高纯试剂国产替代</b>加速，进口依赖从Cytiva、安捷伦体系转向国产</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>中硼硅玻璃＋预灌封/卡式瓶升级</b>，包材从“容器”转向“给药系统”</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>关联审评下耗材与制剂绑定</b>，供应商需具备相容性验证与变更管理能力</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>高端LC-MS/核磁</b>仍由安捷伦、赛默飞、布鲁克主导，国产替代集中在中低端HPLC/GC与前处理</span></div><div class="blt"><span class="mk mk-d">◆</span><span>“仪器＋耗材＋方法学”打包（色谱全生态）成为国产厂商突围路径</span></div><div class="blt"><span class="mk mk-d">◆</span><span>连续流与在线PAT检测设备需求随绿色合成、连续制造放量</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>人源化/基因编辑模型替代普通近交系，成为药效评价主流</span></div><div class="blt"><span class="mk mk-d">◆</span><span>实验猴刚性紧缺（2026年单价升至18—20万元/只），头部CRO以存栏锁定成本</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>类器官/器官芯片</b>获监管认可，逐步替代部分动物试验</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>从人力密集</b>转向“平台＋数据”，DEL与AI辅助设计缩短先导发现周期</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>一体化CRDMO锁定客户</b>，单一环节CRO议价力下降、向特色平台转型</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>生物安全法案等推动订单区域化</b>，头部CRO加速海外产能与双报能力</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>连续流反应、酶催化替代釜式工艺</b>，降本降三废，头部已万吨级应用</span></div><div class="blt"><span class="mk mk-d">◆</span><span>特色原料药向CEP/DMF规范市场升级，原料药—制剂一体化锁定集采利润</span></div><div class="blt"><span class="mk mk-d">◆</span><span>多肽、小核酸、ADC linker等高壁垒品种成为第二增长曲线</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>第十二批集采“双锚点”反内卷</b>，价格战让位于质量与保供，首仿溢价回升</span></div><div class="blt"><span class="mk mk-d">◆</span><span>改良型新药（505(b)(2)）与复杂制剂（缓控释、长效注射、口溶膜）成主战场</span></div><div class="blt"><span class="mk mk-d">◆</span><span>创新药出海BD放量（2026H1对外授权约1100亿美元）重塑估值与研发投向</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>中国CDMO全球份额升至约20%</b>，从API代工走向后期项目与商业化主供</span></div><div class="blt"><span class="mk mk-d">◆</span><span>连续流、多肽、ADC等新分子产能成为差异化竞争点</span></div><div class="blt"><span class="mk mk-d">◆</span><span>生物安全法案倒逼“中国＋N”产能布局与客户结构多元化</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>集采后专利过期药利润压缩</b>，CSO从费用驱动转向合规学术推广</span></div><div class="blt"><span class="mk mk-d">◆</span><span>创新药上市潮催生“CSO＋商保支付”组合，县域与零售终端成增量</span></div><div class="blt"><span class="mk mk-d">◆</span><span>数字化工具（代表行为管理、真实世界数据）重构推广效率</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>批发CR10约59.6%、CR4约48.6%，集中化接近尾声，转向“产品＋服务＋生态”</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>冷链、SPD、院外DTP</b>成增长引擎，DTP复合增速约15.8%</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>医保即时结算推广改善回款</b>，账期长、毛利薄仍是核心约束</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>处方外流与“双通道”政策推动DTP／专业药房扩容，院外处方占比约21%</span></div><div class="blt"><span class="mk mk-d">◆</span><span>连锁化率约57.6%、CR3仅8%，行业进入并购整合与单体店出清期</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>医保比价与线上比价压缩加价空间</b>，“药＋服务＋商保”成新盈利模式</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>色谱填料、高纯试剂与中硼硅包材<b>关联审评粘性强、复购稳定</b>；高端LC-MS质谱仍由外资主导，实验猴稀缺推高安评成本，<b>填料/包材/类器官国产替代空间广阔</b>。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>全球第一大药物形态，管线从仿制/Me-too向<b>口服GLP-1、PROTAC/分子胶、改良型复杂制剂与DEL+AI设计</b>跃迁；中国原料药产能占全球<b>35%—40%</b>但集中度低（TOP10＜20%）。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b>集采常态化加速落后产能出清，CDMO呈<b>“一超多强”</b>并向<b>连续流/酶催化</b>升级。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>专利过期药利润压缩倒逼<b>CSO向合规学术推广转型</b>；流通集中度高（CR4约48.6%），处方外流与“双通道”推动<b>DTP专业药房与“药+商保”</b>成为增量引擎。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">聚焦<b>色谱填料/手性催化剂/预灌封包材</b>等“剃刀+刀片”高粘性标的VC/PE卡位，依托川渝链主订单招引长三角上游试剂耗材龙头落地。</div><div class="cell fcat2 sp2a">早期依托<b>DEL+AI平台</b>筛选差异化新分子（口服GLP-1、靶向蛋白降解）与高BD潜力改良制剂；成长期配置具备<b>CEP/DMF国际认证</b>的高壁垒特色原料药。</div><div class="cell fcat3 sp2b">重点配置<b>“原料药—复杂制剂一体化”</b>及连续流、酶催化商业化CDMO龙头。</div><div class="cell fcat4 sp3b">以<b>产业并购整合</b>区域连锁药房与冷链枢纽，战略布局<b>DTP特药药房+商保直付+数字化真实世界证据（RWE）</b>创新商业化服务商。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">全球创新药市场约<span class="hl">1万亿美元</span>，小分子仍是第一大药物形式；中国为全球最大原料药生产国（产量占<span class="hl">35%—40%</span>），特色原料药约<span class="hl">4050亿元</span>，行业"大行业小龙头"（TOP10不足<span class="hl">20%</span>）；CDMO"一超多强"，药明康德占全球小分子CDMO约<span class="hl">20%</span>；品类分化——口服GLP-1成最强增长引擎（2025年上半年全球GLP-1市场<span class="hl">352亿美元</span>，司美格鲁肽+替尔泊肽合计占<span class="hl">89.1%</span>，首个小分子口服orforglipron于2026年2月获FDA批准），仿制药集采常态化（第十二批）微利化，创新药对外授权2026年上半年约<span class="hl">1100亿美元</span>。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">连续流化学、酶催化/生物合成替代传统釜式工艺；口服GLP-1等"肽改小分子"；PROTAC/分子胶等新型调控剂；DEL+AI辅助药物设计；改良型新药与复杂制剂（缓控释、吸入、长效注射）；多肽、小核酸拓展边界。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">仿制药出清与创新转型、原料药—制剂一体化与规范市场出海（CEP/DMF）、CDMO产能向中国转移叠加"中国+N"布局、AI重塑研发范式。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》第五章明确打造<b>生物医药新兴支柱产业、支持创新药临床使用</b>；第三十九章提出<b>完善集采政策、完善创新药目录、鼓励商业保险扩大创新药支付范围</b>；专栏3推进酶制剂与绿色生物制造技术应用。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd">川渝已构筑<b>成都先导（万亿级DEL库）、华西海圻（双GLP）、成都达硕（西部最大实验动物）、科伦/苑东/倍特/康弘（成都制剂集群）、博腾股份/药友制药/福安（重庆CDMO与双报出口）、正川股份（中硼硅药玻）、重药控股/麦德凯（流通与DTP）</b>全链条闭环；<span class="hl">化学药专用高端色谱柱、高纯试剂与高端质谱本地制造仍薄弱</span>，为重点补链方向。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-1" style="display:none;">
+<div class="canvas" id="poster-1" data-track="抗体创新药" data-seq="02" style="--track-grad:linear-gradient(180deg,#7C3AED 0%,#6D28D9 52%,#4C1D95 100%);--track-accent:#6D28D9;">
+  <div class="strip">
+    <div class="strip-seq">02</div>
+    <span class="strip-txt" style="letter-spacing:14px;">抗体创新药</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">抗体创新药产业链<span class="sub">十五五生物医药产业图谱 · 二部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>奥浦迈</b><i>（无血清培养基/CDM）</i></span><span class="pill"><b>纳微科技</b><i>（Protein A亲和介质）</i></span><span class="pill"><b>乐纯生物</b><i>（一次性反应袋）</i></span><span class="pill"><b>东富龙</b><i>（一次性反应器/耗材）</i></span><span class="pill"><b>洁特生物</b><i>（细胞培养耗材）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>赛多利斯</b><i>（生物反应器/纯化）</i></span><span class="pill"><b>Cytiva</b><i>（ÄKTA层析系统）</i></span><span class="pill"><b>东富龙</b><i>（反应器/冻干机）</i></span><span class="pill"><b>楚天科技</b><i>（生物工程装备）</i></span><span class="pill"><b>多宁生物</b><i>（培养基＋一次性系统）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>药康生物</b><i>（人源化/免疫缺陷鼠）</i></span><span class="pill"><b>百奥赛图</b><i>（RenMab全人抗体鼠）</i></span><span class="pill"><b>昭衍新药</b><i>（食蟹猴＋安评）</i></span><span class="pill"><b>成都达硕</b><i>（抗体血清专用动物，川）</i></span><span class="pill"><b>维通利华</b><i>（SPF大鼠小鼠）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明生物</b><i>（抗体发现＋CRDMO）</i></span><span class="pill"><b>康龙化成</b><i>（大分子发现/安评）</i></span><span class="pill"><b>昭衍新药</b><i>（抗体安评）</i></span><span class="pill"><b>美迪西</b><i>（临床前综合评价）</i></span><span class="pill"><b>百奥赛图</b><i>（抗体发现/靶点人源化）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明生物</b><i>（抗体原液DS）</i></span><span class="pill"><b>智翔金泰</b><i>（抗体原液＋制剂，渝）</i></span><span class="pill"><b>康诺亚</b><i>（抗体发现＋生产，川）</i></span><span class="pill"><b>复宏汉霖</b><i>（生物类似药原液）</i></span><span class="pill"><b>百济神州</b><i>（自建大规模产能）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>恒瑞医药</b><i>（PD-1/ADC/双抗）</i></span><span class="pill"><b>百济神州</b><i>（替雷利珠单抗）</i></span><span class="pill"><b>信达生物</b><i>（PD-1/双抗/ADC）</i></span><span class="pill"><b>智翔金泰</b><i>（自免/感染/肿瘤，渝）</i></span><span class="pill"><b>康诺亚</b><i>（IL-4Rα/TSLP，川）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>药明生物</b><i>（全球生物药CDMO第二）</i></span><span class="pill"><b>药明合联</b><i>（ADC CDMO）</i></span><span class="pill"><b>迈百瑞</b><i>（ADC/抗体CDMO）</i></span><span class="pill"><b>三星生物</b><i>（全球最大产能）</i></span><span class="pill"><b>东曜药业</b><i>（ADC，已并入药明生物）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>康哲药业</b><i>（生物药专科推广）</i></span><span class="pill"><b>上海医药</b><i>（CSO＋分销）</i></span><span class="pill"><b>国药控股</b><i>（全国准入）</i></span><span class="pill"><b>亿腾医药</b><i>（专科药商业化）</i></span><span class="pill"><b>智翔金泰＋康哲/药友</b><i>（双轨推广）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b><i>（全国冷链网络）</i></span><span class="pill"><b>上海医药</b><i>（疫苗/生物药冷链）</i></span><span class="pill"><b>华润医药</b><i>（分销＋并购）</i></span><span class="pill"><b>九州通</b><i>（冷链＋基层）</i></span><span class="pill"><b>重药控股</b><i>（渝，DTP＋冷链）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>益丰药房</b><i>（DTP＋院边店）</i></span><span class="pill"><b>老百姓</b><i>（双通道门店）</i></span><span class="pill"><b>上海医药</b><i>（“益药”DTP）</i></span><span class="pill"><b>京东健康</b><i>（线上新特药）</i></span><span class="pill"><b>重药控股</b><i>（和平药房DTP）</i></span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>赛多利斯成都基地</b>：培养基与一次性耗材本地供应，缩短西南药企采购周期</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>天府国际生物城集聚上游工艺企业，但Protein A介质、一次性反应袋仍以长三角为主</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cq">渝</span><span>重庆国际生物城上游耗材配套较薄弱，依托智翔金泰等链主带动引进</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>赛默飞世尔—天府国际生物城联合创新实验室</b>：分析检测与工艺开发</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>赛多利斯成都基地</b>：生物反应器、层析系统本地化服务与验证</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>智翔金泰2000L抗体产线配套装备，以进口＋东富龙/楚天国产组合为主</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>：抗体安评与灵长类动物实验，天府生物城新基地2027年7月投用</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都达硕</b>：抗体血清专用动物、人源化肿瘤模型，西部最大供应基地</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>智翔金泰自建动物实验与评价平台，专业化灵长类供应仍靠外购</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>（国家成都新药安全性评价中心）：NMPA/FDA双GLP抗体安评</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国家生物治疗转化医学重大科技基础设施</b>（华西医院）：支撑抗体临床转化</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆国际生物城</b>：以智翔金泰为链主构建“发现—临床—生产”本地闭环</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>智翔金泰</b>（巴南）：2000L级抗体原液产线，纬利妥米单抗2026年8月获批</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康诺亚</b>（成都）：司普奇拜单抗商业化，天府国际生物城原液基地</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>百利天恒</b>（成都）：EGFR×HER3双抗ADC授权BMS，里程碑最高71亿美元</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆国际生物城</b>：规划抗体、ADC、多肽产能集群，做强优势赛道</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>智翔金泰</b>：赛立奇单抗（IL-17A，已入医保）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>斯乐韦米单抗为全球首款狂犬病被动免疫双抗</b>（2026年6月获批）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康诺亚</b>：司普奇拜单抗（IL-4Rα）国内首个获批，全球权益授权</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>百利天恒</b>：iza-bren（EGFR×HER3双抗ADC）末线鼻咽癌NDA，2026年有望获批</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康弘药业</b>：康柏西普（抗VEGF融合蛋白）推进国际化</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（重庆）：ADC CDMO产能，ADC新签订单同比增66%</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆国际生物城</b>：规划抗体/ADC CDMO产能集群，承接西南biotech临床样品</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都天府国际生物城、成都医学城</b>：布局抗体CDMO与工艺开发服务</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span>智翔金泰与康哲药业、药友制药合作，构建“自建团队＋战略伙伴”全渠道</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>康弘药业自建学术推广团队，覆盖眼底病与中枢神经专科</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川麦德凯</b>（DTP）：承接抗体创新药院外准入与患者全周期管理</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重药控股</b>：11个省级物流基地、184个仓储中心、近80万㎡，覆盖生物制品冷链</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都药品进口口岸与天府国际生物城保税仓</b>：承接进口抗体药西南分拨</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国药控股四川</b>：生物制品全程温控配送网络</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川麦德凯</b>：在售创新药200余个，服务肿瘤与慢病患者6.4万余人</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重药控股</b>：231家DTP药房，2026H1 DTP业务同比增约35%</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>“双通道”定点药店扩容，承接抗体药院外供应与输注服务</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>Protein A介质、无血清培养基国产替代加速，进口单价约为国产2倍以上</span></div><div class="blt"><span class="mk mk-d">◆</span><span>一次性技术（SUB/SUT）从小试走向2000L商业化，国产反应袋份额已超七成</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>耗材从“单品”</b>转向“培养基＋细胞株＋工艺包”一体化解决方案</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>2000L以上大规模生物反应器与连续流装备仍是短板，国产在中试规模突破</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>一次性＋不锈钢混合产能</b>成为主流配置，装备与耗材捆绑销售</span></div><div class="blt"><span class="mk mk-d">◆</span><span>连续制造（IPC＋CDPC）与在线PAT质控推动装备升级</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>全人源抗体小鼠（RenMab/共轻链）替代噬菌体展示，缩短抗体发现周期</span></div><div class="blt"><span class="mk mk-d">◆</span><span>食蟹猴价格2026年升至18—20万元/只，头部企业以长协与自建猴场锁定资源</span></div><div class="blt"><span class="mk mk-d">◆</span><span>类器官/器官芯片与监管现代化法案推动减少动物依赖</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>CRO从单抗向双抗/ADC/多抗延伸，需细胞株、偶联、表征全链条能力</span></div><div class="blt"><span class="mk mk-d">◆</span><span>AI辅助抗体设计（de novo设计、亲和力成熟）进入临床验证阶段</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>中美双报需求上升</b>，GLP/GCP数据国际互认成为准入门槛</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>表达量由g/L级向8—12g/L</b>提升，定点整合细胞株平台成核心壁垒</span></div><div class="blt"><span class="mk mk-d">◆</span><span>双抗/ADC原液工艺（偶联、纯化）成产能投资重点，中国占全球双抗/ADC在研管线约50%/56%</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>连续流与强化灌流降低单位成本</b>，应对生物类似药集采降价</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>PD-1红海出清</b>，双抗/ADC与自免、慢病靶点（IL-4Rα、TSLP、PCSK9）成增量</span></div><div class="blt"><span class="mk mk-d">◆</span><span>高浓度、皮下注射、预充针/自动注射器成制剂差异化方向</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>生物类似药集采临近</b>，创新抗体靠全球权益与BD出海兑现价值</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>中国生物药CDMO全球份额</b>提升，药明生物在手订单约250亿美元、产能规划超40万升</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>ADC/XDC外包爆发</b>，药明合联全球份额约22%、国内约70%</span></div><div class="blt"><span class="mk mk-d">◆</span><span>生物安全法案下“中国＋N”产能与客户结构多元化</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>抗体药单价高</b>，依赖“医院准入＋双通道＋DTP”三线并进</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>商保创新药目录</b>扩容（2026年54个药品通过初审）成高价抗体支付新通道</span></div><div class="blt"><span class="mk mk-d">◆</span><span>CSO向医学事务、真实世界证据、患者援助等专业化服务升级</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>生物药冷链（2—8℃/深冷）成流通企业核心能力，冷链费用约268亿元</span></div><div class="blt"><span class="mk mk-d">◆</span><span>全程温控追溯（IoT/区块链）与GSP合规成为准入门槛</span></div><div class="blt"><span class="mk mk-d">◆</span><span>流通企业与CDMO、药企共建端到端供应链服务</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>DTP/双通道门店成为抗体创新药放量主渠道，院外处方占比持续提升</span></div><div class="blt"><span class="mk mk-d">◆</span><span>专业药房向“药学服务＋输注中心＋商保直付”延伸（抗体多需静脉输注）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>连锁化与集中度</b>提升，单体药店加速出清</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>无血清培养基、Protein A亲和层析介质与一次性反应袋占生产成本比重高（<b>进口单价为国产2倍以上</b>）；全人源抗体小鼠平台加快源头发现，大规模反应器仍存短板。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>单抗红海出清，管线转向<b>双抗/多抗（TCE）、自免慢病靶点（IL-4Rα/TSLP）及高浓度皮下制剂</b>；定点整合高表达株（8—12g/L）与AI从头设计构筑壁垒。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b><b>重资产、强规模效应</b>，国内生物药CDMO高度集中（<b>头部占超40%</b>），加速灌流连续制造。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>抗体药单价高、多需静脉输注或冷链储运，高度依赖<b>“医院准入+双通道+DTP药房”三线并进</b>；商保创新药目录扩容与2—8℃全程温控追溯成为放量前提。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">优选已进入商业化管线验证的<b>国产无血清培养基、Protein A介质与一次性生物工艺包</b>一体化供应商，关注具备“设备+耗材”捆绑能力的国产装备商。</div><div class="cell fcat2 sp2a">聚焦具备<b>全球First-in-class/Best-in-class</b>潜力的自免/代谢慢病单双抗、TCE多抗及皮下预充针管线，采取<b>临床里程碑PE+海外BD/NewCo授权</b>变现。</div><div class="cell fcat3 sp2b">规避同质化单抗扩产，优选<b>双抗复杂纯化与中美欧GMP双报</b>头部CDMO。</div><div class="cell fcat4 sp3b">围绕抗体院外化趋势，布局<b>“DTP专业药房+院外日间输注中心+商业健康险直付”</b>协同网络及生物制品GSP冷链基础设施。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">2025年全球抗体药物市场约<span class="hl">3040亿美元</span>（<span class="hl">+13%</span>），占全球创新药市场近1/3，K药单品超<span class="hl">300亿美元</span>、64款重磅炸弹；PD-1/PD-L1（<span class="hl">581亿美元</span>）红海出清，ADC（<span class="hl">165.1亿美元</span>，<span class="hl">+27%</span>）与双抗（<span class="hl">178亿美元</span>，<span class="hl">+34%</span>）成第二增长曲线，中国占全球双抗/ADC在研管线约<span class="hl">50%</span>/<span class="hl">56%</span>；国内市场突破<span class="hl">800亿元</span>、连续三年增速超<span class="hl">15%</span>；CDMO高度集中：药明生物占国内生物药CDMO超<span class="hl">40%</span>、药明合联占ADC CDMO国内约<span class="hl">70%</span>；BD出海放量，百利天恒双抗ADC授权BMS（总额最高<span class="hl">84亿美元</span>）。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">双抗/多抗（TCE）与双抗ADC（全球在研超100款）；ADC定点偶联与双载荷；全人源抗体小鼠平台替代噬菌体展示；高浓度皮下制剂与预充针；AI抗体设计进入临床验证。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">从Fast-follow走向<span class="hl">First-in-class</span>、BD出海成为核心变现通道、上游培养基/填料/装备国产替代、医保+商保双支付扩容。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》专栏3第03项明确提出<b>“加快细胞和基因治疗药物、抗体药物、核酸药物、放射性药物等研发应用”</b>；专栏8攻关<b>癌症、心脑血管、呼吸和代谢性疾病精准医学与生物治疗技术</b>。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd">形成<b>成都康诺亚（司普奇拜单抗国内首款IL-4Rα）、百利天恒（双抗ADC最高84亿美元出海BMS）、康弘药业（康柏西普）</b>与<b>重庆智翔金泰（赛立奇单抗+全球首款狂犬双抗斯乐韦米单抗）</b>双城链主格局，配套华西海圻双GLP与重药/麦德凯DTP冷链；<span class="hl">上游Protein A介质、商业化一次性反应袋及万升级第三方抗体CDMO仍较薄弱</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-2" style="display:none;">
+<div class="canvas" id="poster-2" data-track="ADC创新药" data-seq="03" style="--track-grad:linear-gradient(180deg,#DB2777 0%,#BE185D 52%,#831843 100%);--track-accent:#BE185D;">
+  <div class="strip">
+    <div class="strip-seq">03</div>
+    <span class="strip-txt" style="letter-spacing:12px;">ADC创新药</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">ADC创新药产业链<span class="sub">十五五生物医药产业图谱 · 三部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>奥浦迈</b><i>（培养基）</i></span><span class="pill"><b>百普赛斯</b><i>（重组蛋白/抗体试剂）</i></span><span class="pill"><b>皓元医药</b><i>（Linker-Payload工具化合物与试剂）</i></span><span class="pill"><b>洁特生物</b><i>（实验室耗材）</i></span><span class="pill"><b>山东药玻</b><i>（中硼硅药用玻璃/包材）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>华大智造</b><i>（基因测序）</i></span><span class="pill"><b>东富龙</b><i>（生物工程装备/冻干系统）</i></span><span class="pill"><b>楚天科技</b><i>（制药装备与检测系统）</i></span><span class="pill"><b>汉邦科技</b><i>（层析纯化系统）</i></span><span class="pill"><b>聚光科技</b><i>（分析仪器）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>昭衍新药</b><i>（实验动物+安评一体化）</i></span><span class="pill"><b>南模生物</b></span><span class="pill"><b>药康生物</b><i>（基因工程/人源化小鼠模型）</i></span><span class="pill"><b>维通利华</b><i>（SPF级动物）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明康德</b><i>（一体化研发服务，ADC一体化能力突出）</i></span><span class="pill"><b>康龙化成</b></span><span class="pill"><b>泰格医药</b><i>（临床CRO）</i></span><span class="pill"><b>昭衍新药</b><i>（安评CRO）</i></span><span class="pill"><b>皓元医药</b><i>（Payload-Linker合成与生物评价）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明康德</b><i>（合全药业、药明合联，GMP级Payload/Linker及高活性API）</i></span><span class="pill"><b>皓元医药</b><i>（毒素-连接子原料药）</i></span><span class="pill"><b>键凯科技</b><i>（PEG/连接子药用辅料）</i></span><span class="pill"><b>凯莱英</b><i>（高活性小分子合成）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>科伦博泰</b><i>（成都，芦康沙妥珠单抗已获4项适应症）</i></span><span class="pill"><b>百利天恒</b><i>（成都，BL-B01D1为全球首个获批双抗ADC）</i></span><span class="pill"><b>荣昌生物</b><i>（维迪西妥单抗，首款国产ADC）</i></span><span class="pill"><b>映恩生物</b><i>（DB-1303报产、多笔出海BD）</i></span><span class="pill"><b>恒瑞医药</b><i>（HER3 ADC等多管线）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>药明合联</b><i>（全球ADC CDMO龙头，iCMC项目250+，并购东曜药业）</i></span><span class="pill"><b>东曜药业</b><i>（苏州，ADC专用产线）</i></span><span class="pill"><b>凯莱英</b></span><span class="pill"><b>迈百瑞</b><i>（生物药CDMO含ADC）</i></span><span class="pill"><b>博腾股份</b><i>（高活性API）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>康哲药业</b><i>（国内最大CSO）</i></span><span class="pill"><b>亿腾医药</b><i>（肿瘤/成熟品种推广）</i></span><span class="pill"><b>泰凌医药</b><i>（肿瘤专科推广）</i></span><span class="pill-note">创新药企多自建肿瘤学术推广团队（科伦博泰覆盖30省份1200余家医院）</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b></span><span class="pill"><b>上海医药</b></span><span class="pill"><b>华润医药</b></span><span class="pill"><b>九州通</b><i>（高值肿瘤药全程冷链配送网络）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>老百姓大药房</b></span><span class="pill"><b>大参林</b></span><span class="pill"><b>益丰药房</b></span><span class="pill"><b>一心堂</b><i>（DTP专业药房承接高值抗肿瘤创新药）</i></span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cy">川·渝</span><span><b>西南环节相对薄弱</b>：成都天府国际生物城配套耗材企业集群、四川大学华西医院大型科研仪器与试剂共享平台、重庆国际生物城配套耗材企业集群（明确在"细胞培养、分离提纯"环节引入配套项目）</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cy">川·渝</span><span>四川省食品药品检验检测研究院、重庆市食品药品检验检测研究院（生物制品检定与ADC表征能力建设）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cy">川·渝</span><span><b>川渝高校与华西医院大型科研仪器共享平台</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国家成都新药安全性评价中心</b>（华西海圻，GLP安评，ADC毒理评价经验丰富）、成都达硕实验动物（达硕系，全国唯一实验动物生产+使用双资质的全产业链商业化平台）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都森威实验动物</b>（达硕全资子公司）、四川维通利华（国际实验动物巨头 Charles River 在华体系西南基地）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">滇</span><span><b>英茂生物</b>（云南省规模最大的实验猴生产与出口单位，2021年被昭衍新药收购）、亚灵生物（云南独立运营的重点猴场）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">滇·黔</span><span><b>仁利坤元</b>（云南区域供应方）、贵州的实验猴资源主要被天勤生物（武汉企业，靠"养猴"起家的临床前 CRO，正在冲刺上市）以并购形式布局</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都先导</b>（成都，DEL筛选与分子优化）、四川大学华西医院GCP机构（肿瘤临床试验，ADC临床资源丰富）、国家成都新药安全性评价中心（华西海圻）</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cy">川·渝</span><span><b>西南ADC专科临床CRO相对稀缺</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（重庆，高活性API与毒素/连接子中间体CDMO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>汇宇制药</b>（四川内江，抗肿瘤注射剂原料+制剂）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆皓元</b>（皓元医药子公司）生产基地</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>西岭源药业</b>（linker-payload ，自研非对外）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都摩诃大龙医药</b>（ADC 载荷/连接子定制合成，体量小偏早期）</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>科伦博泰</b>（成都天府国际生物城，与默沙东合作累计超118亿美元）、百利天恒（成都，BL-B01D1以84亿美元授权BMS）、康诺亚（成都，CMG901授权阿斯利康）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康弘药业</b>（KH815，TROP2 双载荷 ADC，全球首个进入临床的双载荷 ADC，中美澳推进中）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>科弈药业</b>（成都，纳米双抗 ADC，已达成11.65 亿美元海外授权）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>微芯新域</b>（成都，表观遗传免疫ADC，新类别差异化技术路线）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>海思科</b>（布局早期ADC研发管线）</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span><b>成都已形成国内领先的ADC产业集群</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cy">川·渝</span><span><b>西南ADC CDMO环节薄弱</b>：博腾股份（重庆，高活性毒素/连接子产能）、汇宇制药（四川内江，抗肿瘤注射剂产能）</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>抗体偶联与无菌灌装产能集中于长三角</b>（无锡/苏州）</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">川·渝·滇</span><span><b>重药控股</b>（重庆，分销+推广协同）、四川科伦医药贸易（成都）、云南白药（医药商业板块）</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span>西南专科CSO承接ADC推广能力有限，科伦博泰、百利天恒均自建600+自营销售团队</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">川·渝·滇</span><span><b>重药控股</b>（重庆，全国性分销网络）、四川科伦医药贸易（成都）、云南白药（医药商业板块）</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">川·渝·滇</span><span><b>一心堂</b>（云南，西南药店龙头）、桐君阁大药房（重庆）、四川德仁堂（成都）</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>ADC专用原辅料国产替代</b>加速（定点偶联试剂、非天然氨基酸、毒素/连接子中间体、GMP级Linker-Payload）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>一次性生物反应耗材与无菌包材渗透率</b>提升</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>受下游ADC管线放量与批产节奏影响明显</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>生物反应器、层析与灌装设备国产化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span>ADC偶联与表征专用分析设备（HPLC/LC-MS）仍依赖进口、国产替代起步</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>智能化在线监测与数字化实验室</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>SPF化与基因工程动物模型</b>普及</span></div><div class="blt"><span class="mk mk-d">◆</span><span>人源肿瘤移植模型（CDX/PDX）广泛用于ADC药效与旁观者效应评价</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>实验动物资源与安评服务一体化</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>ADC研发外包需求爆发（连接子-毒素合成、偶联工艺开发、DAR表征、生物分析一体化）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>肿瘤专科临床CRO</b>加速扩容</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>AI辅助抗体设计与连接子优化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>出海多中心临床试验（MRCT）成标配</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>高活性payload密闭隔离生产</b>成标配</span></div><div class="blt"><span class="mk mk-d">◆</span><span>GMP级连接子-毒素本土供应放量、成本下降</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>连续流合成与绿色化学应用</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>定点偶联对中间体纯度要求持续</b>提升</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>国产ADC管线数量与出海授权居全球首位（2026年上半年创新药对外授权约1100亿美元、ADC为最集中品类）</span></div><div class="blt"><span class="mk mk-d">◆</span><span>双抗ADC、双载荷、免疫刺激ADC等新一代分子密集进入III期</span></div><div class="blt"><span class="mk mk-d">◆</span><span>芦康沙妥珠单抗、BL-B01D1等头部品种进入全球III期兑现期</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>适应症从肿瘤向自免等领域延伸</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>ADC外包渗透率约70%、XDC一体化（抗体+payload+偶联+灌装全流程）成主流</span></div><div class="blt"><span class="mk mk-d">◆</span><span>药明合联80亿元扩产、新加坡基地2026年GMP放行并拟布局美国</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>海外Lonza/三星生物/富士</b>加速扩产</span></div><div class="blt"><span class="mk mk-d">◆</span><span>高活车间与隔离器技术、全球多基地"镜像工厂"模式</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>肿瘤专科学术推广与进院能力为核心（准入医院数量决定放量节奏）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>医保谈判/惠民保</b>加速准入</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>海外权益授权后由MNC合作方销售</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>数字化营销与全渠道覆盖</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>高值抗肿瘤药全程冷链+电子追溯</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>两票制下区域集中配送与两级库网络</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>DTP专业药房承接院外市场</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>县域终端下沉</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>DTP药房+双通道政策承接ADC等高值肿瘤药院外供应</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>专业药事服务（输注对接、不良反应管理）</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>线上处方流转与O2O配送</b></span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>涵盖抗体培养、高活毒素合成与生物偶联三大体系，对<b>定点偶联试剂、GMP级Linker-Payload、高分辨DAR值质谱表征及CDX/PDX模型</b>要求极高。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b><b>“抗体+连接子+载荷”三元协同</b>复杂度高，中国ADC在研管线与BD出海金额居全球首位；高活Payload研发生产须具备<b>OEB4/OEB5级密闭隔离</b>与极高纯度控制。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b>跨学科壁垒高、<b>外包率达约70%</b>，<b>“抗体+偶联+冻干灌装”XDC一体化</b>是护城河。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>以高值抗肿瘤专科用药为主，<b>三甲肿瘤医院准入数量、指南推荐线次（后线向一线/新辅助前移）与医保谈判/惠民保覆盖</b>直接决定商业化爬坡速度。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">早期卡位<b>新型亲水连接子、非天然氨基酸定点偶联技术、双载荷工具分子库</b>及国产层析纯化装备（汉邦/东富龙等）专精特新标的。</div><div class="cell fcat2 sp2a">重仓<b>双抗ADC、双载荷ADC、ISAC及向自免/代谢延伸的XDC（RDC/PDC/AOC）</b>前沿管线，以全球多中心临床（MRCT）与MNC巨额BD为退出主航道。</div><div class="cell fcat3 sp2b">以<b>引导基金+园区代建高活隔离GMP厂房</b>，补齐川渝<b>偶联灌装一体化CDMO</b>短板。</div><div class="cell fcat4 sp3b">支持具备全国三甲肿瘤科覆盖能力的<b>肿瘤专科学术推广平台、DTP冷链特药药房（配套输注与不良反应管理）</b>及跨境License-out交易服务机构。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">ADC为肿瘤领域增长最快赛道之一——全球已上市20余款、2025年销售约<span class="hl">168-187亿美元</span>；Enhertu以<span class="hl">49.8亿美元</span>居首（2026年获批早期乳腺癌辅助/新辅助、全年有望破<span class="hl">60亿美元</span>），Polivy、Padcev相继跨过<span class="hl">20亿美元</span>；弗若斯特沙利文预测2030年达约<span class="hl">662亿美元</span>（2032年有望破千亿美元），中国市场增速（CAGR约<span class="hl">46%</span>）全球最快。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">向"精准化+多量化"迭代——定点偶联（糖基化等）提升产物均一性；双抗ADC、双载荷ADC（2026年AACR相关摘要较上年翻倍）、免疫刺激ADC（ISAC）密集进入临床；适应症从晚期后线向一线/辅助治疗前移，并从肿瘤向自免（SLE、哮喘）、代谢、抗感染等XDC领域延伸（RDC/PDC/AOC等新形态崛起）。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">ADC与IO/靶向药联合成为主流疗法；AI辅助抗体与连接子设计；产能全球化与区域化（外包率约<span class="hl">70%</span>、CDMO市场2030年约<span class="hl">110亿美元</span>）；下一代偶联药物（XDC）边界从抗体扩展至多肽/核酸/核素，自免等非肿瘤适应症打开二次增长曲线。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》专栏8第04、06项重点部署<b>“深化分子精准递送研究”</b>与<b>“癌症早筛早查、精准医学、生物治疗及创新药物研发”</b>；第三十九章健全<b>医保与商保支持创新药高质量发展机制</b>。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd"><b>成都已崛起为国内顶尖、全球知名的ADC创新策源集群</b>——集聚<b>科伦博泰（与默沙东合作超118亿美元）、百利天恒（84亿美元授权BMS）、康诺亚、康弘药业（全球首个临床双载荷ADC）、科弈药业、微芯新域</b>，重庆<b>博腾股份、皓元基地</b>配套高活API；但<span class="hl">上游专用耗材、抗体偶联与无菌灌装一体化CDMO及西南肿瘤专科CSO严重稀缺</span>，补链价值极高。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-3" style="display:none;">
+<div class="canvas" id="poster-3" data-track="多肽创新药（含环肽）" data-seq="04" style="--track-grad:linear-gradient(180deg,#059669 0%,#047857 52%,#064E3B 100%);--track-accent:#047857;">
+  <div class="strip">
+    <div class="strip-seq">04</div>
+    <span class="strip-txt" style="letter-spacing:14px;">多肽创新药</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">多肽创新药（含环肽）产业链<span class="sub">十五五生物医药产业图谱 · 四部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>昊帆生物</b><i>（缩合试剂）</i></span><span class="pill"><b>蓝晓科技</b><i>（合成树脂）</i></span><span class="pill"><b>纳微科技</b><i>（纯化填料）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>CEM</b><i>（自动多肽合成）</i></span><span class="pill"><b>安捷伦</b><i>（分析、纯化与质谱）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>维通利华／Charles River</b><i>（实验动物与模型）</i></span><span class="pill"><b>集萃药康</b><i>（模型动物）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>药明康德</b><i>（多肽发现及研发）</i></span><span class="pill"><b>Medpace</b><i>（临床，含肥胖领域）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>Bachem</b></span><span class="pill"><b>诺泰生物</b></span><span class="pill"><b>圣诺生物</b></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>诺和诺德</b><i>（司美格鲁肽、CagriSema）</i></span><span class="pill"><b>礼来</b><i>（替尔泊肽、retatrutide）</i></span><span class="pill"><b>强生／Protagonist</b><i>（icotrokinra）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>Bachem</b></span><span class="pill"><b>药明康德／合全药业</b><i>（WuXi TIDES）</i></span><span class="pill"><b>凯莱英</b></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>IQVIA Contract Sales</b><i>（专业销售外包平台；非多肽专属）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b></span><span class="pill"><b>重庆医药集团</b></span><span class="pill-note">综合医药流通平台</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>京东健康／京东大药房</b></span><span class="pill"><b>重庆医药旗下专业药房网络</b></span><span class="pill-note">综合零售渠道</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都郑源生化</b>（保护氨基酸、短肽片段）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>新维创生物</b>（研究用多肽及定制服务；基础耗材业务规模待核）</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都格莱高科技</b>（多肽合成、裂解、制备纯化及配套系统）</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cq">渝</span><span><b>本轮未核实到明确匹配的本土制造主体</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>格林豪斯、成都达硕实验动物园</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻、海枫生物</b></span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cq">渝</span><span><b>本轮未核实到多肽相关重点供应主体</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都先导</b>（肽类DEL库、环肽筛选及苗头确认）华西海圻、海枫生物</span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cq">渝</span><span><b>本轮未核实到可明确列为多肽专业CRO的主体</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>圣诺生物</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川多瑞药业</b>（金堂）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（多肽API定制研发生产）</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都诺和晟泰</b>（多肽创新药及中试平台）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>圣诺生物</b>（多肽制剂与开发平台）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>宸安生物</b>（司美格鲁肽生物类似药）</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>圣诺生物</b>（多肽API与制剂定制生产）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>博腾股份</b>（多肽API及制剂CDMO平台）</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span><b>多肽专业CSO主体待核实</b></span></div><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cq">渝</span><span><b>多肽专业CSO主体待核实</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国药控股四川医药</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>重庆医药集团、重庆医药集团和平物流</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川德仁堂</b>（零售网络）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>和平药房、和平新健康</b>（DTP业务）</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>非天然、D型及N-甲基氨基酸</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>正交保护砌块</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>高溶胀抗聚集合成树脂</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>低消旋偶联与环化试剂</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>高分辨纯化填料</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>平行与自动化合成</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>困难序列及环化工艺控制</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>合成—裂解—纯化联动</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>在线监测与杂质分析</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>溶剂回收及放大一致性</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>适应证匹配模型</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>靶点跨物种活性确认</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>人源化受体模型</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>体成分及合并症评价</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>标准化背景与模型可重复性</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>环肽库与高通量筛选</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>构象、稳定性及细胞通透性优化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>暴露—靶点作用—药效关联</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>免疫原性与代谢安全性</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>适应证匹配临床设计</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>复杂长肽、环肽及修饰肽规模化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>固液相结合、酶法与混合工艺</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>杂质鉴定与控制</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>提高收率</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>降低溶剂用量和单位合格品成本</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>长效化、多受体激动</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>口服递送</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>大环肽构象与通透性优化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>专科适应证拓展</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>制剂稳定性与给药装置协同</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>工艺开发至商业化一体化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>复杂环肽及修饰肽放大</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>质量体系与批间一致性</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>原料—制剂衔接</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>无菌灌装及给药装置配套</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>按适应证配置专业销售团队</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>医学教育、市场准入与渠道协同</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>真实处方及患者服务数据支持</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>按产品生命周期灵活组织服务</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>院内与院外协同供应</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>按产品批准条件实行温控与追溯</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>小批量高频配送</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>库存、效期及退货管理</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>提高跨区域供应效率</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>专业药师与处方审核</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>按产品要求储运交付</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>注射指导、续方与依从性管理</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>线上线下协同</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>适应证匹配的患者随访</b></span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>固相合成对<b>合成树脂、缩合偶联试剂、非天然/正交保护氨基酸及制备纯化硅胶填料</b>消耗巨大；自动化多肽合成仪与溶剂绿色回收系统决定工艺经济性。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>代谢减重呈<b>全球双寡头主导、多靶点压制单靶点</b>格局，吨级多肽API成全球卡位焦点；环肽凭借高稳定性与跨膜潜力突破<b>口服递送与胞内不可成药靶点</b>。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b><b>固液相混合合成/生物酶法、长肽杂质控制与注射笔灌装</b>成CDMO竞争核心。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>兼具<b>严肃慢病处方药（降糖/MASH/心肾获益）与消费医疗（减重塑形）</b>双重属性，院内内分泌准入与院外O2O电商、DTP续方及患者依从性管理并重。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">布局进入全球大品种供应链的<b>固相合成载体树脂、新型低消旋缩合试剂、高分辨纯化填料及国产全自动多肽合成纯化装备</b>龙头。</div><div class="cell fcat2 sp2a">依托<b>环肽DEL高通量筛选</b>，投资<b>口服环肽、超长效GLP-1/GIP/GCG/Amylin多靶点管线、PDC/RDC配体</b>及具备FDA/EMA DMF资质的多肽API企业。</div><div class="cell fcat3 sp2b">配置具备<b>吨级放大、绿色酶法降本与注射笔制剂一体化</b>的TIDES CDMO龙头。</div><div class="cell fcat4 sp3b">关注<b>“互联网医院在线处方+冷链O2O即时配送+注射指导与数字化体重管理”</b>全周期商业化平台及院外专业连锁渠道。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">当前多肽创新药市场呈现高度头部化、<span class="hl">双寡头主导</span>、代谢领域绝对集中的格局。礼来替尔泊肽与诺和诺德司美格鲁肽占据绝对优势。双靶点药物在规模上首次全面压制单靶点产品，标志着技术代际更替加速。非代谢类多肽（如长效生长抑素类似物、放射性肽偶联药物）虽增速不及代谢板块，但构成稳定的存量基本盘，维持行业长尾韧性。与此同时，中国企业在多肽原料药与CDMO环节深度嵌入全球供应链。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">产品向长效、多靶点、口服与复杂环肽方向发展。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">司美格鲁肽核心专利到期引发全球生物类似药与成本效率竞赛；适应症从减重降糖向MASH（代谢相关脂肪性肝炎）、心肾获益、睡眠呼吸暂停及神经退行性疾病全面扩容；多肽作为精准靶向配体与核素（RDC）、小核酸（PDC）跨界融合打开第二增长曲线。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》专栏8明确攻关<b>“代谢性疾病精准医学与重大高发慢性病创新药物”</b>；专栏3突破<b>酶制剂与智能发酵/绿色生物制造</b>关键技术，支撑多肽酶法绿色合成升级。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd">川渝在多肽链条优势鲜明：<b>成都先导（全球领先环肽DEL筛选）、圣诺生物（国内多肽API与制剂CDMO核心龙头）、多瑞药业、诺和晟泰（多肽创新药）、成都格莱高（多肽合成纯化装备）</b>与<b>重庆博腾股份（多肽CDMO）、宸安生物（司美格鲁肽类似药）</b>深度协同；<span class="hl">上游高端合成树脂/纯化填料及川渝多肽专业化CSO主体仍待补齐</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-4" style="display:none;">
+<div class="canvas" id="poster-4" data-track="核药" data-seq="05" style="--track-grad:linear-gradient(180deg,#D97706 0%,#B45309 52%,#78350F 100%);--track-accent:#B45309;">
+  <div class="strip">
+    <div class="strip-seq">05</div>
+    <span class="strip-txt" style="letter-spacing:24px;">核　　药</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">核药（放射性药物）产业链<span class="sub">十五五生物医药产业图谱 · 五部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>北京派特生物</b><i>（PET试剂耗材、钨合金/铅防护器材、FDG药盒）</i></span><span class="pill"><b>玖谊源</b><i>（合成模块配套一次性合成卡套）</i></span><span class="pill"><b>吉蕊科技</b><i>（GMP级一次性试剂盒卡套）</i></span><span class="pill"><b>诺宇生物</b><i>（自研全自动合成模块Mortenon M1及配套低成本卡套）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>联影医疗</b><i>（PET/CT）</i></span><span class="pill"><b>楚天科技</b><i>（核药热室/自动合成/分装灌装线装备）</i></span><span class="pill"><b>中核安科锐</b><i>（Tomo C/射波刀放疗装备）</i></span><span class="pill"><b>明峰医疗</b></span><span class="pill"><b>永新医疗</b><i>（国产SPECT）</i></span><span class="pill"><b>玖谊源</b><i>（医用回旋加速器）</i></span><span class="pill"><b>中硼医疗</b><i>（BNCT）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>昭衍新药</b></span><span class="pill"><b>益诺思</b></span><span class="pill"><b>药明康德</b><i>（分子影像中心）</i></span><span class="pill"><b>华西海圻</b><i>（核药GLP）</i></span><span class="pill"><b>中科灵瑞</b></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>米度生物</b><i>（专注核药CRO）</i></span><span class="pill"><b>通瑞生物</b><i>（专注核药CRO）</i></span><span class="pill"><b>国通新药</b><i>（专注核药CRO）</i></span><span class="pill"><b>药明康德</b><i>（兼做核药CRO服务）</i></span><span class="pill"><b>益诺思</b><i>（兼做核药CRO服务）</i></span><span class="pill"><b>昭衍新药</b><i>（兼做核药CRO服务）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>中国同辐</b><i>（中核高通/中核秦同/原子高科）</i></span><span class="pill"><b>秦山核电「和福一号」</b></span><span class="pill"><b>国电投核素同创</b></span><span class="pill"><b>中广核同位素</b></span><span class="pill"><b>玖谊源</b></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>中国同辐</b></span><span class="pill"><b>东诚药业</b></span><span class="pill"><b>远大医药</b></span><span class="pill"><b>先通药业</b></span><span class="pill"><b>蓝纳成</b></span><span class="pill"><b>纽瑞特</b></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>通瑞生物</b></span><span class="pill"><b>国通新药</b></span><span class="pill"><b>米度生物</b></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>远大医药</b></span><span class="pill"><b>百洋医药</b></span><span class="pill"><b>上海医药/国药控股/九州通</b><i>（核药商业准入）</i></span><span class="pill"><b>成都普尔伟业</b></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>中国同辐</b><i>（自有核药房网络，直配直送）</i></span><span class="pill"><b>东诚药业</b><i>（自有核药房网络，直配直送）</i></span><span class="pill"><b>东航物流</b></span><span class="pill"><b>川航物流</b></span><span class="pill"><b>世达国际物流</b></span><span class="pill"><b>国药/上药四川</b></span><span class="pill"><b>成都普尔伟业</b><i>（第三方物流）</i></span></div></div><div class="cell cat4"><div class="empty-box"><span class="empty-badge">无</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span>四川省内尚无公开的核药专用耗材专项重点项目，耗材多随装备与制剂项目配套供给：绵阳玖谊源（合成模块+一次性卡套）、成都德力斯（热室/手套箱装备配套）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>需求由成都温江远大基地、纽瑞特、通瑞生物、国通绵阳等制剂/CMO项目带动</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>玖谊源</b>（医用回旋加速器）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>中广核技</b>（30MeV回旋加速器）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都德力斯</b>（核药热室/手套箱/隔离器装备）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>中玖闪光</b>（FLASH放疗）</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>永新医疗</b>（国产SPECT）</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>中硼医疗</b>（BNCT）</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>（核药GLP）、药明康德成都分子影像中心、中物院二所安评平台</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>通瑞生物、国通新药、华西海圻</b>（核药GLP）</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川海同同位素</b>（乐山夹江，核动力设计院旗下）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>中国绵阳研究堆 </b>（绵阳，中物院旗下）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>中广核绵阳</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>玖谊源</b>（加速器产核素阵列工厂）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>纽瑞特</b>（器产核素）等</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>纽瑞特、通瑞生物、云克药业、欣科药业、绵阳九院二所、核动力设计院</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>通瑞生物、国通新药、绵阳九院二所、云克药业</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>远大医药、成都普尔伟业、云克药业、欣科药业</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>川航物流</b>（双流/天府双机场有核素运输资质）、中国同辐四川核药房网络、东诚四川核药房、成都普尔伟业</span></div></div></div><div class="cell cat4"><div class="empty-box"><span class="empty-badge">无</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>耗材与合成模块“主机+一次性卡匣”绑定放量：卡匣标准化以适配GE/IBA等进口主流模块并国产化降本</span></div><div class="blt"><span class="mk mk-d">◆</span><span>标记前体、纯化柱、屏蔽器材等配套试剂耗材国产化</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>随“当日制当日用”院内合成趋势</b>，GMP级一次性无菌卡匣需求扩大</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>耗材复购粘性强</b>，是设备商“设备+耗材+工艺包”闭环的主要利润池</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>仪器装备向中高能化与小型化</b>演进，国产化替代加速</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>放射性安评与分子影像一体化</b>成标配，同位素使用资质稀缺性提升</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>C证与甲级辐安证</b>成准入门槛，海外影像与中美双报能力成分化点</span></div><div class="blt"><span class="mk mk-d">◆</span><span>由CRO向CRDMO一站式服务发展，筛选项目→标记工艺→非临床→IND→临床供药→商业化交付的全产业链服务能力为核心竞争力</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>堆产核素及器产核素双主路线</b>并行，壁垒方面堆产&gt;器产&gt;发生器产</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>国内核素实现自主供应甚至实现出口</b>，随着自主产能增加，预计核素价格进一步降低，无载体高比活度取代价格成为壁垒</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>核药诊疗一体化主线</b>确立，创新靶点多线并进成为核心突破点</span></div><div class="blt"><span class="mk mk-d">◆</span><span>225Ac、177Lu等核素管线集中进入产业化兑现期，核药国产成本预计大幅下探，治疗性核药接棒诊断性核药迎来更大市场空间</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>核药CMO进入壁垒及产业化壁垒高</b>，CMO订单进一步向头部企业集中，承接海外订单增多，随着3-5年核药的集中获批及商业化，核药CMO预计迎来产业机会</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>由学术推广</b>转向“诊断进院+商保支付+持证运营”双轨发展，CSO绑定核药房网络，商业化能力取代获批数量成竞争焦点</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>核素半衰期决定核药配送以“产地邻近+时效物流”为王，短半衰期依托核药房半径与双机场空运，中长半衰期走集中生产+冷链配送，预计随着3-5年核药的集中获批及商业化，核药房及第三方物流市场需求增加</span></div></div></div><div class="cell cat4"><div class="empty-box"><span class="empty-badge">无</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>合成模块实行<b>“主机+GMP一次性无菌卡匣”强绑定</b>；回旋加速器、热室屏蔽与PET/CT、SPECT装备壁垒高，<b>放射性GLP安评与分子影像资质极度稀缺</b>。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>呈<b>“盘子小、增速快、渗透浅”</b>特征，治疗性<b>177Lu/225Ac RDC</b>开启百亿空间；上游<b>医用同位素（堆产/器产）自主保供</b>是生命线，甲乙级辐安证构筑高准入壁垒。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b>环评与防辐射审批极严，生产订单高度向<b>少数持甲级证头部CRDMO</b>集中。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>物理半衰期（数小时至数天）决定<b>“产地邻近+核药房半径+双机场航空时效冷链”</b>为王；实行<b>“核药房—医院核医学科”闭环直配</b>，无传统社会零售药店环节。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">重点投资国产<b>中高能医用回旋加速器、自动化热室分装线、GMP一次性合成卡套及国产数字化SPECT/BNCT/FLASH高端核医疗装备</b>。</div><div class="cell fcat2 sp2a">战略参股稀缺<b>堆产/器产无载体高比活度同位素（177Lu/225Ac/68Ga）产能</b>，重仓布局<b>新型多肽/纳米抗体配体+新兴靶点诊疗一体化RDC</b>创新管线。</div><div class="cell fcat3 sp2b">优先卡位具备<b>甲级辐安证与标记—临床供药—商业化一体化</b>的稀缺核药CMO。</div><div class="cell fcat4 sp3b">围绕国家放射诊疗设备配置松绑红利，投资<b>全国性第三方核药房网络、航空核素特种冷链物流及“核医学科共建+商保特药支付”</b>运营平台。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">市场规模整体呈现“盘子小、增速快、渗透浅”的现状，未来随着产业链上中下游的齐头并进发展，市场规模在<span class="hl">3-5年</span>内迎来快速增长；核药行业呈现“<span class="hl">双寡头主导</span>、多点开花”态势，中国同辐、东诚药业为龙头企业实现全产业链布局，两者合计占我国核药逾<span class="hl">70%</span>市场；远大医药等企业加速布局创新核药管线及全产业链，先通医药、辐联医药、纽瑞特、核欣医药等核药Biotech新锐靠资本加持创新管线加速推进</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">核素从β核素向更精准、更强杀伤的α核素迭代，RDC成为治疗性核药主流研发结构，多肽、环肽、纳米抗体等配体及靶点内卷化加剧，新兴靶点成为核心突破点，AI 剂量学推动固定剂量走向个体化，诊疗一体化加速</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">医用同位素自主化、监管条例升级、设备配置下放与商保支付构成四根支柱，行业将从"拼设备价格"升级为"拼核素保供＋管线储备＋即时配送＋合规＋临床价值"的综合竞争，具备全产业链一体化能力的龙头持续放大优势</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》专栏3第03项明确点名<b>“加快放射性药物等研发应用”</b>，第10项推进<b>“超高端CT、放射治疗系统等新型诊疗装备规模化应用”</b>；专栏4提升<b>成渝世界级机场群</b>能力支撑核素航空配送。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd"><b>四川是我国无可替代的核医疗全产业链战略第一高地！</b>拥有<b>乐山夹江海同同位素、中国绵阳研究堆、中广核绵阳、玖谊源（回旋加速器+器产核素）</b>“堆器双路线”自主核素底座，集聚<b>纽瑞特、通瑞生物、国通新药、云克药业、温江远大基地、华西海圻核药GLP</b>及<b>川航双国际机场核素航空运输资质</b>；<span class="hl">省内独立GMP级核药专用耗材卡匣规模化配套仍需进一步做强</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-5" style="display:none;">
+<div class="canvas" id="poster-5" data-track="细胞/基因疗法" data-seq="06" style="--track-grad:linear-gradient(180deg,#0891B2 0%,#0E7490 52%,#164E63 100%);--track-accent:#0E7490;">
+  <div class="strip">
+    <div class="strip-seq">06</div>
+    <span class="strip-txt" style="letter-spacing:10px;">细胞基因疗法</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">细胞/基因疗法（CGT）产业链<span class="sub">十五五生物医药产业图谱 · 六部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>倍谙基</b><i>（免疫细胞及病毒生产培养基）</i></span><span class="pill"><b>百普赛斯</b><i>（细胞因子、活化及检测试剂）</i></span><span class="pill"><b>金斯瑞</b><i>（sgRNA、HDR模板等编辑材料）</i></span><span class="pill"><b>华龛生物</b><i>（细胞培养微载体及配套耗材）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>华龛生物</b><i>（生物反应器、收获、灌装及无菌连接设备）</i></span><span class="pill"><b>海尔生物医疗</b><i>（液氮存储和深冷转运设备）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>药康生物</b><i>（模式动物及相关技术服务）</i></span><span class="pill"><b>百奥赛图</b><i>（免疫缺陷、靶点人源化及疾病小鼠模型，配套药理药效评价）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>昭衍新药</b><i>（CGT非临床评价）</i></span><span class="pill"><b>华西海圻</b><i>（免疫分析、细胞及类器官安全性评价）</i></span><span class="pill"><b>诺禾致源</b><i>（基因组及编辑分析）</i></span><span class="pill"><b>和元生物</b><i>（载体分析和药学研究服务）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>和元生物</b><i>（质粒及AAV、慢病毒载体工艺和生产服务）</i></span><span class="pill"><b>云舟生物</b><i>（质粒及AAV、慢病毒载体工艺和生产服务）</i></span><span class="pill"><b>中源协和</b><i>（细胞资源及存储）</i></span><span class="pill"><b>厦门赛诺邦格</b><i>（LNP相关脂质辅料）</i></span><span class="pill-note">本栏按CGT活性物料、载体及起始材料梳理</span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>传奇</b><i>（CAR-T）</i></span><span class="pill"><b>驯鹿</b><i>（CAR-T）</i></span><span class="pill"><b>药明巨诺</b><i>（CAR-T）</i></span><span class="pill"><b>科济</b><i>（CAR-T）</i></span><span class="pill"><b>沙砾</b><i>（TIL/TCR-T）</i></span><span class="pill"><b>香雪生命科学</b><i>（TIL/TCR-T）</i></span><span class="pill"><b>星奕昂</b><i>（NK/iPSC细胞）</i></span><span class="pill"><b>睿健</b><i>（NK/iPSC细胞）</i></span><span class="pill"><b>铂生卓越</b><i>（MSC）</i></span><span class="pill"><b>信念</b><i>（基因治疗/编辑）</i></span><span class="pill"><b>芳拓</b><i>（基因治疗/编辑）</i></span><span class="pill"><b>博雅辑因</b><i>（基因治疗/编辑）</i></span><span class="pill"><b>尧唐</b><i>（基因治疗/编辑）</i></span><span class="pill"><b>正序</b><i>（基因治疗/编辑）</i></span><span class="pill"><b>滨会</b><i>（溶瘤病毒）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>和元生物</b><i>（CGT委托研发生产，覆盖质粒、病毒载体及细胞相关工艺）</i></span><span class="pill"><b>云舟生物</b><i>（CGT委托研发生产，覆盖质粒、病毒载体及细胞相关工艺）</i></span><span class="pill"><b>华龛生物</b><i>（规模化细胞制备技术服务）</i></span><span class="pill-note">实际业务多采用CDMO模式</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>华东医药</b><i>（承担科济泽沃基奥仑赛等产品商业化合作）</i></span><span class="pill"><b>药明巨诺</b><i>（自建或合作开展准入、医学沟通及患者服务）</i></span><span class="pill"><b>传奇</b><i>（自建或合作开展准入、医学沟通及患者服务）</i></span><span class="pill"><b>驯鹿</b><i>（自建或合作开展准入、医学沟通及患者服务）</i></span><span class="pill-note">自营团队与独立CSO分别看待</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>上药云健康</b><i>（创新药供应链及CAR-T相关服务）</i></span><span class="pill"><b>顺丰医药</b><i>（温控物流，具体CGT产品及线路能力需单独核验）</i></span><span class="pill"><b>海尔生物医疗</b><i>（深冷存储、转运设备配套）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>上药云健康“益药·药房”</b><i>（专业DTP药房及CAR-T落地服务）</i></span><span class="pill"><b>镁信健康</b><i>（商保、支付和患者服务，属于配套平台）</i></span><span class="pill-note">药房签约、支付及供应链服务需与医院回输衔接</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川卡澈</b>（生基赛尔旗下）：天府国际生物城细胞治疗类无血清培养基业务</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康德赛与江苏东抗</b>：GMP级重组蛋白原料合作</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都云测</b>：hiPSC培养及分化技术，属于使用和研发端</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西医院生物制剂规模化制备中心</b>：全密闭细胞制备线、洁净车间及质量检测配套</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康景</b>：区域细胞制备中心</span></div><div class="blt"><span class="mk mk-s">★</span><span>上述为设备使用平台，省内CGT专用设备制造企业待进一步核实</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都药康</b>：药康生物成都子公司，开展相关技术服务</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都达硕</b>：实验大小鼠本地供应，已有科研论文使用记录</span></div><div class="blt"><span class="mk mk-a">▲</span><span>CGT专用人源化及疾病模型的实际供货能力需逐项确认</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都华西海圻</b>：非临床研究和安全性评价</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西医院</b>：精准医学检测、动物研究及临床转化平台</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>云测、华西细胞治疗研究院</b>：细胞质量研究、检测及注册孵化服务</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>至善唯新</b>：自有三质粒rAAV平台</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>新生命、云测</b>：细胞库和种源</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都月涌大江</b>：科研级质粒及病毒载体服务</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西医院、威斯津</b>：mRNA靶向递送研究</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>自用、科研及临床级供应需分别核验</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>优赛诺UC101</b>：异体CAR-T，美国IND许可</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康德赛</b>：DC及巨噬细胞产品</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康景KJ001</b>：肺纤维化IND申请受理</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>睿健NouvNeu001</b>：帕金森病II期</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>至善唯新ZS805</b>：法布雷病基因治疗</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>弘基</b>：眼科AAV临床前研究</span></div><div class="blt"><span class="mk mk-s">★</span><span><b>详见管线明细</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>康景</b>：细胞与基因产品中试、区域制备中心</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西医院</b>：临床级细胞制剂制备共享平台</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西细胞治疗研究院</b>：制备、检测及注册孵化服务</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>科研和中试能力对应的商业生产许可需另行核验</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-sc">川</span><span>四川省内专门承接已上市CGT药物推广的独立CSO企业待核实</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川在研药企的未来商业化安排可继续跟踪</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西等医院属于临床使用机构，不列为CSO</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>新生命、康景</b>：细胞采集转运、冻存及库管理基础</span></div><div class="blt"><span class="mk mk-s">★</span><span>省内CGT成品药专门配送网络及具体服务主体待确认</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>样本转运经验需经产品验证后才能用于药品流通</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>国药控股四川专业药房等已列入保险特药服务网络，可作为省内配套渠道跟踪</span></div><div class="blt"><span class="mk mk-a">▲</span><span><b>具体门店是否承接CGT签约和直付需确认</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span>2026惠蓉保相关保障以正式药品目录及合同为准</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>培养基向无血清、无动物源、成分明确的配方发展，按T/NK细胞、iPSC及病毒生产工艺分别优化</span></div><div class="blt"><span class="mk mk-d">◆</span><span>一次性耗材需兼顾密闭连接、浸出物和细胞回收率，原料批次稳定性及更换验证影响客户采购</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>制备设备整合分选、转染、扩增、收获和灌装，减少开放操作</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>自体产品侧重多批次</b>并行，异体产品侧重单批放大</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>工艺数据、设备运行和样本身份逐步联通</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>免疫缺陷、人源化和基因编辑疾病模型用于细胞存续、分布、成瘤性及药效研究</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>模型应与作用机制和临床疾病匹配</b>，并结合类器官、人源细胞等方法评价，减少低信息量动物试验</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>药效、组织分布、成瘤性、免疫毒性和脱靶研究需按产品特点设计</span></div><div class="blt"><span class="mk mk-d">◆</span><span>效力测定、快速微生物检测及临床样本分析将更受重视，研究型检测与注册申报方法验证应分别管理</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>病毒载体生产侧重满壳率、功能滴度、杂质控制和单位剂量成本</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>细胞种源侧重稳定细胞库及供者筛查</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>LNP等非病毒递送继续改进组织靶向性</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span>关键起始材料、活性物料及成品应明确质量和放行边界</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>自体CAR-T继续研究更早线次、实体瘤及自免适应症，异体与体内CAR-T尝试减少个体化制备</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>干细胞疗法围绕具体疾病积累证据</b>，基因治疗和编辑侧重递送与长期安全性</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>12类产品技术另附明细</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>工艺开发、分析方法、放大和注册支持将与生产服务结合</span></div><div class="blt"><span class="mk mk-d">◆</span><span>自体并行生产、异体规模放大分别设计，提高收率和批次成功率</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>新增产能应与订单及产品临床进度匹配</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>CGT推广围绕获认证治疗中心、产品准入、医生培训和患者转诊展开</span></div><div class="blt"><span class="mk mk-d">◆</span><span>医学服务需要解释适应症、毒性处理及长期疗效，商业化团队还需配合商保和患者援助</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>将患者身份、单采物料、成品和回输时间关联，保留每次交接记录</span></div><div class="blt"><span class="mk mk-d">◆</span><span>按产品验证气相液氮、超低温或鲜制运输，并管理温度、耗时、震动、复苏活性和异常处置</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>院外专业药房可承接处方签约、支付、援助和患者管理，成品按要求交付治疗中心</span></div><div class="blt"><span class="mk mk-d">◆</span><span>CGT仍需在医疗机构完成评估、回输和监测</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>零售服务能力与细胞治疗资质应分别核对</b></span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>无血清无动物源培养基、GMP级细胞因子/磁珠、sgRNA编辑原料与<b>全密闭自动化细胞制备一体机、气相液氮深冷设备</b>技术门槛高，批次稳定性严苛。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>早期高度依赖<b>三甲医院IIT临床转化</b>；病毒载体（AAV/LV满壳率与滴度）、非病毒LNP靶向递送是核心瓶颈，管线加速向<b>通用现货型、体内CAR-T与iPSC</b>演进。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b><b>自体“一人一批”与异体现货放大</b>并存，CMC放行极严、<b>单剂降本</b>决定生死。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>CAR-T等百万级定价高度依赖<b>获认证三甲治疗中心评估回输+城市惠民保/商业健康险/按疗效分期支付</b>；须实现“单采—制备—深冷运输—回输”身份链100%闭环。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">早期VC投资<b>国产全密闭自动化细胞制备装备、GMP级基因编辑酶/无血清培养基及新型组织靶向LNP/AAV衣壳工程</b>底层工具平台。</div><div class="cell fcat2 sp2a">采用<b>“院企概念验证+拨投结合+里程碑PE”</b>，重点投向<b>通用现货型CAR-T/NK、体内（In vivo）CAR-T、实体瘤TIL/TCR-T、iPSC细胞替代及罕见病基因编辑</b>。</div><div class="cell fcat3 sp2b">依托园区共建<b>共享GMP质粒/病毒载体与细胞中试CDMO</b>，降低初创重资产负担。</div><div class="cell fcat4 sp3b">布局<b>CGT认证气相液氮深冷追溯供应链、商保创新支付科技平台（如镁信类TPA）及衔接认证医院回输的专业DTP特药服务网</b>。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">国内已有CAR-T、特定MSC和AAV药物上市，其他多类疗法处于研发或临床阶段。上游供应、专业研发生产与药企自有平台并存；下游由商业化伙伴、专业药房、物流和治疗中心协作，不能用单一市场份额概括。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">细胞疗法推进多靶点、通用现货、体内工程化及功能细胞替代；基因治疗侧重靶向递送和编辑精度。制造端改进密闭自动化、细胞库及效力检测，减少批次波动。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">产品竞争将更看重持久疗效、安全性、治疗总成本与支付能力。产业分工可能随临床证据、订单和生产效率调整。四川可依托现有研发及华西临床资源完善原料、中试和应用配套。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》将<b>生物制造</b>列为未来产业新增长点，专栏3明确<b>“加快细胞和基因治疗药物、核酸药物研发应用”</b>；专栏8深化<b>“基因编辑、分子精准递送、细胞编程与调控”</b>前沿攻关。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd">依托<b>四川大学华西医院（国家生物治疗转化医学重大科技基础设施、华西细胞治疗研究院、规模化制备中心）与华西海圻</b>全国顶尖临床转化底座，涌现<b>优赛诺（异体CAR-T获美国IND）、至善唯新（rAAV基因治疗）、威斯津（mRNA递送）、康德赛、康景、睿健</b>等创新矩阵；<span class="hl">省内CGT专用装备耗材制造、持证商业化大型CDMO及成品深冷专网仍待完善</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-6" style="display:none;">
+<div class="canvas" id="poster-6" data-track="疫苗" data-seq="07" style="--track-grad:linear-gradient(180deg,#2FA36B 0%,#1E8452 52%,#145A38 100%);--track-accent:#1E8452;">
+  <div class="strip">
+    <div class="strip-seq">07</div>
+    <span class="strip-txt" style="letter-spacing:26px;">疫　　苗</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">疫苗产业链<span class="sub">十五五生物医药产业图谱 · 七部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>山东药玻</b><i>（中硼硅西林瓶/包材）</i></span><span class="pill"><b>湖南华强</b><i>（胶塞）</i></span><span class="pill"><b>洁特生物</b><i>（实验室耗材）</i></span><span class="pill"><b>奥浦迈</b><i>（培养基）</i></span><span class="pill"><b>百普赛斯</b><i>（试剂/耗材）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>华大智造</b><i>（基因测序）</i></span><span class="pill"><b>东富龙</b><i>（生物工程装备）</i></span><span class="pill"><b>楚天科技</b><i>（制药装备与检测系统）</i></span><span class="pill"><b>聚光科技</b><i>（分析仪器）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>昭衍新药</b><i>（实验动物+安评一体化）</i></span><span class="pill"><b>南模生物</b></span><span class="pill"><b>药康生物</b><i>（基因工程小鼠）</i></span><span class="pill"><b>维通利华</b><i>（SPF级动物）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>泰格医药</b><i>（临床CRO）</i></span><span class="pill"><b>昭衍新药</b><i>（安评CRO）</i></span><span class="pill"><b>药明康德</b></span><span class="pill"><b>康龙化成</b><i>（一体化研发服务）</i></span><span class="pill"><b>普蕊斯</b><i>（SMO）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>奥浦迈</b><i>（培养基）</i></span><span class="pill"><b>百普赛斯</b><i>（重组蛋白/抗原）</i></span><span class="pill"><b>键凯科技</b><i>（药用辅料/递送材料）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>智飞生物</b></span><span class="pill"><b>康泰生物</b></span><span class="pill"><b>沃森生物</b></span><span class="pill"><b>康希诺</b></span><span class="pill"><b>华兰疫苗</b></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>药明海德</b><i>（疫苗CDMO）</i></span><span class="pill"><b>药明生物</b></span><span class="pill"><b>勃林格殷格翰生物药业</b><i>（中国，CDMO）</i></span><span class="pill-note">行业以疫苗企业自建产能为主（智飞、沃森、康泰等）</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>智飞生物</b><i>（独家代理默沙东HPV/轮状等，国内最大疫苗推广商）</i></span><span class="pill-note">头部疫苗企业多自建千人级推广队伍（康泰、沃森、科兴）</span><span class="pill-note">第三方综合CSO涉足疫苗推广（康哲药业等）</span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b></span><span class="pill"><b>上海医药</b></span><span class="pill"><b>华润医药</b></span><span class="pill"><b>九州通</b><i>（全程冷链配送网络）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill-note">疫苗领域无零售企业</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-yn">川·渝·滇</span><span><b>西南环节相对薄弱</b>：重庆国际生物城、沃森生物（玉溪）内部原辅料配套体系，拜奥飞生物技术（成都）有限公司、四川南格尔生物科技有限公司、赛多利斯成都分公司</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川程邦制药设备</b>（工程）有限公司（高新技术企业，专注疫苗及生物制药的工艺设备与洁净工程，小而精）</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>国家成都新药安全性评价中心</b>（华西海圻，GLP安评）、成都达硕实验动物有限公司、四川维通利华实验动物技术有限公司</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>华西海圻</b>（国家成都新药安全性评价中心）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都先导</b>（药物筛选与生物分析）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川格林泰科生物科技有限公司</b>（临床前药效、药代、毒理CRO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都里来生物科技有限公司</b>（综合临床前研究CRO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都臻拓医药科技有限公司</b>（临床、生物分析、BE-CRO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都诺为泰医药科技有限公司</b>（国际临床CRO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>四川韧新药业有限公司</b>（药学研发、制剂开发、注册申报CRO）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都海枫生物科技有限公司</b>（临床前药效评价CRO）</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都迈科康生物科技股份有限公司</b>（疫苗佐剂、培养基、冻干保护剂等原辅料）、成都依思康生物科技有限公司（动物疫苗佐剂、冻干保护剂等疫苗原辅料）</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-yn">渝·滇</span><span><b>智飞生物</b>（重庆）、沃森生物（昆明/玉溪基地）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都欧林生物、成都康华生物</b></span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都威斯克生物</b>（华西团队）、威斯津生物</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>迈克康生物、科兴</b>（成都）生物制品有限公司</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>成都史纪生物制药有限公司</b>（兽用疫苗）、四川海林格生物制药有限公司（兽用疫苗）</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span class="geo geo-cy">川·渝</span><span><b>西南第三方疫苗CMO稀缺</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cq">渝</span><span><b>智飞生物</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cy">川·渝</span><span><b>重药控股</b>（重庆）、四川科伦医药贸易（成都）</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span>成都蜀丰药业有限公司、四川合纵药易购医药股份有限公司</span></div><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-cy">川·渝</span><span><b>国药集团西南医药有限公司</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-s">★</span><span><b>疫苗领域无零售企业</b></span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>疫苗专用原辅料（培养基、佐剂、高端试剂）国产替代加速</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>一次性生物反应耗材渗透率</b>提升</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>受疫苗批签发与下游放量节奏影响明显</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>高端测序、分析仪器与生物反应器国产化</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>省级药检机构疫苗批签发检验能力</b>扩容</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>智能化在线监测与数字化实验室</b></span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>SPF化与基因工程动物模型（人源化小鼠）普及</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>感染模型用于疫苗效力评价</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>实验动物资源与安评服务一体化</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>疫苗GCP临床基地稀缺、</b>加速扩容</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>安评+临床+注册一体化服务</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>出海多中心临床试验</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>AI辅助设计缩短研发周期</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>疫苗专用原辅料国产替代（培养基、新佐剂、脂质体/LNP材料、酶）</span></div><div class="blt"><span class="mk mk-d">◆</span><span>mRNA原料（核苷酸、帽类似物）本土化供应</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>国产重磅突破</b>：重组带疱3家报产、RSV与国际并跑、HPV纳入国家免疫规划</span></div><div class="blt"><span class="mk mk-d">◆</span><span>多联多价与新平台（mRNA、重组蛋白+新佐剂）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>出海加速（WHO预认证、本地化合作）</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>全球产能区域化重构</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>自建产能为主、第三方CDMO需求上升</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span>LNP/mRNA放大生产、数字化车间、出口资质认证（EU/WHO PQ）</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>HPV疫苗纳入国家免疫规划→政府采购模式重塑推广格局</span></div><div class="blt"><span class="mk mk-d">◆</span><span>成人疫苗学术推广下沉（社区门诊、药店接种点）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>数字化营销与全渠道覆盖</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>疫苗管理法下全程冷链+电子追溯（批签发随附）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>区域集中配送与两级库网络</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>成人疫苗终端配送下沉县域</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>成人疫苗零售化（药店+接种点合作，HPV/流感/带疱预约接种）</span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>O2O线上预约</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>DTP专业药房承接自费疫苗服务</b></span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>上游培养基/佐剂/包材/实验动物<b>市场规模中等、品类分散、技术壁垒较高</b>，疫苗级原辅料与SPF攻毒模型供给集中，省级药检<b>批签发检验扩容与国产替代空间大</b>。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>研发投入大、<b>周期长（8—12年）、临床受试者规模庞大</b>，疫苗GCP临床基地稀缺；管线竞争转向<b>新型佐剂（AS01/Matrix-M）、mRNA平台、RSV/带疱与多联多价</b>。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b>《疫苗管理法》强监管与强制批签发下<b>以药企自建为主</b>，<b>mRNA/LNP代工需求抬升</b>。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>强疾控渠道与学术推广驱动，<b>HPV纳入国家免疫规划重塑政采与自费格局</b>；肺炎、带疱、RSV等<b>成人二类自费苗下沉（社区门诊+线上预约导流）</b>成为利润增长核心。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">适合<b>PE/VC早期卡位与产业资本战略绑定</b>，重点投向<b>新型复合佐剂、mRNA核心原料酶/帽类似物、一次性生物工艺耗材</b>等国产替代标的。</div><div class="cell fcat2 sp2a">以<b>VC/PE临床里程碑投入与海外本地化BD合作</b>为主，聚焦<b>RSV疫苗、重组带状疱疹、高价次肺炎结合苗、mRNA多联苗及肿瘤治疗性新抗原疫苗</b>。</div><div class="cell fcat3 sp2b"><b>产业龙头主导</b>（自建车间+牌照并购），关注<b>WHO PQ资质及mRNA封装CDMO</b>。</div><div class="cell fcat4 sp3b">关注<b>成人自费疫苗基层下沉推广能力、疫苗全程冷链电子追溯网络及“互联网预约平台+DTP科普导流+社区接种门诊”</b>创新服务生态。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">辉瑞/GSK/默沙东/赛诺菲四大巨头占全球约<span class="hl">85%</span>价值份额；2025年全球疫苗市场约<span class="hl">367亿美元</span>——HPV退潮（默沙东Gardasil中国去库存，同比<span class="hl">-39%</span>）、肺炎接棒（21价Capvaxive放量，肺炎疫苗市场<span class="hl">85亿美元</span>、<span class="hl">+12%</span>）、带疱Shingrix恢复增长（约<span class="hl">36亿英镑</span>）、RSV成新引擎（成人Arexvy/mResvia/Abrysvo+婴儿长效抗体Beyfortus <span class="hl">17.8亿欧元</span>）。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">mRNA平台化与季节化（Moderna新冠/RSV/流感多产品获批、mRNA新冠+流感联合苗获批上市）；新佐剂（Matrix-M、AS01）；多联多价与广谱疫苗；肿瘤治疗性疫苗/个体化新抗原疫苗推进临床。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">成人适应症扩展（肺炎、RSV、带疱）、疫苗+药物全链条防控、AI辅助抗原设计、产能区域化与本地自给。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》妇女儿童发展篇明确<b>“全面实施适龄女童国家免疫规划人乳头瘤病毒（HPV）疫苗免费接种”</b>；专栏3提出<b>“提升应急疫苗和药物研产用能力”</b>；专栏16强化疾控体系建设。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd">大西南坐拥<b>重庆智飞生物（国内疫苗商业化与自研巨头）、云南沃森生物（昆明/玉溪基地）</b>两大链主，成都集聚<b>欧林生物、康华生物、威斯克、威斯津（mRNA）、科兴成都、迈科康（新型佐剂+重组带疱）</b>及<b>华西海圻/格林泰科等CRO集群与重药/科伦冷链网</b>；<span class="hl">西南上游高端反应耗材与第三方疫苗商业化CDMO仍较稀缺</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+<div class="poster-slot" id="slot-7" style="display:none;">
+<div class="canvas" id="poster-7" data-track="血液制品" data-seq="08" style="--track-grad:linear-gradient(180deg,#DC2626 0%,#B91C1C 52%,#7F1D1D 100%);--track-accent:#B91C1C;">
+  <div class="strip">
+    <div class="strip-seq">08</div>
+    <span class="strip-txt" style="letter-spacing:16px;">血液制品</span>
+    <svg class="strip-deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 4c3 3 7 3 10 0M7 20c3-3 7-3 10 0M6 8.5h12M6 15.5h12M8.5 12h7"/></svg>
+  </div>
+  <div class="main">
+
+    <div class="title-row">
+      <div class="tr-l">
+        <div class="t-left">血液制品产业链<span class="sub">十五五生物医药产业图谱 · 八部</span></div>
+        <div class="t-mid">上中下游</div>
+      </div>
+      <div class="t-right">方向趋势</div>
+    </div>
+
+    <div class="content">
+      <div class="ct">
+        <div class="grid11 badges">
+          <div class="badge b-up gc-up">上游</div>
+          <div class="badge b-mid gc-mid">中游</div>
+          <div class="badge b-down gc-down">下游</div>
+        </div>
+
+        <div class="grid11 arrows">
+          <div class="arrow a-teal ga1">研发基础设施</div>
+          <div class="arrow a-blue ga2">药物开发</div>
+          <div class="arrow a-teal ga3">制造</div>
+          <div class="arrow a-blue ga4">销售</div>
+        </div>
+
+        <div class="mrow">
+          <div class="rail rail-head">细分环节</div>
+          <div class="seg c1 seg-first"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8"/><path d="M10 3v11.5a2.5 2.5 0 0 0 5 0V3"/><path d="M10 9.5h5"/></svg>耗材</div><div class="seg c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M15 15l5.5 5.5"/></svg>仪器</div><div class="seg c1"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="3.4" fill="currentColor"/><circle cx="6.8" cy="10" r="1.5" fill="currentColor"/><circle cx="10.3" cy="7.4" r="1.5" fill="currentColor"/><circle cx="13.7" cy="7.4" r="1.5" fill="currentColor"/><circle cx="17.2" cy="10" r="1.5" fill="currentColor"/></svg>实验动物</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="4.5" width="13" height="16.5" rx="2"/><path d="M9 3h6v3.5H9z"/><path d="M9 12h6M9 16h4"/></svg>CRO</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6l-4.6 8.2A2 2 0 0 0 7.1 20h9.8a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M8.5 3h7"/><path d="M7.6 14.5h8.8"/></svg>原料药</div><div class="seg c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4.5-1.2L19 8.3l-3.3-3.3L4.2 16.5 3 21z"/><path d="M13.5 6.5l4 4"/><path d="M17.5 2.5l4 4"/></svg>制剂（管线）</div><div class="seg c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V11l4.5 2.8V11l4.5 2.8V8.5h5V21"/></svg>CMO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h3.5l6.5 4.5v-13L7.5 10H4z"/><path d="M17.5 9.5a4.5 4.5 0 0 1 0 5.5"/></svg>CSO</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5H14v9H2.5z"/><path d="M14 10.5h3.5l3 3.2v2.8H14"/><circle cx="6.5" cy="18.5" r="1.7"/><circle cx="16.8" cy="18.5" r="1.7"/></svg>流通</div><div class="seg c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5L5.5 4h13l1 5.5"/><path d="M4.5 9.5v10.5h15V9.5"/><path d="M4.5 9.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5c0 1.4 1.1 2.5 2.4 2.5s2.4-1.1 2.4-2.5"/><path d="M9.5 20v-5.5h5V20"/></svg>零售</div>
+        </div>
+
+        <div class="mrow dim dim-ent">
+          <div class="rail r-ent">代表企业</div>
+          <div class="cell cat1"><div class="chips"><span class="pill"><b>南格尔</b><i>（血浆袋）</i></span><span class="pill"><b>海尔血液技术</b><i>（血浆袋）</i></span><span class="pill"><b>上海达华医疗</b><i>（离心式血浆分离器、血液透析管路）</i></span><span class="pill"><b>陕西正源科技</b><i>（采浆管路、血浆袋）</i></span></div></div><div class="cell cat1"><div class="chips"><span class="pill"><b>南格尔</b><i>（单采血浆机）</i></span><span class="pill"><b>海尔血液技术</b><i>（单采血浆机）</i></span><span class="pill"><b>陕西正源科技</b><i>（单采血浆机）</i></span></div></div><div class="cell cat1"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>中科院血液病医院</b><i>（天津血研所）</i></span><span class="pill"><b>泰格医药</b><i>（临床CRO）</i></span><span class="pill"><b>药明康德</b><i>（CRDMO）</i></span><span class="pill"><b>上海凌先医药</b><i>（CRO）</i></span><span class="pill"><b>北京精诚通医药</b><i>（CRO）</i></span><span class="pill"><b>成都凡微析医药</b><i>（生物分析）</i></span><span class="pill"><b>合肥科颖医药</b><i>（CRO）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>天坛生物</b></span><span class="pill"><b>上海莱士</b></span><span class="pill"><b>华兰生物</b></span><span class="pill"><b>华润博雅</b></span><span class="pill"><b>派林生物</b></span><span class="pill"><b>卫光生物</b></span><span class="pill"><b>禾元生物</b><i>（重组白蛋白）</i></span></div></div><div class="cell cat2"><div class="chips"><span class="pill"><b>天坛生物</b></span><span class="pill"><b>上海莱士</b></span><span class="pill"><b>华兰生物</b></span><span class="pill"><b>华润博雅</b></span><span class="pill"><b>派林生物</b></span><span class="pill"><b>卫光生物</b></span><span class="pill"><b>禾元生物</b><i>（重组白蛋白）</i></span></div></div><div class="cell cat3"><div class="chips"><span class="pill"><b>天坛生物</b></span><span class="pill"><b>上海莱士</b></span><span class="pill"><b>华兰生物</b></span><span class="pill"><b>华润博雅</b></span><span class="pill"><b>派林生物</b></span><span class="pill"><b>卫光生物</b></span><span class="pill"><b>禾元生物</b><i>（重组白蛋白）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b></span><span class="pill"><b>华润医药商业</b></span><span class="pill"><b>上海医药</b></span><span class="pill"><b>九州通</b></span><span class="pill"><b>兴科蓉医药</b><i>（06833.HK）</i></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国药控股</b></span><span class="pill"><b>华润医药商业</b></span><span class="pill"><b>上海医药</b></span><span class="pill"><b>九州通</b></span></div></div><div class="cell cat4"><div class="chips"><span class="pill"><b>国大药房</b></span><span class="pill"><b>华润零售</b></span><span class="pill"><b>老百姓</b></span><span class="pill"><b>益丰</b></span><span class="pill"><b>上药云健康益药</b></span><span class="pill"><b>思派大药房</b></span><span class="pill"><b>医保全新</b></span><span class="pill"><b>德轩堂</b></span></div></div>
+        </div>
+
+        <div class="mrow dim dim-prj">
+          <div class="rail r-prj">重点项目</div>
+          <div class="cell cat1"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat1"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat1"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat2"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>蜀阳生物</b></span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>蜀阳生物</b></span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>蜀阳生物</b></span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-a">▲</span><span class="geo geo-sc">川</span><span><b>兴科蓉医药</b>（06833.HK）</span></div></div></div><div class="cell cat4"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat4"><div class="empty-box"><span class="empty-badge">/</span></div></div>
+        </div>
+
+        <div class="mrow dim dim-dir">
+          <div class="rail r-dir">发展方向</div>
+          <div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>向机耗一体化、高血浆回收率、数字化溯源、低生物风险方向发展</span></div></div></div><div class="cell cat1"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>智能采浆站与自动化分离纯化产线建设</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span><b>连续流层析纯化系统部署</b></span></div></div></div><div class="cell cat1"><div class="empty-box"><span class="empty-badge">/</span></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>提供新型血液制品品种研发服务以及重组血液制品研发服务</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>国内浆站不断扩展</b>，头部企业纷纷建立新浆站，扩充血浆来源</span></div><div class="blt"><span class="mk mk-d">◆</span><span>同时，创新生物医药企业开始开发重组血液制品来替代原有的人源来源的血浆</span></div></div></div><div class="cell cat2"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>一是从血浆中提取更多的新型血液制品品种（如特异性免疫球蛋白）</span></div><div class="blt"><span class="mk mk-d">◆</span><span>二是发展新型重组血液制品（如重组白蛋白）</span></div></div></div><div class="cell cat3"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>牌照壁垒下以自产+自建产能为主</b></span></div><div class="blt"><span class="mk mk-d">◆</span><span>重组产品代工（CMO/CDMO）需求显现</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>血液制品的CSO机构较少</b>，集中在少数大型医药流通机构中</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span>向少数专业冷链流通商主导、厂仓一体化、全链路闭环追溯、集采驱动院内直配、供应链增值服务化方向发展</span></div></div></div><div class="cell cat4"><div class="blts"><div class="blt"><span class="mk mk-d">◆</span><span><b>格局稳定</b>，具备血液制品经营范围、独立2-8℃冷链、UDI 全链路追溯能力的 DTP 专业药房</span></div></div></div>
+        </div>
+
+        <div class="mrow dim dim-feat">
+          <div class="rail r-feat">特点</div>
+          <div class="cell fcat1 sp3a"><b class="lbl2">研发基础设施：</b>上游集中于<b>智能单采血浆机与一次性血浆袋/管路（机耗一体化绑定、数字化溯源）</b>及自动化层析纯化装备；传统人源血浆提取<b>不涉及常规实验动物环节</b>。</div><div class="cell fcat2 sp2a"><b class="lbl2">药物开发：</b>2001年起<b>严控新增牌照，单采血浆站与采浆量</b>决定供给上限；管线深挖<b>高纯层析静丙/特免/凝血因子</b>提升吨浆利润，<b>重组人血白蛋白</b>率先实现技术破局。</div><div class="cell fcat3 sp2b"><b class="lbl2">制造：</b>传统血制受牌照约束严格<b>自采自产</b>；重组血制品催生<b>高表达发酵纯化CDMO</b>需求。</div><div class="cell fcat4 sp3b"><b class="lbl2">销售：</b>医院危重症抢救与免疫替代<b>临床刚需极强、CSO高度集中于大型医商与稀缺进口总代</b>；院内集采直配与院外具备<b>独立2—8℃冷链及UDI全链路追溯的DTP药房</b>格局稳定。</div>
+        </div>
+
+        <div class="mrow dim dim-inv">
+          <div class="rail r-inv">投资方式</div>
+          <div class="cell fcat1 sp3a">关注具备<b>“智能单采血浆设备+一次性耗材+数字化浆站管理系统”</b>机耗一体优势及连续流层析纯化装备国产化的细分制造龙头。</div><div class="cell fcat2 sp2a">双线布局：一是产业资本支持头部企业<b>拓展浆站与层析新产品（皮下静丙/特免/凝血因子）</b>；二是<b>VC/PE重仓重组白蛋白、重组凝血因子</b>颠覆性Biotech。</div><div class="cell fcat3 sp2b">以<b>央国企并购整合</b>存量血制牌照为主，前瞻布局承接<b>重组血制品的生物药CDMO</b>。</div><div class="cell fcat4 sp3b">稳健配置具备<b>稀缺进口白蛋白全国总代准入资质（CSO）、厂仓一体化冷链直配及双通道DTP特药服务能力</b>的高现金流医药商业标的。</div>
+        </div>
+      </div>
+
+      
+      <div class="rp">
+        <div class="rp-head">方向趋势</div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <div class="bd">随着国内产浆量的不断提高，血液制品国产化率不断提高。此外，近几年，血液制品行业并购重组不断上演，小型血液制品企业纷纷被并购整合进入头部企业。重组血液制品开始实现技术突破，对传统血液制品企业形成较大挑战。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <div class="bd">一是传统血液制品研发新型品种（如特异性免疫球蛋白或重组产品）；二是新兴生物医药企业开发重组技术的血液制品产品。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <div class="bd">《十五五规划纲要》明确布局建设10个国家区域血液安全中心，“千吨级采浆规模+十余种因子提取能力”成为头部护城河；人源血制品深耕危重症免疫治疗刚需，重组血制品逐步替代部分基础扩容场景，院外DTP冷链与全链路UDI追溯体系日趋成熟。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
+          <div class="bd">《十五五规划纲要》第三十九章·专栏16《健康中国建设》第01项明确部署<b>“布局建设10个国家区域血液安全中心”</b>；药品安全监管篇强化<b>高风险生物制品全链条智慧监管与抽检追溯</b>。</div>
+        </div>
+
+        <div class="rp-block">
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
+          <div class="bd"><b>四川具备完整的血液制品产业链重点布局</b>：上游拥有单采血浆机与血浆袋代表企业<b>南格尔</b>，中游拥有全谱系血液制品基地<b>蜀阳生物</b>及生物分析CRO<b>成都凡微析医药</b>，下游拥有港股上市进口血制品营销龙头<b>兴科蓉医药（06833.HK）</b>；<span class="hl">面向下一代重组血液制品的本土源头创新与专业CRO配套仍待培育</span>。</div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="legend">
+      <div class="lg"><span class="chip chp-ent"></span>代表企业</div>
+      <div class="lg"><span class="chip chp-prj"></span>重点项目（侧重川渝/西南布局）</div>
+      <div class="lg"><span class="chip chp-dir"></span>发展方向</div>
+      <div class="lg"><span class="chip chp-feat"></span>特点（按环节大类）</div>
+      <div class="lg"><span class="chip chp-inv"></span>投资方式（按环节大类）</div>
+      <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
+      <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
+      <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+<script id="tracksMeta" type="application/json">["小分子化学药", "抗体创新药", "ADC创新药", "多肽创新药（含环肽）", "核药", "细胞/基因疗法", "疫苗", "血液制品"]</script>
+
+<div class="cm-overlay" id="cellModal" onclick="if(event.target===this)closeCellModal()">
+  <div class="cm-card" role="dialog" aria-modal="true">
+    <div class="cm-head" id="cmHead">
+      <div class="cm-title-wrap">
+        <span class="cm-badge" id="cmBadge">赛道</span>
+        <span class="cm-title" id="cmTitle">细分环节详情</span>
+        <span class="cm-sub" id="cmSub"></span>
+      </div>
+      <div class="cm-actions">
+        <button class="cm-nav-btn" id="cmPrevBtn" onclick="stepModal(-1)">◀ 上一项</button>
+        <button class="cm-nav-btn" id="cmNextBtn" onclick="stepModal(1)">下一项 ▶</button>
+        <button class="cm-close" onclick="closeCellModal()">✕ 关闭 (Esc)</button>
+      </div>
+    </div>
+    <div class="cm-body" id="cmBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const PHASE_MAP = [
+    "上游 · 研发基础设施", "上游 · 研发基础设施", "上游 · 研发基础设施",
+    "中游 · 药物开发", "中游 · 药物开发", "中游 · 药物开发",
+    "中游 · 制造",
+    "下游 · 销售", "下游 · 销售", "下游 · 销售"
+  ];
+  const FEAT_PHASES = ["上游 · 研发基础设施", "中游 · 药物开发", "中游 · 制造", "下游 · 销售"];
+
+  let modalCtx = null; // { canvas, mode: 'stage'|'phase'|'rp', idx, focusRow }
+
+  function renderModal() {
+    if (!modalCtx) return;
+    const { canvas, mode, idx, focusRow } = modalCtx;
+    const trackTitle = (canvas.querySelector('.t-left') ? canvas.querySelector('.t-left').childNodes[0].textContent : canvas.dataset.track) || '';
+    const seq = canvas.dataset.seq || '';
+    const accent = getComputedStyle(canvas).getPropertyValue('--track-accent').trim() || '#2FA36B';
+    document.getElementById('cmHead').style.borderBottomColor = accent;
+    document.getElementById('cmBadge').textContent = (seq ? seq + ' · ' : '') + trackTitle;
+
+    const bodyEl = document.getElementById('cmBody');
+    if (mode === 'stage') {
+      const segs = canvas.querySelectorAll('.seg');
+      const stageName = segs[idx] ? segs[idx].textContent.trim() : '';
+      document.getElementById('cmTitle').textContent = stageName;
+      document.getElementById('cmSub').textContent = PHASE_MAP[idx] + '（第 ' + (idx + 1) + ' / 10 环节）';
+      document.getElementById('cmPrevBtn').textContent = '◀ 上一环节';
+      document.getElementById('cmNextBtn').textContent = '下一环节 ▶';
+
+      const entCells = canvas.querySelectorAll('.dim-ent .cell');
+      const prjCells = canvas.querySelectorAll('.dim-prj .cell');
+      const dirCells = canvas.querySelectorAll('.dim-dir .cell');
+
+      const rows = [
+        { key: 'ent', cls: 'cm-sec-ent', label: '代表企业', html: entCells[idx] ? entCells[idx].innerHTML : '' },
+        { key: 'prj', cls: 'cm-sec-prj', label: '重点项目（川渝/西南布局）', html: prjCells[idx] ? prjCells[idx].innerHTML : '' },
+        { key: 'dir', cls: 'cm-sec-dir', label: '发展方向', html: dirCells[idx] ? dirCells[idx].innerHTML : '' }
+      ];
+      bodyEl.innerHTML = rows.map(r => (
+        '<div class="cm-sec ' + r.cls + (focusRow === r.key ? ' focused' : '') + '">' +
+          '<div class="cm-sec-hd"><span>' + r.label + '</span>' + (focusRow === r.key ? '<span class="cm-sec-tag">当前点击项</span>' : '') + '</div>' +
+          '<div class="cm-sec-bd">' + r.html + '</div>' +
+        '</div>'
+      )).join('');
+    } else if (mode === 'phase') {
+      const featCells = canvas.querySelectorAll('.dim-feat .cell');
+      const invCells = canvas.querySelectorAll('.dim-inv .cell');
+      document.getElementById('cmTitle').textContent = FEAT_PHASES[idx] || '环节特点与投资方式';
+      document.getElementById('cmSub').textContent = '阶段研判（第 ' + (idx + 1) + ' / 4 大类）';
+      document.getElementById('cmPrevBtn').textContent = '◀ 上一阶段';
+      document.getElementById('cmNextBtn').textContent = '下一阶段 ▶';
+
+      bodyEl.innerHTML =
+        '<div class="cm-sec cm-sec-feat' + (focusRow === 'feat' ? ' focused' : '') + '">' +
+          '<div class="cm-sec-hd"><span>环节特点</span>' + (focusRow === 'feat' ? '<span class="cm-sec-tag">当前点击项</span>' : '') + '</div>' +
+          '<div class="cm-sec-bd">' + (featCells[idx] ? featCells[idx].innerHTML : '') + '</div>' +
+        '</div>' +
+        '<div class="cm-sec cm-sec-inv' + (focusRow === 'inv' ? ' focused' : '') + '">' +
+          '<div class="cm-sec-hd"><span>投资方式与策略</span>' + (focusRow === 'inv' ? '<span class="cm-sec-tag">当前点击项</span>' : '') + '</div>' +
+          '<div class="cm-sec-bd">' + (invCells[idx] ? invCells[idx].innerHTML : '') + '</div>' +
+        '</div>';
+    } else if (mode === 'rp') {
+      const blocks = canvas.querySelectorAll('.rp-block');
+      const blk = blocks[idx];
+      const h3Text = blk && blk.querySelector('h3') ? blk.querySelector('h3').textContent.trim() : '方向趋势';
+      const bdHtml = blk && blk.querySelector('.bd') ? blk.querySelector('.bd').innerHTML : '';
+      document.getElementById('cmTitle').textContent = h3Text;
+      document.getElementById('cmSub').textContent = '方向趋势研判（第 ' + (idx + 1) + ' / ' + blocks.length + ' 项）';
+      document.getElementById('cmPrevBtn').textContent = '◀ 上一研判';
+      document.getElementById('cmNextBtn').textContent = '下一研判 ▶';
+
+      bodyEl.innerHTML =
+        '<div class="cm-sec cm-sec-rp focused">' +
+          '<div class="cm-sec-hd"><span>' + h3Text + '</span><span class="cm-sec-tag">方向趋势全景</span></div>' +
+          '<div class="cm-sec-bd">' + bdHtml + '</div>' +
+        '</div>';
+    }
+    document.getElementById('cellModal').classList.add('open');
+  }
+
+  window.closeCellModal = function() {
+    document.getElementById('cellModal').classList.remove('open');
+    modalCtx = null;
+  };
+
+  window.stepModal = function(delta) {
+    if (!modalCtx) return;
+    const maxLen = modalCtx.mode === 'stage' ? 10 : (modalCtx.mode === 'phase' ? 4 : modalCtx.canvas.querySelectorAll('.rp-block').length);
+    modalCtx.idx = (modalCtx.idx + delta + maxLen) % maxLen;
+    renderModal();
+  };
+
+  window.isCellModalOpen = function() {
+    return !!modalCtx;
+  };
+
+  document.addEventListener('click', function(e) {
+    const cell = e.target.closest('.cell');
+    if (cell) {
+      const canvas = cell.closest('.canvas');
+      const mrow = cell.closest('.mrow');
+      if (!canvas || !mrow) return;
+      const cells = Array.from(mrow.querySelectorAll('.cell'));
+      const idx = cells.indexOf(cell);
+      if (idx < 0) return;
+
+      if (mrow.classList.contains('dim-ent')) {
+        modalCtx = { canvas, mode: 'stage', idx, focusRow: 'ent' };
+      } else if (mrow.classList.contains('dim-prj')) {
+        modalCtx = { canvas, mode: 'stage', idx, focusRow: 'prj' };
+      } else if (mrow.classList.contains('dim-dir')) {
+        modalCtx = { canvas, mode: 'stage', idx, focusRow: 'dir' };
+      } else if (mrow.classList.contains('dim-feat')) {
+        modalCtx = { canvas, mode: 'phase', idx, focusRow: 'feat' };
+      } else if (mrow.classList.contains('dim-inv')) {
+        modalCtx = { canvas, mode: 'phase', idx, focusRow: 'inv' };
+      }
+      if (modalCtx) renderModal();
+      return;
+    }
+
+    const rpBlock = e.target.closest('.rp-block');
+    if (rpBlock) {
+      const canvas = rpBlock.closest('.canvas');
+      if (!canvas) return;
+      const blocks = Array.from(canvas.querySelectorAll('.rp-block'));
+      const idx = blocks.indexOf(rpBlock);
+      if (idx >= 0) {
+        modalCtx = { canvas, mode: 'rp', idx, focusRow: 'rp' };
+        renderModal();
+      }
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!modalCtx) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      closeCellModal();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      stepModal(-1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      stepModal(1);
+    }
+  }, true);
+})();
+</script>
+
+
+<div class="pres-hud" id="presHud">
+  <button class="hud-btn" onclick="stepPoster(-1)" title="快捷键 ←">◀ 上一赛道</button>
+  <span class="hud-label" id="hudTrackLabel">01 / 08 · 小分子化学药</span>
+  <button class="hud-btn" onclick="stepPoster(1)" title="快捷键 →">下一赛道 ▶</button>
+  <button class="hud-btn" onclick="toggleClassicTheme()" title="切换多彩/经典翠绿">🎨 配色</button>
+  <button class="hud-btn" onclick="toggleImmersive(false)" title="快捷键 Esc">退出沉浸</button>
+</div>
+
+<script>
+const TRACK_NAMES = JSON.parse(document.getElementById('tracksMeta').textContent);
+let fitMode = true;
+let currentIdx = 0; // -1 means all
+let classicTheme = false;
+let immersiveMode = false;
+
+function updateHudLabel() {
+  const lbl = document.getElementById('hudTrackLabel');
+  if (!lbl) return;
+  if (currentIdx === -1) {
+    lbl.textContent = '全览 · 八大赛道联排';
+  } else {
+    const no = String(currentIdx + 1).padStart(2, '0');
+    lbl.textContent = no + ' / 08 · ' + TRACK_NAMES[currentIdx];
+  }
+}
+
+function selectPoster(idx) {
+  currentIdx = idx;
+  document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.toggle('active', Number(b.dataset.idx) === idx));
+  document.getElementById('btnAll').classList.remove('active');
+  document.querySelectorAll('.poster-slot').forEach((el, i) => {
+    if (i === idx) {
+      el.style.display = 'block';
+      el.classList.remove('fade-in');
+      void el.offsetWidth;
+      el.classList.add('fade-in');
+    } else {
+      el.style.display = 'none';
+    }
+  });
+  updateHudLabel();
+  applyScale();
+}
+
+function stepPoster(delta) {
+  const base = currentIdx === -1 ? 0 : currentIdx;
+  const next = (base + delta + TRACK_NAMES.length) % TRACK_NAMES.length;
+  selectPoster(next);
+}
+
+function selectAllPosters() {
+  currentIdx = -1;
+  document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.remove('active'));
+  document.getElementById('btnAll').classList.add('active');
+  document.querySelectorAll('.poster-slot').forEach(el => { el.style.display = 'block'; });
+  updateHudLabel();
+  applyScale();
+}
+
+function toggleFit(enableFit) {
+  fitMode = enableFit;
+  document.getElementById('btnFit').classList.toggle('active', fitMode);
+  document.getElementById('btnRaw').classList.toggle('active', !fitMode);
+  applyScale();
+}
+
+function toggleClassicTheme() {
+  classicTheme = !classicTheme;
+  document.body.classList.toggle('classic-theme', classicTheme);
+  const btn = document.getElementById('btnTheme');
+  if (btn) {
+    btn.textContent = classicTheme ? '🌿 经典翠绿' : '🎨 多彩分轨';
+    btn.classList.toggle('active', !classicTheme);
+  }
+}
+
+function toggleImmersive(forceState) {
+  immersiveMode = (typeof forceState === 'boolean') ? forceState : !immersiveMode;
+  document.body.classList.toggle('immersive', immersiveMode);
+  const btn = document.getElementById('btnImmersive');
+  if (btn) btn.classList.toggle('active', immersiveMode);
+
+  if (immersiveMode) {
+    if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else {
+    if (document.exitFullscreen && document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+  setTimeout(applyScale, 80);
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && immersiveMode) {
+    immersiveMode = false;
+    document.body.classList.remove('immersive');
+    const btn = document.getElementById('btnImmersive');
+    if (btn) btn.classList.remove('active');
+    setTimeout(applyScale, 60);
+  }
+});
+
+// 沉浸模式下鼠标移至屏幕顶部自动唤出导航栏
+document.addEventListener('mousemove', (e) => {
+  if (!immersiveMode) return;
+  const tb = document.querySelector('.topbar');
+  if (!tb) return;
+  if (e.clientY <= 24) {
+    tb.classList.add('peek');
+  } else if (e.clientY > 110 && !tb.matches(':hover')) {
+    tb.classList.remove('peek');
+  }
+});
+
+// 键盘汇报快捷键：←/→ 翻页，1~8 直达赛道，0 全览，Esc 退出沉浸
+document.addEventListener('keydown', (e) => {
+  if (window.isCellModalOpen && window.isCellModalOpen()) return;
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    stepPoster(-1);
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    stepPoster(1);
+  } else if (e.key >= '1' && e.key <= '8') {
+    selectPoster(Number(e.key) - 1);
+  } else if (e.key === '0') {
+    selectAllPosters();
+  } else if (e.key === 'Escape' && immersiveMode) {
+    toggleImmersive(false);
+  }
+});
+
+function applyScale() {
+  const slots = document.querySelectorAll('.poster-slot');
+  const vw = document.documentElement.clientWidth;
+  const pad = immersiveMode ? 20 : 28;
+  const scale = fitMode ? Math.min(1, (vw - pad) / 3480) : 1;
+
+  slots.forEach(slot => {
+    if (slot.style.display === 'none') return;
+    const canvas = slot.querySelector('.canvas');
+    if (fitMode && scale < 1) {
+      canvas.style.zoom = scale;
+    } else {
+      canvas.style.zoom = 1;
+    }
+  });
+}
+
+function highlightKeyword(kw) {
+  const q = (kw || '').trim().toLowerCase();
+  document.querySelectorAll('.pill, .blt').forEach(el => {
+    if (!q) {
+      el.classList.remove('search-hit');
+      return;
+    }
+    const hit = el.textContent.toLowerCase().includes(q);
+    el.classList.toggle('search-hit', hit);
+  });
+}
+
+window.addEventListener('resize', applyScale);
+window.addEventListener('DOMContentLoaded', () => { updateHudLabel(); applyScale(); });
+</script>
+
+</body>
+</html>
