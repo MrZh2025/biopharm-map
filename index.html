@@ -11,6 +11,7 @@
   .canvas {
     --track-grad: linear-gradient(180deg,#2FA36B 0%,#1C7A4A 100%);
     --track-accent: #1C7A4A;
+    position:relative;
     width:3480px; margin:0 auto; background:#FFFFFF; display:flex; overflow:hidden;
     box-shadow:0 10px 36px rgba(15,23,42,0.10); border-radius:4px;
   }
@@ -338,25 +339,38 @@
   .cm-sec-bd .empty-box { min-height:56px; justify-content:flex-start; }
   .cm-sec-bd .empty-badge { font-size:16px; padding:4px 18px; }
 
+  /* 全局高辨识度滚动条（醒目易抓握） */
+  ::-webkit-scrollbar { width:13px; height:13px; }
+  ::-webkit-scrollbar-track { background:#DCE4EC; }
+  ::-webkit-scrollbar-thumb { background:#74869B; border-radius:7px; border:2px solid #DCE4EC; }
+  ::-webkit-scrollbar-thumb:hover { background:#2FA36B; }
+  ::-webkit-scrollbar-corner { background:#DCE4EC; }
+
+  body.is-grabbing, body.is-grabbing * { cursor:grabbing !important; user-select:none !important; }
+
   @page { size:36.4in 14.2in; margin:0; }
   @media print {
-    html, body { background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    .topbar, .cm-overlay, .pres-hud { display:none !important; }
-    .stage-viewport { padding:0 !important; overflow:visible !important; }
+    html, body { height:auto !important; overflow:visible !important; display:block !important; background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .topbar, .panbar, .cm-overlay, .pres-hud { display:none !important; }
+    .stage-viewport { height:auto !important; overflow:visible !important; padding:0 !important; display:block !important; }
     .poster-slot { margin:0 !important; break-after:page; page-break-after:always; }
     .poster-slot:last-child { break-after:auto; page-break-after:auto; }
     .canvas { zoom:0.5 !important; box-shadow:none !important; margin:0 auto !important; }
   }
 
 
+  /* 视口级固定高度布局：让横向与纵向滚动条永远固定在屏幕最底边/最右边，无需拉到底部才出现 */
+  html, body { height: 100%; overflow: hidden; }
+  body { display: flex; flex-direction: column; }
+
   /* 顶部悬浮切换与自适应缩放工具栏（打印时自动隐藏） */
   .topbar {
-    position: sticky;
-    top: 0;
+    flex: none;
+    position: relative;
     z-index: 100;
     background: linear-gradient(90deg, #0D1F18 0%, #132A20 55%, #0F231B 100%);
     color: #fff;
-    padding: 10px 20px;
+    padding: 9px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -367,12 +381,12 @@
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
   .tb-group { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-  .tb-title { font-size:15px; font-weight:900; color:#6EE7B7; margin-right:6px; letter-spacing:1px; }
+  .tb-title { font-size:15px; font-weight:900; color:#6EE7B7; margin-right:4px; letter-spacing:1px; }
   .tb-btn {
     background: rgba(255,255,255,0.09);
     color: #E2E8F0;
     border: 1px solid rgba(255,255,255,0.18);
-    padding: 5.5px 11px;
+    padding: 5px 10.5px;
     border-radius: 7px;
     font-size: 12.5px;
     font-weight: 600;
@@ -387,28 +401,123 @@
   .tb-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
   body.classic-theme .tb-dot { background:#34D399 !important; }
   .tb-search {
-    padding: 5.5px 11px;
+    padding: 5px 10px;
     border-radius: 7px;
     border: 1px solid rgba(255,255,255,0.26);
     background: rgba(255,255,255,0.11);
     color: #fff;
     font-size: 12.5px;
-    width: 195px;
+    width: 175px;
     outline: none;
     transition: border-color 0.15s, background 0.15s;
   }
   .tb-search:focus { border-color:#6EE7B7; background:rgba(255,255,255,0.17); }
   .tb-search::placeholder { color: rgba(255,255,255,0.62); }
 
-  .stage-viewport {
-    padding: 18px 0 36px;
-    overflow-x: auto;
-    transition: padding 0.2s ease;
+  /* 自由缩放滑杆组 */
+  .zoom-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 7px;
+    padding: 3px 8px;
   }
+  .zoom-step {
+    background: transparent;
+    border: none;
+    color: #A7F3D0;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    padding: 0 3px;
+    line-height: 1;
+  }
+  .zoom-step:hover { color: #fff; }
+  .zoom-range {
+    width: 72px;
+    accent-color: #2FA36B;
+    cursor: pointer;
+    height: 4px;
+  }
+  .zoom-pct {
+    font-size: 12px;
+    font-weight: 800;
+    color: #A7F3D0;
+    min-width: 36px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 顶部双向同步横向快捷导航栏（当画面宽度超出屏幕时自动展开，无需移到屏幕底部也能拖） */
+  .panbar {
+    flex: none;
+    z-index: 95;
+    background: #173327;
+    border-bottom: 1px solid rgba(110,231,183,0.25);
+    color: #D1FAE5;
+    padding: 6px 18px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.14);
+  }
+  .panbar.visible { display: flex; }
+  .pan-jumps { display: inline-flex; align-items: center; gap: 5px; flex: none; }
+  .pan-lbl { color: #6EE7B7; font-weight: 800; margin-right: 2px; }
+  .pan-btn {
+    background: rgba(255,255,255,0.09);
+    color: #E2E8F0;
+    border: 1px solid rgba(255,255,255,0.16);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11.8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.14s;
+  }
+  .pan-btn:hover, .pan-btn.active {
+    background: #2FA36B;
+    color: #fff;
+    border-color: #6EE7B7;
+  }
+  .pan-track-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+  }
+  .pan-slider {
+    flex: 1;
+    height: 7px;
+    accent-color: #34D399;
+    cursor: ew-resize;
+  }
+  .pan-tip {
+    flex: none;
+    color: #94A3B8;
+    font-size: 11.8px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* 核心画布滚动视口：占满剩余屏幕高度，底部横向滚动条永久贴底可见 */
+  .stage-viewport {
+    flex: 1;
+    min-height: 0;
+    padding: 16px 14px 24px;
+    overflow: auto;
+    position: relative;
+  }
+  .stage-viewport.pannable { cursor: grab; }
   .poster-slot {
     margin-bottom: 28px;
     transform-origin: top left;
   }
+  .poster-slot:last-child { margin-bottom: 4px; }
   .poster-slot.fade-in {
     animation: posterFade 0.22s ease-out;
   }
@@ -431,21 +540,21 @@
     transform: translateY(0);
     opacity: 0.98;
   }
+  body.immersive .panbar { display: none !important; }
   body.immersive .stage-viewport {
-    min-height: 100vh;
-    padding: 14px 0 20px;
+    height: 100vh;
+    padding: 12px 10px 18px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
   }
-  body.immersive .poster-slot { margin-bottom: 16px; }
+  body.immersive .poster-slot.single-active { margin: auto; }
   body.immersive .canvas { box-shadow: 0 18px 60px rgba(0,0,0,0.55); }
 
-  /* 沉浸汇报右下角悬浮翻页控制器 */
+  /* 沉浸汇报右下角悬浮翻页控制器（避开底部 13px 滚动条） */
   .pres-hud {
     position: fixed;
-    right: 22px;
-    bottom: 18px;
+    right: 24px;
+    bottom: 24px;
     z-index: 250;
     display: none;
     align-items: center;
@@ -485,13 +594,34 @@
     <button class="tb-btn" id="btnAll" onclick="selectAllPosters()">📚 八大赛道全览</button>
   </div>
   <div class="tb-group">
-    <input type="text" class="tb-search" placeholder="🔍 高亮企业/项目关键词…" oninput="highlightKeyword(this.value)" />
+    <input type="text" class="tb-search" placeholder="🔍 高亮企业/项目…" oninput="highlightKeyword(this.value)" />
     <button class="tb-btn active" id="btnTheme" onclick="toggleClassicTheme()" title="一键切换八赛道专属配色 / 经典统一翠绿">🎨 多彩分轨</button>
     <button class="tb-btn active" id="btnFit" onclick="toggleFit(true)">🗖 自适应屏宽</button>
-    <button class="tb-btn" id="btnRaw" onclick="toggleFit(false)">🔍 1:1 超清(3480px)</button>
+    <div class="zoom-box" title="自由调节画面缩放比例">
+      <button class="zoom-step" onclick="stepZoom(-10)">−</button>
+      <input type="range" class="zoom-range" id="zoomRange" min="40" max="115" step="5" value="55" oninput="setCustomZoom(this.value)" />
+      <span class="zoom-pct" id="zoomPct">55%</span>
+      <button class="zoom-step" onclick="stepZoom(10)">+</button>
+    </div>
+    <button class="tb-btn" id="btnRaw" onclick="toggleFit(false)">🔍 1:1 超清</button>
     <button class="tb-btn" id="btnImmersive" onclick="toggleImmersive()" title="进入大屏沉浸汇报模式（支持 ←/→ 键盘翻页）">🖥️ 沉浸汇报</button>
     <button class="tb-btn" onclick="window.print()">🖨️ 导出PDF</button>
   </div>
+</div>
+
+<div class="panbar" id="panbar">
+  <div class="pan-jumps">
+    <span class="pan-lbl">🧭 横向快速定位：</span>
+    <button class="pan-btn active" data-sec="up" onclick="jumpToSection('up')">⏮ 上游 · 研发基础设施</button>
+    <button class="pan-btn" data-sec="mid" onclick="jumpToSection('mid')">⏺ 中游 · 药物开发</button>
+    <button class="pan-btn" data-sec="mfg" onclick="jumpToSection('mfg')">🏭 制造</button>
+    <button class="pan-btn" data-sec="down" onclick="jumpToSection('down')">⏭ 下游 · 销售</button>
+    <button class="pan-btn" data-sec="rp" onclick="jumpToSection('rp')">📈 右侧 · 方向趋势</button>
+  </div>
+  <div class="pan-track-wrap">
+    <input type="range" class="pan-slider" id="topPanSlider" min="0" max="1000" value="0" oninput="onTopSliderInput(this.value)" title="顶部同步横向拖动条" />
+  </div>
+  <span class="pan-tip">🤚 按住画面左键可直接拖拽平移 ｜ 底部滚动条已常驻贴底</span>
 </div>
 
 <div class="stage-viewport" id="viewport">
@@ -1408,6 +1538,77 @@
   const FEAT_PHASES = ["上游 · 研发基础设施", "中游 · 药物开发", "中游 · 制造", "下游 · 销售"];
 
   let modalCtx = null; // { canvas, mode: 'stage'|'phase'|'rp', idx, focusRow }
+  let suppressNextClick = false;
+
+  // ===== 地图式“按住鼠标左键拖拽平移画布”（智能区分 5px 内点击放大 vs 拖拽平移） =====
+  (function initGrabToPan() {
+    let isDown = false, moved = false;
+    let startX = 0, startY = 0, startSL = 0, startST = 0;
+    let scroller = null;
+
+    function getScroller() {
+      return document.getElementById('viewport') || document.scrollingElement || document.documentElement;
+    }
+
+    window.addEventListener('mousedown', function(e) {
+      if (e.button !== 0 || e.altKey) return;
+      if (e.target.closest('.topbar, .panbar, .cm-overlay, .pres-hud, button, input, a, select, textarea')) return;
+      scroller = getScroller();
+      if (!scroller) return;
+      const canPanX = scroller.scrollWidth > scroller.clientWidth + 4;
+      const canPanY = scroller.scrollHeight > scroller.clientHeight + 4;
+      if (!canPanX && !canPanY) return;
+
+      isDown = true;
+      moved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      startSL = scroller.scrollLeft;
+      startST = scroller.scrollTop;
+    });
+
+    window.addEventListener('mousemove', function(e) {
+      if (!isDown || !scroller) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!moved && Math.hypot(dx, dy) > 5) {
+        moved = true;
+        document.body.classList.add('is-grabbing');
+        if (window.getSelection) {
+          const sel = window.getSelection();
+          if (sel && sel.removeAllRanges) sel.removeAllRanges();
+        }
+      }
+      if (moved) {
+        e.preventDefault();
+        scroller.scrollLeft = startSL - dx;
+        scroller.scrollTop = startST - dy;
+      }
+    }, { passive: false });
+
+    function endDrag() {
+      if (!isDown) return;
+      isDown = false;
+      document.body.classList.remove('is-grabbing');
+      if (moved) {
+        suppressNextClick = true;
+        setTimeout(function() { suppressNextClick = false; }, 80);
+      }
+      moved = false;
+    }
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('mouseleave', endDrag);
+
+    // 捕获阶段拦截拖拽结束瞬间派生的 click，防止拖拽画布时误触打开放大弹窗
+    window.addEventListener('click', function(e) {
+      if (suppressNextClick) {
+        suppressNextClick = false;
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }, true);
+  })();
 
   function renderModal() {
     if (!modalCtx) return;
@@ -1563,9 +1764,17 @@
 <script>
 const TRACK_NAMES = JSON.parse(document.getElementById('tracksMeta').textContent);
 let fitMode = true;
+let customScale = 1;
 let currentIdx = 0; // -1 means all
 let classicTheme = false;
 let immersiveMode = false;
+
+function getActiveCanvas() {
+  if (currentIdx >= 0) {
+    return document.getElementById('poster-' + currentIdx);
+  }
+  return document.querySelector('.poster-slot:not([style*="display: none"]) .canvas') || document.getElementById('poster-0');
+}
 
 function updateHudLabel() {
   const lbl = document.getElementById('hudTrackLabel');
@@ -1585,11 +1794,13 @@ function selectPoster(idx) {
   document.querySelectorAll('.poster-slot').forEach((el, i) => {
     if (i === idx) {
       el.style.display = 'block';
+      el.classList.add('single-active');
       el.classList.remove('fade-in');
       void el.offsetWidth;
       el.classList.add('fade-in');
     } else {
       el.style.display = 'none';
+      el.classList.remove('single-active');
     }
   });
   updateHudLabel();
@@ -1606,16 +1817,34 @@ function selectAllPosters() {
   currentIdx = -1;
   document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.remove('active'));
   document.getElementById('btnAll').classList.add('active');
-  document.querySelectorAll('.poster-slot').forEach(el => { el.style.display = 'block'; });
+  document.querySelectorAll('.poster-slot').forEach(el => {
+    el.style.display = 'block';
+    el.classList.remove('single-active');
+  });
   updateHudLabel();
   applyScale();
 }
 
 function toggleFit(enableFit) {
   fitMode = enableFit;
+  if (!enableFit) customScale = 1;
   document.getElementById('btnFit').classList.toggle('active', fitMode);
-  document.getElementById('btnRaw').classList.toggle('active', !fitMode);
+  document.getElementById('btnRaw').classList.toggle('active', !fitMode && Math.abs(customScale - 1) < 0.01);
   applyScale();
+}
+
+function setCustomZoom(pctVal) {
+  const pct = Math.max(35, Math.min(125, Number(pctVal) || 100));
+  fitMode = false;
+  customScale = pct / 100;
+  document.getElementById('btnFit').classList.remove('active');
+  document.getElementById('btnRaw').classList.toggle('active', Math.abs(customScale - 1) < 0.01);
+  applyScale();
+}
+
+function stepZoom(deltaPct) {
+  const curPct = Math.round((window._appliedScale || 1) * 100);
+  setCustomZoom(Math.round((curPct + deltaPct) / 5) * 5);
 }
 
 function toggleClassicTheme() {
@@ -1689,21 +1918,94 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ===== 顶部与底部滚动条实时双向同步 + 分段一键横跳 =====
+function syncPanBarState() {
+  const vp = document.getElementById('viewport');
+  const panbar = document.getElementById('panbar');
+  const slider = document.getElementById('topPanSlider');
+  if (!vp || !panbar || !slider) return;
+
+  const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  const hasHoriz = maxScroll > 6;
+  panbar.classList.toggle('visible', hasHoriz);
+  vp.classList.toggle('pannable', hasHoriz || (vp.scrollHeight > vp.clientHeight + 6));
+
+  if (hasHoriz) {
+    const ratio = maxScroll > 0 ? Math.round((vp.scrollLeft / maxScroll) * 1000) : 0;
+    slider.value = ratio;
+    highlightActiveJump(vp, maxScroll);
+  }
+}
+
+function onTopSliderInput(val) {
+  const vp = document.getElementById('viewport');
+  if (!vp) return;
+  const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  vp.scrollLeft = (Number(val) / 1000) * maxScroll;
+}
+
+function jumpToSection(secKey) {
+  const vp = document.getElementById('viewport');
+  const canvas = getActiveCanvas();
+  if (!vp || !canvas) return;
+  const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  if (maxScroll <= 0) return;
+
+  if (secKey === 'up') {
+    vp.scrollTo({ left: 0, behavior: 'smooth' });
+    return;
+  }
+  if (secKey === 'rp') {
+    vp.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    return;
+  }
+  const selMap = { mid: '.ga2', mfg: '.ga3', down: '.ga4' };
+  const targetEl = canvas.querySelector(selMap[secKey]);
+  if (!targetEl) return;
+
+  let offsetX = 0;
+  let cur = targetEl;
+  while (cur && cur !== canvas) {
+    offsetX += cur.offsetLeft || 0;
+    cur = cur.offsetParent;
+  }
+  const scale = window._appliedScale || 1;
+  const targetLeft = Math.max(0, Math.min(maxScroll, (offsetX - 42) * scale));
+  vp.scrollTo({ left: targetLeft, behavior: 'smooth' });
+}
+
+function highlightActiveJump(vp, maxScroll) {
+  const r = maxScroll > 0 ? (vp.scrollLeft / maxScroll) : 0;
+  let key = 'up';
+  if (r > 0.86) key = 'rp';
+  else if (r > 0.60) key = 'down';
+  else if (r > 0.44) key = 'mfg';
+  else if (r > 0.16) key = 'mid';
+  document.querySelectorAll('.pan-btn[data-sec]').forEach(b => {
+    b.classList.toggle('active', b.dataset.sec === key);
+  });
+}
+
 function applyScale() {
+  const vp = document.getElementById('viewport');
   const slots = document.querySelectorAll('.poster-slot');
-  const vw = document.documentElement.clientWidth;
-  const pad = immersiveMode ? 20 : 28;
-  const scale = fitMode ? Math.min(1, (vw - pad) / 3480) : 1;
+  const availW = (vp ? vp.clientWidth : document.documentElement.clientWidth) - (immersiveMode ? 24 : 30);
+  const scale = fitMode ? Math.min(1, Math.max(0.25, availW / 3480)) : customScale;
+  window._appliedScale = scale;
 
   slots.forEach(slot => {
     if (slot.style.display === 'none') return;
     const canvas = slot.querySelector('.canvas');
-    if (fitMode && scale < 1) {
-      canvas.style.zoom = scale;
-    } else {
-      canvas.style.zoom = 1;
-    }
+    canvas.style.zoom = scale;
   });
+
+  const pct = Math.round(scale * 100);
+  const rangeEl = document.getElementById('zoomRange');
+  const pctEl = document.getElementById('zoomPct');
+  if (rangeEl) rangeEl.value = Math.max(40, Math.min(115, pct));
+  if (pctEl) pctEl.textContent = pct + '%';
+
+  requestAnimationFrame(syncPanBarState);
 }
 
 function highlightKeyword(kw) {
@@ -1719,7 +2021,14 @@ function highlightKeyword(kw) {
 }
 
 window.addEventListener('resize', applyScale);
-window.addEventListener('DOMContentLoaded', () => { updateHudLabel(); applyScale(); });
+window.addEventListener('DOMContentLoaded', () => {
+  const vp = document.getElementById('viewport');
+  if (vp) vp.addEventListener('scroll', syncPanBarState, { passive: true });
+  const firstSlot = document.getElementById('slot-0');
+  if (firstSlot) firstSlot.classList.add('single-active');
+  updateHudLabel();
+  applyScale();
+});
 </script>
 
 </body>
