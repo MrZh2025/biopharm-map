@@ -261,7 +261,43 @@
   .lg-zoom-tip { color:#0F766E; font-weight:700; background:#F0FDFA; border:1px solid #99F6E4; padding:2px 10px; border-radius:999px; font-size:12.5px; }
   .lg-note { margin-left:auto; color:#64748B; font-size:13px; }
 
-  .search-hit { outline:2.5px solid #E74C3C !important; background:#FFF0ED !important; }
+  .search-hit {
+    outline:2.5px solid #F59E0B !important;
+    background:#FEF9C3 !important;
+    border-radius:6px;
+  }
+  .search-hit-current {
+    outline:3.5px solid #EF4444 !important;
+    background:#FEF08A !important;
+    box-shadow:0 0 0 7px rgba(239,68,68,0.30), 0 6px 18px rgba(239,68,68,0.28) !important;
+    position:relative;
+    z-index:6;
+    animation:hitPulse 1.2s ease-in-out infinite alternate;
+  }
+  .cell-hit-focus {
+    border-color:#EF4444 !important;
+    box-shadow:0 0 0 4px rgba(239,68,68,0.20), 0 8px 22px rgba(239,68,68,0.16) !important;
+  }
+  @keyframes hitPulse {
+    from { box-shadow:0 0 0 5px rgba(239,68,68,0.24), 0 4px 14px rgba(239,68,68,0.22); }
+    to   { box-shadow:0 0 0 9px rgba(239,68,68,0.40), 0 8px 22px rgba(239,68,68,0.34); }
+  }
+
+  /* 快速定位区段聚光灯高亮反馈 */
+  .canvas.has-sec-focus .cell:not(.sec-spotlight),
+  .canvas.has-sec-focus .seg:not(.sec-spotlight),
+  .canvas.has-sec-focus .arrow:not(.sec-spotlight),
+  .canvas.has-sec-focus .rp:not(.sec-spotlight) {
+    opacity:0.38;
+    transition:opacity 0.22s ease;
+  }
+  .sec-spotlight {
+    outline:3px solid #10B981 !important;
+    box-shadow:0 0 0 5px rgba(16,185,129,0.22), 0 8px 20px rgba(15,23,42,0.12) !important;
+    transition:opacity 0.22s ease, box-shadow 0.22s ease;
+    position:relative;
+    z-index:4;
+  }
 
   /* ===== 大屏汇报级高清放大弹窗（Lightbox Modal，独立于 canvas zoom 之外） ===== */
   .cm-overlay {
@@ -400,19 +436,96 @@
   .tb-btn.active { background: #2FA36B; color: #fff; border-color: #6EE7B7; font-weight:800; box-shadow:0 2px 8px rgba(47,163,107,0.38); }
   .tb-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
   body.classic-theme .tb-dot { background:#34D399 !important; }
-  .tb-search {
-    padding: 5px 10px;
-    border-radius: 7px;
-    border: 1px solid rgba(255,255,255,0.26);
-    background: rgba(255,255,255,0.11);
-    color: #fff;
-    font-size: 12.5px;
-    width: 175px;
-    outline: none;
-    transition: border-color 0.15s, background 0.15s;
+  /* 赛道按钮命中计数角标 */
+  .tb-hit-cnt {
+    background:#EF4444;
+    color:#fff;
+    font-size:10.5px;
+    font-weight:900;
+    line-height:1;
+    padding:2px 5.5px;
+    border-radius:999px;
+    margin-left:2px;
+    box-shadow:0 1px 4px rgba(239,68,68,0.45);
   }
-  .tb-search:focus { border-color:#6EE7B7; background:rgba(255,255,255,0.17); }
-  .tb-search::placeholder { color: rgba(255,255,255,0.62); }
+
+  /* 全局跨赛道智能搜索组合框 */
+  .search-wrap {
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    background:rgba(255,255,255,0.11);
+    border:1px solid rgba(255,255,255,0.28);
+    border-radius:8px;
+    padding:2px 6px 2px 9px;
+    transition:border-color 0.15s, background 0.15s;
+  }
+  .search-wrap:focus-within {
+    border-color:#6EE7B7;
+    background:rgba(255,255,255,0.17);
+    box-shadow:0 0 0 2px rgba(110,231,183,0.22);
+  }
+  .tb-search {
+    padding:3.5px 4px;
+    border:none;
+    background:transparent;
+    color:#fff;
+    font-size:12.5px;
+    width:170px;
+    outline:none;
+  }
+  .tb-search::placeholder { color:rgba(255,255,255,0.65); }
+  .search-stat {
+    font-size:11.5px;
+    font-weight:800;
+    color:#FDE68A;
+    padding:1px 6px;
+    border-radius:999px;
+    background:rgba(0,0,0,0.28);
+    white-space:nowrap;
+    display:none;
+    font-variant-numeric:tabular-nums;
+  }
+  .search-stat.empty { color:#FCA5A5; }
+  .search-stat.show { display:inline-block; }
+  .search-nav-btn {
+    background:rgba(255,255,255,0.12);
+    color:#E2E8F0;
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:5px;
+    padding:2px 6px;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+    line-height:1.2;
+    display:none;
+  }
+  .search-nav-btn.show { display:inline-block; }
+  .search-nav-btn:hover { background:#2FA36B; color:#fff; border-color:#6EE7B7; }
+  .search-go-btn {
+    background:#2FA36B;
+    color:#fff;
+    border:1px solid #6EE7B7;
+    border-radius:5px;
+    padding:2.5px 8px;
+    font-size:11.5px;
+    font-weight:800;
+    cursor:pointer;
+    line-height:1.25;
+  }
+  .search-go-btn:hover { background:#1F8F5B; }
+  .search-clear-btn {
+    background:transparent;
+    color:#CBD5E1;
+    border:none;
+    padding:1px 5px;
+    font-size:12.5px;
+    font-weight:800;
+    cursor:pointer;
+    display:none;
+  }
+  .search-clear-btn.show { display:inline-block; }
+  .search-clear-btn:hover { color:#FCA5A5; }
 
   /* 自由缩放滑杆组 */
   .zoom-box {
@@ -450,30 +563,30 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* 顶部双向同步横向快捷导航栏（当画面宽度超出屏幕时自动展开，无需移到屏幕底部也能拖） */
+  /* 顶部常驻横向快速定位栏（任何缩放模式下均常驻可用：自适应模式下点击自动放大聚焦并聚光灯高亮目标区段） */
   .panbar {
     flex: none;
     z-index: 95;
-    background: #173327;
-    border-bottom: 1px solid rgba(110,231,183,0.25);
+    background: #163125;
+    border-bottom: 1px solid rgba(110,231,183,0.24);
     color: #D1FAE5;
     padding: 6px 18px;
-    display: none;
+    display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
     font-size: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.14);
   }
-  .panbar.visible { display: flex; }
-  .pan-jumps { display: inline-flex; align-items: center; gap: 5px; flex: none; }
+  .pan-jumps { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .pan-lbl { color: #6EE7B7; font-weight: 800; margin-right: 2px; }
   .pan-btn {
     background: rgba(255,255,255,0.09);
     color: #E2E8F0;
-    border: 1px solid rgba(255,255,255,0.16);
-    padding: 3px 9px;
+    border: 1px solid rgba(255,255,255,0.17);
+    padding: 3.5px 10px;
     border-radius: 999px;
-    font-size: 11.8px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.14s;
@@ -482,13 +595,14 @@
     background: #2FA36B;
     color: #fff;
     border-color: #6EE7B7;
+    box-shadow: 0 1px 6px rgba(47,163,107,0.4);
   }
   .pan-track-wrap {
     flex: 1;
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 140px;
+    min-width: 150px;
   }
   .pan-slider {
     flex: 1;
@@ -594,7 +708,14 @@
     <button class="tb-btn" id="btnAll" onclick="selectAllPosters()">📚 八大赛道全览</button>
   </div>
   <div class="tb-group">
-    <input type="text" class="tb-search" placeholder="🔍 高亮企业/项目…" oninput="highlightKeyword(this.value)" />
+    <div class="search-wrap" id="searchWrap">
+      <input type="text" id="searchInput" class="tb-search" placeholder="🔍 搜索企业/项目/趋势 (回车定位)…" autocomplete="off" />
+      <span class="search-stat" id="searchStat"></span>
+      <button type="button" class="search-nav-btn" id="searchPrevBtn" onclick="stepSearchHit(-1)" title="上一处 (Shift+Enter)">▲</button>
+      <button type="button" class="search-nav-btn" id="searchNextBtn" onclick="stepSearchHit(1)" title="下一处 (Enter)">▼</button>
+      <button type="button" class="search-go-btn" onclick="triggerSearchNow()" title="搜索并自动跳转定位">定位</button>
+      <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="清空搜索 (Esc)">✕</button>
+    </div>
     <button class="tb-btn active" id="btnTheme" onclick="toggleClassicTheme()" title="一键切换八赛道专属配色 / 经典统一翠绿">🎨 多彩分轨</button>
     <button class="tb-btn active" id="btnFit" onclick="toggleFit(true)">🗖 自适应屏宽</button>
     <div class="zoom-box" title="自由调节画面缩放比例">
@@ -611,8 +732,9 @@
 
 <div class="panbar" id="panbar">
   <div class="pan-jumps">
-    <span class="pan-lbl">🧭 横向快速定位：</span>
-    <button class="pan-btn active" data-sec="up" onclick="jumpToSection('up')">⏮ 上游 · 研发基础设施</button>
+    <span class="pan-lbl">🧭 快速定位：</span>
+    <button class="pan-btn active" data-sec="all" onclick="resetFullOverview()" title="缩回全图总览">🗖 全图总览</button>
+    <button class="pan-btn" data-sec="up" onclick="jumpToSection('up')">⏮ 上游 · 研发基础设施</button>
     <button class="pan-btn" data-sec="mid" onclick="jumpToSection('mid')">⏺ 中游 · 药物开发</button>
     <button class="pan-btn" data-sec="mfg" onclick="jumpToSection('mfg')">🏭 制造</button>
     <button class="pan-btn" data-sec="down" onclick="jumpToSection('down')">⏭ 下游 · 销售</button>
@@ -621,7 +743,7 @@
   <div class="pan-track-wrap">
     <input type="range" class="pan-slider" id="topPanSlider" min="0" max="1000" value="0" oninput="onTopSliderInput(this.value)" title="顶部同步横向拖动条" />
   </div>
-  <span class="pan-tip">🤚 按住画面左键可直接拖拽平移 ｜ 底部滚动条已常驻贴底</span>
+  <span class="pan-tip">🤚 按住画面左键可拖拽平移 ｜ 点击区段自动放大并聚光灯高亮</span>
 </div>
 
 <div class="stage-viewport" id="viewport">
@@ -1769,6 +1891,14 @@ let currentIdx = 0; // -1 means all
 let classicTheme = false;
 let immersiveMode = false;
 
+// 快速定位与搜索状态
+let manualSecLockUntil = 0;
+let spotlightTimer = null;
+let scrollAnimId = null;
+let searchHits = [];
+let searchHitIdx = -1;
+let lastSearchedQuery = '';
+
 function getActiveCanvas() {
   if (currentIdx >= 0) {
     return document.getElementById('poster-' + currentIdx);
@@ -1787,7 +1917,110 @@ function updateHudLabel() {
   }
 }
 
-function selectPoster(idx) {
+// 兼容桌面浏览器、远程桌面及无动画系统设置的 60fps 可靠平滑滚动引擎
+function animateViewportScroll(targetLeft, targetTop, durationMs) {
+  const vp = document.getElementById('viewport');
+  if (!vp) return;
+  if (scrollAnimId) {
+    clearInterval(scrollAnimId);
+    scrollAnimId = null;
+  }
+  const maxL = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  const maxT = Math.max(0, vp.scrollHeight - vp.clientHeight);
+  const endL = (typeof targetLeft === 'number') ? Math.max(0, Math.min(maxL, targetLeft)) : vp.scrollLeft;
+  const endT = (typeof targetTop === 'number') ? Math.max(0, Math.min(maxT, targetTop)) : vp.scrollTop;
+
+  if (!durationMs || durationMs <= 0) {
+    vp.scrollLeft = endL;
+    vp.scrollTop = endT;
+    syncPanBarState();
+    return;
+  }
+  const startL = vp.scrollLeft;
+  const startT = vp.scrollTop;
+  if (Math.abs(endL - startL) < 1 && Math.abs(endT - startT) < 1) {
+    syncPanBarState();
+    return;
+  }
+  const t0 = Date.now();
+  scrollAnimId = setInterval(() => {
+    const p = Math.min(1, (Date.now() - t0) / durationMs);
+    const ease = 1 - Math.pow(1 - p, 3);
+    vp.scrollLeft = startL + (endL - startL) * ease;
+    vp.scrollTop = startT + (endT - startT) * ease;
+    syncPanBarState();
+    if (p >= 1) {
+      clearInterval(scrollAnimId);
+      scrollAnimId = null;
+    }
+  }, 16);
+}
+
+function centerElementInViewport(el, smooth = true) {
+  const vp = document.getElementById('viewport');
+  if (!vp || !el) return;
+  const vpRect = vp.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+  const targetL = vp.scrollLeft + (elRect.left + elRect.width / 2) - (vpRect.left + vpRect.width / 2);
+  const targetT = vp.scrollTop + (elRect.top + elRect.height / 2) - (vpRect.top + vpRect.height / 2);
+  animateViewportScroll(targetL, targetT, smooth ? 240 : 0);
+}
+
+function clearSectionSpotlight() {
+  if (spotlightTimer) {
+    clearTimeout(spotlightTimer);
+    spotlightTimer = null;
+  }
+  document.querySelectorAll('.canvas.has-sec-focus').forEach(c => c.classList.remove('has-sec-focus'));
+  document.querySelectorAll('.sec-spotlight').forEach(el => el.classList.remove('sec-spotlight'));
+}
+
+function applySectionSpotlight(canvas, secKey) {
+  clearSectionSpotlight();
+  if (!canvas || secKey === 'all') return;
+
+  const colMap = { up: [0, 1, 2], mid: [3, 4, 5], mfg: [6], down: [7, 8, 9] };
+  const featIdxMap = { up: 0, mid: 1, mfg: 2, down: 3 };
+  const arrowSelMap = { up: '.ga1', mid: '.ga2', mfg: '.ga3', down: '.ga4' };
+
+  canvas.classList.add('has-sec-focus');
+  if (secKey === 'rp') {
+    const rp = canvas.querySelector('.rp');
+    if (rp) rp.classList.add('sec-spotlight');
+  } else {
+    const cols = colMap[secKey] || [];
+    const ar = canvas.querySelector(arrowSelMap[secKey]);
+    if (ar) ar.classList.add('sec-spotlight');
+    const segs = canvas.querySelectorAll('.seg');
+    const ents = canvas.querySelectorAll('.dim-ent .cell');
+    const prjs = canvas.querySelectorAll('.dim-prj .cell');
+    const dirs = canvas.querySelectorAll('.dim-dir .cell');
+    cols.forEach(ci => {
+      if (segs[ci]) segs[ci].classList.add('sec-spotlight');
+      if (ents[ci]) ents[ci].classList.add('sec-spotlight');
+      if (prjs[ci]) prjs[ci].classList.add('sec-spotlight');
+      if (dirs[ci]) dirs[ci].classList.add('sec-spotlight');
+    });
+    const fi = featIdxMap[secKey];
+    const feats = canvas.querySelectorAll('.dim-feat .cell');
+    const invs = canvas.querySelectorAll('.dim-inv .cell');
+    if (feats[fi]) feats[fi].classList.add('sec-spotlight');
+    if (invs[fi]) invs[fi].classList.add('sec-spotlight');
+  }
+
+  spotlightTimer = setTimeout(() => {
+    clearSectionSpotlight();
+  }, 2400);
+}
+
+function setActivePanBtn(secKey) {
+  document.querySelectorAll('.pan-btn[data-sec]').forEach(b => {
+    b.classList.toggle('active', b.dataset.sec === secKey);
+  });
+}
+
+function selectPoster(idx, skipAnim) {
+  clearSectionSpotlight();
   currentIdx = idx;
   document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.toggle('active', Number(b.dataset.idx) === idx));
   document.getElementById('btnAll').classList.remove('active');
@@ -1796,8 +2029,10 @@ function selectPoster(idx) {
       el.style.display = 'block';
       el.classList.add('single-active');
       el.classList.remove('fade-in');
-      void el.offsetWidth;
-      el.classList.add('fade-in');
+      if (!skipAnim) {
+        void el.offsetWidth;
+        el.classList.add('fade-in');
+      }
     } else {
       el.style.display = 'none';
       el.classList.remove('single-active');
@@ -1814,6 +2049,7 @@ function stepPoster(delta) {
 }
 
 function selectAllPosters() {
+  clearSectionSpotlight();
   currentIdx = -1;
   document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.remove('active'));
   document.getElementById('btnAll').classList.add('active');
@@ -1825,12 +2061,22 @@ function selectAllPosters() {
   applyScale();
 }
 
+function resetFullOverview() {
+  clearSectionSpotlight();
+  toggleFit(true);
+  const vp = document.getElementById('viewport');
+  if (vp) vp.scrollLeft = 0;
+  setActivePanBtn('all');
+}
+
 function toggleFit(enableFit) {
+  clearSectionSpotlight();
   fitMode = enableFit;
   if (!enableFit) customScale = 1;
   document.getElementById('btnFit').classList.toggle('active', fitMode);
   document.getElementById('btnRaw').classList.toggle('active', !fitMode && Math.abs(customScale - 1) < 0.01);
   applyScale();
+  if (fitMode) setActivePanBtn('all');
 }
 
 function setCustomZoom(pctVal) {
@@ -1918,72 +2164,117 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ===== 顶部与底部滚动条实时双向同步 + 分段一键横跳 =====
+// ===== 顶部与底部滚动条实时双向同步 + 分段一键聚焦横跳 =====
 function syncPanBarState() {
   const vp = document.getElementById('viewport');
-  const panbar = document.getElementById('panbar');
   const slider = document.getElementById('topPanSlider');
-  if (!vp || !panbar || !slider) return;
+  if (!vp || !slider) return;
 
   const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
   const hasHoriz = maxScroll > 6;
-  panbar.classList.toggle('visible', hasHoriz);
   vp.classList.toggle('pannable', hasHoriz || (vp.scrollHeight > vp.clientHeight + 6));
 
-  if (hasHoriz) {
-    const ratio = maxScroll > 0 ? Math.round((vp.scrollLeft / maxScroll) * 1000) : 0;
-    slider.value = ratio;
-    highlightActiveJump(vp, maxScroll);
+  if (!hasHoriz) {
+    slider.value = 0;
+    if (fitMode && Date.now() > manualSecLockUntil) {
+      setActivePanBtn('all');
+    }
+    return;
+  }
+
+  const ratio = Math.round((vp.scrollLeft / maxScroll) * 1000);
+  slider.value = ratio;
+  if (Date.now() > manualSecLockUntil) {
+    highlightActiveJumpByCenter(vp, maxScroll);
   }
 }
 
 function onTopSliderInput(val) {
   const vp = document.getElementById('viewport');
   if (!vp) return;
-  const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  let maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  if (maxScroll <= 6) {
+    setCustomZoom(95);
+    maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  }
   vp.scrollLeft = (Number(val) / 1000) * maxScroll;
+  syncPanBarState();
 }
 
 function jumpToSection(secKey) {
+  if (secKey === 'all') {
+    resetFullOverview();
+    return;
+  }
   const vp = document.getElementById('viewport');
+  if (!vp) return;
+
+  // 若当前处于自适应全图模式（无横向滚动空间），自动放大至 95% 清晰阅读比例再精准居中该区段
+  let maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  if (fitMode || maxScroll < 40) {
+    setCustomZoom(95);
+    maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
+  }
+
   const canvas = getActiveCanvas();
-  if (!vp || !canvas) return;
-  const maxScroll = Math.max(0, vp.scrollWidth - vp.clientWidth);
-  if (maxScroll <= 0) return;
+  if (!canvas) return;
+
+  manualSecLockUntil = Date.now() + 550;
+  setActivePanBtn(secKey);
+  applySectionSpotlight(canvas, secKey);
 
   if (secKey === 'up') {
-    vp.scrollTo({ left: 0, behavior: 'smooth' });
+    animateViewportScroll(0, null, 240);
     return;
   }
   if (secKey === 'rp') {
-    vp.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    animateViewportScroll(maxScroll, null, 240);
     return;
   }
+
   const selMap = { mid: '.ga2', mfg: '.ga3', down: '.ga4' };
   const targetEl = canvas.querySelector(selMap[secKey]);
   if (!targetEl) return;
 
-  let offsetX = 0;
-  let cur = targetEl;
-  while (cur && cur !== canvas) {
-    offsetX += cur.offsetLeft || 0;
-    cur = cur.offsetParent;
-  }
-  const scale = window._appliedScale || 1;
-  const targetLeft = Math.max(0, Math.min(maxScroll, (offsetX - 42) * scale));
-  vp.scrollTo({ left: targetLeft, behavior: 'smooth' });
+  const vpRect = vp.getBoundingClientRect();
+  const elRect = targetEl.getBoundingClientRect();
+  const centerTargetL = vp.scrollLeft + (elRect.left + elRect.width / 2) - (vpRect.left + vpRect.width / 2);
+  animateViewportScroll(centerTargetL, null, 240);
 }
 
-function highlightActiveJump(vp, maxScroll) {
-  const r = maxScroll > 0 ? (vp.scrollLeft / maxScroll) : 0;
-  let key = 'up';
-  if (r > 0.86) key = 'rp';
-  else if (r > 0.60) key = 'down';
-  else if (r > 0.44) key = 'mfg';
-  else if (r > 0.16) key = 'mid';
-  document.querySelectorAll('.pan-btn[data-sec]').forEach(b => {
-    b.classList.toggle('active', b.dataset.sec === key);
-  });
+function highlightActiveJumpByCenter(vp, maxScroll) {
+  if (fitMode && maxScroll <= 6) {
+    setActivePanBtn('all');
+    return;
+  }
+  const canvas = getActiveCanvas();
+  if (!canvas) return;
+  const vpCenter = vp.getBoundingClientRect().left + vp.clientWidth / 2;
+  const candidates = [
+    { key: 'up', el: canvas.querySelector('.ga1') },
+    { key: 'mid', el: canvas.querySelector('.ga2') },
+    { key: 'mfg', el: canvas.querySelector('.ga3') },
+    { key: 'down', el: canvas.querySelector('.ga4') },
+    { key: 'rp', el: canvas.querySelector('.rp') }
+  ];
+  let bestKey = 'up', bestDist = Infinity;
+  if (vp.scrollLeft <= 12) {
+    bestKey = 'up';
+  } else if (vp.scrollLeft >= maxScroll - 12) {
+    bestKey = 'rp';
+  } else {
+    candidates.forEach(c => {
+      if (!c.el) return;
+      const r = c.el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const d = Math.abs(cx - vpCenter);
+      if (d < bestDist) {
+        bestDist = d;
+        bestKey = c.key;
+      }
+    });
+  }
+  setActivePanBtn(bestKey);
 }
 
 function applyScale() {
@@ -2005,19 +2296,163 @@ function applyScale() {
   if (rangeEl) rangeEl.value = Math.max(40, Math.min(115, pct));
   if (pctEl) pctEl.textContent = pct + '%';
 
-  requestAnimationFrame(syncPanBarState);
+  syncPanBarState();
 }
 
-function highlightKeyword(kw) {
-  const q = (kw || '').trim().toLowerCase();
-  document.querySelectorAll('.pill, .blt').forEach(el => {
-    if (!q) {
-      el.classList.remove('search-hit');
-      return;
-    }
-    const hit = el.textContent.toLowerCase().includes(q);
-    el.classList.toggle('search-hit', hit);
+// ===== 跨八大赛道全局智能搜索与自动跳转定位 =====
+function clearSearchVisuals() {
+  document.querySelectorAll('.search-hit, .search-hit-current').forEach(el => {
+    el.classList.remove('search-hit', 'search-hit-current');
   });
+  document.querySelectorAll('.cell-hit-focus').forEach(el => el.classList.remove('cell-hit-focus'));
+  document.querySelectorAll('.tb-hit-cnt').forEach(el => el.remove());
+}
+
+function runSearch(rawKw, autoJump) {
+  const q = (rawKw || '').trim().toLowerCase();
+  const statEl = document.getElementById('searchStat');
+  const prevBtn = document.getElementById('searchPrevBtn');
+  const nextBtn = document.getElementById('searchNextBtn');
+  const clrBtn = document.getElementById('searchClearBtn');
+
+  clearSearchVisuals();
+  searchHits = [];
+  searchHitIdx = -1;
+  lastSearchedQuery = q;
+
+  if (!q) {
+    if (statEl) { statEl.className = 'search-stat'; statEl.textContent = ''; }
+    if (prevBtn) prevBtn.classList.remove('show');
+    if (nextBtn) nextBtn.classList.remove('show');
+    if (clrBtn) clrBtn.classList.remove('show');
+    return;
+  }
+
+  if (clrBtn) clrBtn.classList.add('show');
+
+  const trackCounts = new Array(TRACK_NAMES.length).fill(0);
+  for (let t = 0; t < TRACK_NAMES.length; t++) {
+    const canvas = document.getElementById('poster-' + t);
+    if (!canvas) continue;
+    const targets = canvas.querySelectorAll('.pill, .pill-note, .blt, .dim-feat .cell, .dim-inv .cell, .rp-block');
+    targets.forEach(el => {
+      if (el.textContent.toLowerCase().includes(q)) {
+        el.classList.add('search-hit');
+        searchHits.push({ el, trackIdx: t });
+        trackCounts[t]++;
+      }
+    });
+  }
+
+  // 在顶部 8 个赛道按钮上标注命中数量红点，一目了然哪些赛道有该企业/关键词
+  document.querySelectorAll('.tb-btn[data-idx]').forEach(btn => {
+    const ti = Number(btn.dataset.idx);
+    if (trackCounts[ti] > 0) {
+      const badge = document.createElement('span');
+      badge.className = 'tb-hit-cnt';
+      badge.textContent = trackCounts[ti];
+      btn.appendChild(badge);
+    }
+  });
+
+  if (searchHits.length === 0) {
+    if (statEl) {
+      statEl.className = 'search-stat show empty';
+      statEl.textContent = '无匹配';
+    }
+    if (prevBtn) prevBtn.classList.remove('show');
+    if (nextBtn) nextBtn.classList.remove('show');
+    return;
+  }
+
+  if (prevBtn) prevBtn.classList.toggle('show', searchHits.length > 1);
+  if (nextBtn) nextBtn.classList.toggle('show', searchHits.length > 1);
+
+  // 优先定位当前赛道的第一个命中项；若当前赛道无命中，自动切换到首个有命中的赛道！
+  let startIdx = 0;
+  if (currentIdx >= 0) {
+    const onCur = searchHits.findIndex(h => h.trackIdx === currentIdx);
+    if (onCur >= 0) startIdx = onCur;
+  }
+
+  if (autoJump) {
+    focusSearchHit(startIdx);
+  } else {
+    searchHitIdx = startIdx;
+    if (statEl) {
+      statEl.className = 'search-stat show';
+      statEl.textContent = (searchHitIdx + 1) + ' / ' + searchHits.length;
+    }
+  }
+}
+
+function focusSearchHit(idx) {
+  if (!searchHits.length) return;
+  document.querySelectorAll('.search-hit-current').forEach(el => el.classList.remove('search-hit-current'));
+  document.querySelectorAll('.cell-hit-focus').forEach(el => el.classList.remove('cell-hit-focus'));
+
+  searchHitIdx = ((idx % searchHits.length) + searchHits.length) % searchHits.length;
+  const hit = searchHits[searchHitIdx];
+
+  // 自动切换到命中项所在的赛道
+  if (currentIdx !== -1 && currentIdx !== hit.trackIdx) {
+    selectPoster(hit.trackIdx, true);
+  }
+  // 若当前为缩小的全图自适应比例，自动放大至 88% 清晰阅读尺寸以便精准居中聚焦命中项
+  if (fitMode || (window._appliedScale || 1) < 0.78) {
+    setCustomZoom(88);
+  }
+
+  hit.el.classList.add('search-hit-current');
+  const parentCard = hit.el.closest('.cell, .rp-block');
+  if (parentCard && parentCard !== hit.el) {
+    parentCard.classList.add('cell-hit-focus');
+  }
+
+  const statEl = document.getElementById('searchStat');
+  if (statEl) {
+    statEl.className = 'search-stat show';
+    statEl.textContent = (searchHitIdx + 1) + ' / ' + searchHits.length;
+  }
+
+  // 将命中元素平滑滚动至屏幕正中央
+  centerElementInViewport(hit.el, true);
+}
+
+function stepSearchHit(delta) {
+  const input = document.getElementById('searchInput');
+  const q = (input ? input.value : '').trim().toLowerCase();
+  if (!q) return;
+  if (q !== lastSearchedQuery || !searchHits.length) {
+    runSearch(q, true);
+    return;
+  }
+  focusSearchHit(searchHitIdx + delta);
+}
+
+function triggerSearchNow() {
+  const input = document.getElementById('searchInput');
+  const q = (input ? input.value : '').trim().toLowerCase();
+  if (!q) {
+    if (input) input.focus();
+    return;
+  }
+  if (q === lastSearchedQuery && searchHits.length > 0) {
+    focusSearchHit(searchHitIdx + 1);
+  } else {
+    runSearch(q, true);
+  }
+}
+
+function clearSearch() {
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  runSearch('', false);
+}
+
+// 兼容旧内联调用
+function highlightKeyword(kw) {
+  runSearch(kw, true);
 }
 
 window.addEventListener('resize', applyScale);
@@ -2026,6 +2461,45 @@ window.addEventListener('DOMContentLoaded', () => {
   if (vp) vp.addEventListener('scroll', syncPanBarState, { passive: true });
   const firstSlot = document.getElementById('slot-0');
   if (firstSlot) firstSlot.classList.add('single-active');
+
+  // 绑定搜索框中文输入法合成感知 + 防抖实时定位 + 回车上下跳转
+  const sInput = document.getElementById('searchInput');
+  if (sInput) {
+    let composing = false;
+    let debounceId = null;
+    sInput.addEventListener('compositionstart', () => { composing = true; });
+    sInput.addEventListener('compositionend', () => {
+      composing = false;
+      clearTimeout(debounceId);
+      runSearch(sInput.value, true);
+    });
+    sInput.addEventListener('input', () => {
+      if (composing) return;
+      clearTimeout(debounceId);
+      debounceId = setTimeout(() => {
+        runSearch(sInput.value, true);
+      }, 160);
+    });
+    sInput.addEventListener('keydown', (e) => {
+      if (composing) return;
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        clearTimeout(debounceId);
+        const q = sInput.value.trim().toLowerCase();
+        if (!q) return;
+        if (q !== lastSearchedQuery) {
+          runSearch(q, true);
+        } else {
+          stepSearchHit(e.shiftKey ? -1 : 1);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        clearSearch();
+        sInput.blur();
+      }
+    });
+  }
+
   updateHudLabel();
   applyScale();
 });
