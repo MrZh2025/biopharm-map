@@ -263,22 +263,22 @@
   .geo-cy { color:#0F5132; background:linear-gradient(105deg,#DCFCE7 0%,#FEF3C7 100%); border-color:#94D3AC; }
   .geo-yn { color:#3730A3; background:#EEF2FF; border-color:#A5B4FC; }
 
-  /* ===== 右侧：方向趋势（微图标 + 呼吸行距 + 关键指标微标签） ===== */
+  /* ===== 右侧：方向趋势（严格仅含 Excel 原表三大维度，零自创内容） ===== */
   .rp {
     background:var(--rp-bg);
-    border:2px solid var(--rp-bd); border-radius:14px; padding:14px;
-    display:flex; flex-direction:column; gap:12px;
+    border:2px solid var(--rp-bd); border-radius:14px; padding:15px;
+    display:flex; flex-direction:column; gap:15px;
     box-shadow:inset 0 1px 0 rgba(255,255,255,0.75);
   }
   .rp-head {
     background:var(--rp-head);
-    color:#fff; font-size:21px; font-weight:800; text-align:center; padding:10px;
+    color:#fff; font-size:21px; font-weight:800; text-align:center; padding:10.5px;
     border-radius:9px; letter-spacing:4px;
     box-shadow:0 3px 8px rgba(15,23,42,0.14);
   }
   .rp-block {
     background:var(--rp-card-bg);
-    border:1px solid var(--rp-card-bd); border-radius:10px; overflow:hidden; flex:1;
+    border:1px solid var(--rp-card-bd); border-radius:10px; overflow:hidden; flex:1 0 auto;
     display:flex; flex-direction:column;
     box-shadow:0 2px 6px rgba(15,23,42,0.05);
     transition:transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
@@ -291,12 +291,12 @@
   }
   .rp-block h3 {
     background:var(--rp-h3);
-    color:#fff; font-size:15.8px; font-weight:800; padding:7.5px 13px; letter-spacing:1px;
-    display:flex; align-items:center; gap:7px;
+    color:#fff; font-size:16.5px; font-weight:800; padding:9px 15px; letter-spacing:1px;
+    display:flex; align-items:center; gap:7.5px;
   }
-  .rp-block h3 svg.rp-ico { width:16px; height:16px; flex:none; opacity:0.95; }
+  .rp-block h3 svg.rp-ico { width:16.5px; height:16.5px; flex:none; opacity:0.95; }
   .rp-block .bd {
-    padding:11px 14px 10px; font-size:13.8px; line-height:1.74; color:var(--rp-card-fg);
+    padding:15px 17px; font-size:14.8px; line-height:1.84; color:var(--rp-card-fg);
     text-align:justify; flex:1;
   }
   .rp-block .hl {
@@ -1402,28 +1402,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">全球创新药市场约<span class="hl">1万亿美元</span>，小分子仍是第一大药物形式；中国为全球最大原料药生产国（产量占<span class="hl">35%—40%</span>），特色原料药约<span class="hl">4050亿元</span>，行业"大行业小龙头"（TOP10不足<span class="hl">20%</span>）；CDMO"一超多强"，药明康德占全球小分子CDMO约<span class="hl">20%</span>；品类分化——口服GLP-1成最强增长引擎（2025年上半年全球GLP-1市场<span class="hl">352亿美元</span>，司美格鲁肽+替尔泊肽合计占<span class="hl">89.1%</span>，首个小分子口服orforglipron于2026年2月获FDA批准），仿制药集采常态化（第十二批）微利化，创新药对外授权2026年上半年约<span class="hl">1100亿美元</span>。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">连续流化学、酶催化/生物合成替代传统釜式工艺；口服GLP-1等"肽改小分子"；PROTAC/分子胶等新型调控剂；DEL+AI辅助药物设计；改良型新药与复杂制剂（缓控释、吸入、长效注射）；多肽、小核酸拓展边界。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">仿制药出清与创新转型、原料药—制剂一体化与规范市场出海（CEP/DMF）、CDMO产能向中国转移叠加"中国+N"布局、AI重塑研发范式。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》第五章明确打造<b>生物医药新兴支柱产业、支持创新药临床使用</b>；第三十九章提出<b>完善集采政策、完善创新药目录、鼓励商业保险扩大创新药支付范围</b>；专栏3推进酶制剂与绿色生物制造技术应用。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd">川渝已构筑<b>成都先导（万亿级DEL库）、华西海圻（双GLP）、成都达硕（西部最大实验动物）、科伦/苑东/倍特/康弘（成都制剂集群）、博腾股份/药友制药/福安（重庆CDMO与双报出口）、正川股份（中硼硅药玻）、重药控股/麦德凯（流通与DTP）</b>全链条闭环；<span class="hl">化学药专用高端色谱柱、高纯试剂与高端质谱本地制造仍薄弱</span>，为重点补链方向。</div>
         </div>
       </div>
     
@@ -1438,7 +1428,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -1512,28 +1502,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">2025年全球抗体药物市场约<span class="hl">3040亿美元</span>（<span class="hl">+13%</span>），占全球创新药市场近1/3，K药单品超<span class="hl">300亿美元</span>、64款重磅炸弹；PD-1/PD-L1（<span class="hl">581亿美元</span>）红海出清，ADC（<span class="hl">165.1亿美元</span>，<span class="hl">+27%</span>）与双抗（<span class="hl">178亿美元</span>，<span class="hl">+34%</span>）成第二增长曲线，中国占全球双抗/ADC在研管线约<span class="hl">50%</span>/<span class="hl">56%</span>；国内市场突破<span class="hl">800亿元</span>、连续三年增速超<span class="hl">15%</span>；CDMO高度集中：药明生物占国内生物药CDMO超<span class="hl">40%</span>、药明合联占ADC CDMO国内约<span class="hl">70%</span>；BD出海放量，百利天恒双抗ADC授权BMS（总额最高<span class="hl">84亿美元</span>）。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">双抗/多抗（TCE）与双抗ADC（全球在研超100款）；ADC定点偶联与双载荷；全人源抗体小鼠平台替代噬菌体展示；高浓度皮下制剂与预充针；AI抗体设计进入临床验证。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">从Fast-follow走向<span class="hl">First-in-class</span>、BD出海成为核心变现通道、上游培养基/填料/装备国产替代、医保+商保双支付扩容。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》专栏3第03项明确提出<b>“加快细胞和基因治疗药物、抗体药物、核酸药物、放射性药物等研发应用”</b>；专栏8攻关<b>癌症、心脑血管、呼吸和代谢性疾病精准医学与生物治疗技术</b>。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd">形成<b>成都康诺亚（司普奇拜单抗国内首款IL-4Rα）、百利天恒（双抗ADC最高84亿美元出海BMS）、康弘药业（康柏西普）</b>与<b>重庆智翔金泰（赛立奇单抗+全球首款狂犬双抗斯乐韦米单抗）</b>双城链主格局，配套华西海圻双GLP与重药/麦德凯DTP冷链；<span class="hl">上游Protein A介质、商业化一次性反应袋及万升级第三方抗体CDMO仍较薄弱</span>。</div>
         </div>
       </div>
     
@@ -1548,7 +1528,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -1622,28 +1602,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">ADC为肿瘤领域增长最快赛道之一——全球已上市20余款、2025年销售约<span class="hl">168-187亿美元</span>；Enhertu以<span class="hl">49.8亿美元</span>居首（2026年获批早期乳腺癌辅助/新辅助、全年有望破<span class="hl">60亿美元</span>），Polivy、Padcev相继跨过<span class="hl">20亿美元</span>；弗若斯特沙利文预测2030年达约<span class="hl">662亿美元</span>（2032年有望破千亿美元），中国市场增速（CAGR约<span class="hl">46%</span>）全球最快。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">向"精准化+多量化"迭代——定点偶联（糖基化等）提升产物均一性；双抗ADC、双载荷ADC（2026年AACR相关摘要较上年翻倍）、免疫刺激ADC（ISAC）密集进入临床；适应症从晚期后线向一线/辅助治疗前移，并从肿瘤向自免（SLE、哮喘）、代谢、抗感染等XDC领域延伸（RDC/PDC/AOC等新形态崛起）。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">ADC与IO/靶向药联合成为主流疗法；AI辅助抗体与连接子设计；产能全球化与区域化（外包率约<span class="hl">70%</span>、CDMO市场2030年约<span class="hl">110亿美元</span>）；下一代偶联药物（XDC）边界从抗体扩展至多肽/核酸/核素，自免等非肿瘤适应症打开二次增长曲线。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》专栏8第04、06项重点部署<b>“深化分子精准递送研究”</b>与<b>“癌症早筛早查、精准医学、生物治疗及创新药物研发”</b>；第三十九章健全<b>医保与商保支持创新药高质量发展机制</b>。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd"><b>成都已崛起为国内顶尖、全球知名的ADC创新策源集群</b>——集聚<b>科伦博泰（与默沙东合作超118亿美元）、百利天恒（84亿美元授权BMS）、康诺亚、康弘药业（全球首个临床双载荷ADC）、科弈药业、微芯新域</b>，重庆<b>博腾股份、皓元基地</b>配套高活API；但<span class="hl">上游专用耗材、抗体偶联与无菌灌装一体化CDMO及西南肿瘤专科CSO严重稀缺</span>，补链价值极高。</div>
         </div>
       </div>
     
@@ -1658,7 +1628,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -1732,28 +1702,13 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">当前多肽创新药市场呈现高度头部化、<span class="hl">双寡头主导</span>、代谢领域绝对集中的格局。礼来替尔泊肽与诺和诺德司美格鲁肽占据绝对优势。双靶点药物在规模上首次全面压制单靶点产品，标志着技术代际更替加速。非代谢类多肽（如长效生长抑素类似物、放射性肽偶联药物）虽增速不及代谢板块，但构成稳定的存量基本盘，维持行业长尾韧性。与此同时，中国企业在多肽原料药与CDMO环节深度嵌入全球供应链。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">产品向长效、多靶点、口服与复杂环肽方向发展。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
-          <div class="bd">司美格鲁肽核心专利到期引发全球生物类似药与成本效率竞赛；适应症从减重降糖向MASH（代谢相关脂肪性肝炎）、心肾获益、睡眠呼吸暂停及神经退行性疾病全面扩容；多肽作为精准靶向配体与核素（RDC）、小核酸（PDC）跨界融合打开第二增长曲线。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》专栏8明确攻关<b>“代谢性疾病精准医学与重大高发慢性病创新药物”</b>；专栏3突破<b>酶制剂与智能发酵/绿色生物制造</b>关键技术，支撑多肽酶法绿色合成升级。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd">川渝在多肽链条优势鲜明：<b>成都先导（全球领先环肽DEL筛选）、圣诺生物（国内多肽API与制剂CDMO核心龙头）、多瑞药业、诺和晟泰（多肽创新药）、成都格莱高（多肽合成纯化装备）</b>与<b>重庆博腾股份（多肽CDMO）、宸安生物（司美格鲁肽类似药）</b>深度协同；<span class="hl">上游高端合成树脂/纯化填料及川渝多肽专业化CSO主体仍待补齐</span>。</div>
         </div>
       </div>
     
@@ -1768,7 +1723,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -1842,28 +1797,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">市场规模整体呈现“盘子小、增速快、渗透浅”的现状，未来随着产业链上中下游的齐头并进发展，市场规模在<span class="hl">3-5年</span>内迎来快速增长；核药行业呈现“<span class="hl">双寡头主导</span>、多点开花”态势，中国同辐、东诚药业为龙头企业实现全产业链布局，两者合计占我国核药逾<span class="hl">70%</span>市场；远大医药等企业加速布局创新核药管线及全产业链，先通医药、辐联医药、纽瑞特、核欣医药等核药Biotech新锐靠资本加持创新管线加速推进</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">核素从β核素向更精准、更强杀伤的α核素迭代，RDC成为治疗性核药主流研发结构，多肽、环肽、纳米抗体等配体及靶点内卷化加剧，新兴靶点成为核心突破点，AI 剂量学推动固定剂量走向个体化，诊疗一体化加速</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">医用同位素自主化、监管条例升级、设备配置下放与商保支付构成四根支柱，行业将从"拼设备价格"升级为"拼核素保供＋管线储备＋即时配送＋合规＋临床价值"的综合竞争，具备全产业链一体化能力的龙头持续放大优势</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》专栏3第03项明确点名<b>“加快放射性药物等研发应用”</b>，第10项推进<b>“超高端CT、放射治疗系统等新型诊疗装备规模化应用”</b>；专栏4提升<b>成渝世界级机场群</b>能力支撑核素航空配送。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd"><b>四川是我国无可替代的核医疗全产业链战略第一高地！</b>拥有<b>乐山夹江海同同位素、中国绵阳研究堆、中广核绵阳、玖谊源（回旋加速器+器产核素）</b>“堆器双路线”自主核素底座，集聚<b>纽瑞特、通瑞生物、国通新药、云克药业、温江远大基地、华西海圻核药GLP</b>及<b>川航双国际机场核素航空运输资质</b>；<span class="hl">省内独立GMP级核药专用耗材卡匣规模化配套仍需进一步做强</span>。</div>
         </div>
       </div>
     
@@ -1878,7 +1823,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -1952,28 +1897,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">国内已有CAR-T、特定MSC和AAV药物上市，其他多类疗法处于研发或临床阶段。上游供应、专业研发生产与药企自有平台并存；下游由商业化伙伴、专业药房、物流和治疗中心协作，不能用单一市场份额概括。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">细胞疗法推进多靶点、通用现货、体内工程化及功能细胞替代；基因治疗侧重靶向递送和编辑精度。制造端改进密闭自动化、细胞库及效力检测，减少批次波动。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">产品竞争将更看重持久疗效、安全性、治疗总成本与支付能力。产业分工可能随临床证据、订单和生产效率调整。四川可依托现有研发及华西临床资源完善原料、中试和应用配套。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》将<b>生物制造</b>列为未来产业新增长点，专栏3明确<b>“加快细胞和基因治疗药物、核酸药物研发应用”</b>；专栏8深化<b>“基因编辑、分子精准递送、细胞编程与调控”</b>前沿攻关。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd">依托<b>四川大学华西医院（国家生物治疗转化医学重大科技基础设施、华西细胞治疗研究院、规模化制备中心）与华西海圻</b>全国顶尖临床转化底座，涌现<b>优赛诺（异体CAR-T获美国IND）、至善唯新（rAAV基因治疗）、威斯津（mRNA递送）、康德赛、康景、睿健</b>等创新矩阵；<span class="hl">省内CGT专用装备耗材制造、持证商业化大型CDMO及成品深冷专网仍待完善</span>。</div>
         </div>
       </div>
     
@@ -1988,7 +1923,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -2062,28 +1997,18 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">辉瑞/GSK/默沙东/赛诺菲四大巨头占全球约<span class="hl">85%</span>价值份额；2025年全球疫苗市场约<span class="hl">367亿美元</span>——HPV退潮（默沙东Gardasil中国去库存，同比<span class="hl">-39%</span>）、肺炎接棒（21价Capvaxive放量，肺炎疫苗市场<span class="hl">85亿美元</span>、<span class="hl">+12%</span>）、带疱Shingrix恢复增长（约<span class="hl">36亿英镑</span>）、RSV成新引擎（成人Arexvy/mResvia/Abrysvo+婴儿长效抗体Beyfortus <span class="hl">17.8亿欧元</span>）。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">mRNA平台化与季节化（Moderna新冠/RSV/流感多产品获批、mRNA新冠+流感联合苗获批上市）；新佐剂（Matrix-M、AS01）；多联多价与广谱疫苗；肿瘤治疗性疫苗/个体化新抗原疫苗推进临床。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>3. 长期趋势</h3>
           <div class="bd">成人适应症扩展（肺炎、RSV、带疱）、疫苗+药物全链条防控、AI辅助抗原设计、产能区域化与本地自给。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》妇女儿童发展篇明确<b>“全面实施适龄女童国家免疫规划人乳头瘤病毒（HPV）疫苗免费接种”</b>；专栏3提出<b>“提升应急疫苗和药物研产用能力”</b>；专栏16强化疾控体系建设。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd">大西南坐拥<b>重庆智飞生物（国内疫苗商业化与自研巨头）、云南沃森生物（昆明/玉溪基地）</b>两大链主，成都集聚<b>欧林生物、康华生物、威斯克、威斯津（mRNA）、科兴成都、迈科康（新型佐剂+重组带疱）</b>及<b>华西海圻/格林泰科等CRO集群与重药/科伦冷链网</b>；<span class="hl">西南上游高端反应耗材与第三方疫苗商业化CDMO仍较稀缺</span>。</div>
         </div>
       </div>
     
@@ -2098,7 +2023,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
@@ -2172,28 +2097,13 @@
         <div class="rp-head">方向趋势</div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>① 市场格局</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="0.8"/><rect x="12.5" y="7" width="3" height="10" rx="0.8"/><rect x="18" y="4" width="2.5" height="13" rx="0.8"/></svg>1. 市场格局</h3>
           <div class="bd">随着国内产浆量的不断提高，血液制品国产化率不断提高。此外，近几年，血液制品行业并购重组不断上演，小型血液制品企业纷纷被并购整合进入头部企业。重组血液制品开始实现技术突破，对传统血液制品企业形成较大挑战。</div>
         </div>
 
         <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>② 技术方向</h3>
+          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)"/></svg>2. 技术方向</h3>
           <div class="bd">一是传统血液制品研发新型品种（如特异性免疫球蛋白或重组产品）；二是新兴生物医药企业开发重组技术的血液制品产品。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>③ 长期趋势</h3>
-          <div class="bd">《十五五规划纲要》明确布局建设10个国家区域血液安全中心，“千吨级采浆规模+十余种因子提取能力”成为头部护城河；人源血制品深耕危重症免疫治疗刚需，重组血制品逐步替代部分基础扩容场景，院外DTP冷链与全链路UDI追溯体系日趋成熟。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5.2-3.4 9.8-8 11-4.6-1.2-8-5.8-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>④ 十五五规划定调</h3>
-          <div class="bd">《十五五规划纲要》第三十九章·专栏16《健康中国建设》第01项明确部署<b>“布局建设10个国家区域血液安全中心”</b>；药品安全监管篇强化<b>高风险生物制品全链条智慧监管与抽检追溯</b>。</div>
-        </div>
-
-        <div class="rp-block">
-          <h3><svg class="rp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.8-7-11.5A7 7 0 0 1 19 9.5C19 15.2 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>⑤ 区域看点（川渝/西南）</h3>
-          <div class="bd"><b>四川具备完整的血液制品产业链重点布局</b>：上游拥有单采血浆机与血浆袋代表企业<b>南格尔</b>，中游拥有全谱系血液制品基地<b>蜀阳生物</b>及生物分析CRO<b>成都凡微析医药</b>，下游拥有港股上市进口血制品营销龙头<b>兴科蓉医药（06833.HK）</b>；<span class="hl">面向下一代重组血液制品的本土源头创新与专业CRO配套仍待培育</span>。</div>
         </div>
       </div>
     
@@ -2208,7 +2118,7 @@
       <div class="lg"><span class="geo geo-sc">川</span><span class="geo geo-cq">渝</span><span class="geo geo-cy">川·渝</span><span class="geo geo-yn">滇·黔</span>重点项目所在区域</div>
       <div class="lg"><span class="mk mk-s" style="line-height:1;">★</span>薄弱/补链关键提示</div>
       <div class="lg lg-zoom-tip">🔍 点击任意单元格或趋势卡片可高清放大汇报</div>
-      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》及《十五五规划纲要》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
+      <div class="lg-note">依据《十五五产业图谱【修改后】.xlsx》整理 ｜ 版式参照《疫苗产业链图谱》标准图式</div>
     </div>
 
   </div>
