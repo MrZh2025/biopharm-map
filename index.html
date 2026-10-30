@@ -9,15 +9,65 @@
   html, body { background:#E6EBF0; }
   body { font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; -webkit-font-smoothing:antialiased; }
   .canvas {
+    /* 1. 赛道主色与标题 */
     --track-grad: linear-gradient(180deg,#2FA36B 0%,#1C7A4A 100%);
     --track-accent: #1C7A4A;
+    --canvas-bg: #FFFFFF;
+    --title-fg: #0F172A;
+    --sub-bg: rgba(15,23,42,0.04);
+    --sub-bd: rgba(15,23,42,0.11);
+
+    /* 2. 中部矩阵外框与上中下游徽章 */
+    --ct-bg: linear-gradient(180deg,#FCFDFD 0%,#F6FAF8 100%);
+    --ct-bd: #D6E5DC;
+    --b-up-fg: #0B7E5F;   --b-up-bg: linear-gradient(90deg,#E6F7EE,#D5EFE2);   --b-up-bd: #57C292;
+    --b-mid-fg: #2563EB;  --b-mid-bg: linear-gradient(90deg,#E8F1FE,#DAE8FB);  --b-mid-bd: #75AAEC;
+    --b-down-fg: #C25E09; --b-down-bg: linear-gradient(90deg,#FEF3E4,#FCE6C9); --b-down-bd: #F0AD57;
+
+    /* 3. 横向四大阶段光谱（1:研发基础设施, 2:药物开发, 3:制造, 4:销售） */
+    --ph1-ar: linear-gradient(95deg,#1BB89B 0%,#11967E 55%,#0A7563 100%);
+    --ph2-ar: linear-gradient(95deg,#55A3EE 0%,#367ED8 55%,#235FB5 100%);
+    --ph3-ar: linear-gradient(95deg,#1BB89B 0%,#11967E 55%,#0A7563 100%);
+    --ph4-ar: linear-gradient(95deg,#55A3EE 0%,#367ED8 55%,#235FB5 100%);
+    --cat1-bd: #17A88E;   --cat1-bg: linear-gradient(180deg,#F2FBF8 0%,#FFFFFF 45%);
+    --cat2-bd: #4E9BE8;   --cat2-bg: linear-gradient(180deg,#F2F8FF 0%,#FFFFFF 45%);
+    --cat3-bd: #17A88E;   --cat3-bg: linear-gradient(180deg,#F2FBF8 0%,#FFFFFF 45%);
+    --cat4-bd: #4E9BE8;   --cat4-bg: linear-gradient(180deg,#F2F8FF 0%,#FFFFFF 45%);
+    --fcat1-bg: linear-gradient(180deg,#F2FBF8 0%,#FBFEFC 100%); --fcat1-bd: #7ECBB3;
+    --fcat2-bg: linear-gradient(180deg,#F2F7FF 0%,#FAFCFF 100%); --fcat2-bd: #93C0F0;
+    --fcat3-bg: linear-gradient(180deg,#F2FBF8 0%,#FBFEFC 100%); --fcat3-bd: #7ECBB3;
+    --fcat4-bg: linear-gradient(180deg,#F2F7FF 0%,#FAFCFF 100%); --fcat4-bd: #93C0F0;
+
+    /* 4. 纵向五大维度横行色块与左侧竖排色条 */
+    --dim-ent: #FAF0D4;   --rail-ent: linear-gradient(180deg,#EDA909,#D69306);  --chp-ent: #E5A50A;
+    --dim-prj: #FCECE0;   --rail-prj: linear-gradient(180deg,#EF8626,#D96E12);  --chp-prj: #E67E22;
+    --dim-dir: #E5EFFC;   --rail-dir: linear-gradient(180deg,#5297E8,#3577C8);  --chp-dir: #4A8FE2;
+    --dim-feat: #E5F4EC;  --rail-feat: linear-gradient(180deg,#249A6C,#177952); --chp-feat: #1F8F63;
+    --dim-inv: #DCEEE5;   --rail-inv: linear-gradient(180deg,#187359,#0F5440);  --chp-inv: #14664F;
+
+    /* 5. 单元格文字、代表企业胶囊与标记色 */
+    --cell-bd: #DCE7E0;   --cell-fg: #374151;   --cell-b: #1F2937;   --lbl2-fg: #166B43;
+    --pill-bg: linear-gradient(180deg,#FFFDF6 0%,#FFF7DF 100%);
+    --pill-bd: #EAD38E;   --pill-fg: #6B5A22;   --pill-b: #7A5B00;   --pill-i: #9E8640;
+    --pill-note-bg: rgba(255,255,255,0.62);     --pill-note-bd: #DEC684; --pill-note-fg: #8A7638;
+    --mk-a: #E67E22;      --mk-d: #4A8FE2;
+
+    /* 6. 右侧方向趋势面板色块 */
+    --rp-bg: linear-gradient(180deg,#FDF6E7 0%,#FBF0D9 100%);
+    --rp-bd: #EFC77E;
+    --rp-head: linear-gradient(95deg,#F59E0B 0%,#EA580C 100%);
+    --rp-h3: linear-gradient(90deg,#F59E0B 0%,#E67E22 100%);
+    --rp-card-bg: linear-gradient(180deg,#FFFFFF 0%,#FFFDF8 100%);
+    --rp-card-bd: #F1DCAD;
+    --rp-card-fg: #43351E;
+    --hl-fg: #9A3412;
+    --hl-bg: linear-gradient(180deg,#FEF3C7 0%,#FDE68A 100%);
+    --hl-bd: #F59E0B;
+
     position:relative;
-    width:3480px; margin:0 auto; background:#FFFFFF; display:flex; overflow:hidden;
+    width:3480px; margin:0 auto; background:var(--canvas-bg); display:flex; overflow:hidden;
     box-shadow:0 10px 36px rgba(15,23,42,0.10); border-radius:4px;
-  }
-  body.classic-theme .canvas {
-    --track-grad: linear-gradient(180deg,#2FA36B 0%,#1C7A4A 100%) !important;
-    --track-accent: #1C7A4A !important;
+    transition:background 0.22s ease;
   }
 
   /* 左侧赛道专属色带 + 序列徽标 */
@@ -47,27 +97,27 @@
   .title-row { display:grid; grid-template-columns:1fr 640px; gap:26px; align-items:end; margin-bottom:16px; }
   .tr-l { display:flex; align-items:end; }
   .t-left {
-    font-size:38px; font-weight:900; color:#0F172A; letter-spacing:2px; line-height:1.1;
+    font-size:38px; font-weight:900; color:var(--title-fg); letter-spacing:2px; line-height:1.1;
     border-left:7px solid var(--track-accent); padding-left:15px;
     display:flex; align-items:center;
   }
   .t-left .sub {
     font-size:15.5px; font-weight:700; color:var(--track-accent);
-    background:rgba(15,23,42,0.035); border:1px solid rgba(15,23,42,0.10);
+    background:var(--sub-bg); border:1px solid var(--sub-bd);
     padding:4px 12px; border-radius:999px; letter-spacing:1.2px; margin-left:14px;
   }
-  .t-mid { font-size:28px; font-weight:800; color:#0F172A; letter-spacing:8px; margin:0 auto; padding:0 0 4px 60px; }
-  .t-right { font-size:28px; font-weight:800; text-align:center; color:#0F172A; letter-spacing:8px; padding-bottom:4px; }
+  .t-mid { font-size:28px; font-weight:800; color:var(--title-fg); letter-spacing:8px; margin:0 auto; padding:0 0 4px 60px; }
+  .t-right { font-size:28px; font-weight:800; text-align:center; color:var(--title-fg); letter-spacing:8px; padding-bottom:4px; }
 
   /* 两栏内容：中链条 + 右趋势 */
   .content { display:grid; grid-template-columns:1fr 640px; gap:26px; align-items:stretch; }
 
   /* ===== 中部：矩阵（外框 + 11列共享网格） ===== */
   .ct {
-    background:linear-gradient(180deg,#FCFDFD 0%,#F8FBF9 100%);
-    border:1.5px solid #DAE6DF; border-radius:14px; padding:14px 14px 8px;
+    background:var(--ct-bg);
+    border:1.5px solid var(--ct-bd); border-radius:14px; padding:14px 14px 8px;
     display:flex; flex-direction:column; min-width:0;
-    box-shadow:inset 0 1px 0 #FFFFFF;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.65);
   }
   .grid11, .mrow { display:grid; grid-template-columns:56px repeat(10,1fr); gap:12px; }
   .mrow { margin-bottom:12px; }
@@ -84,46 +134,46 @@
   /* 上中下游徽章 */
   .badges { margin-bottom:9px; }
   .badge { text-align:center; font-size:14px; font-weight:800; padding:3.5px 0; border-radius:20px; letter-spacing:3px; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
-  .b-up   { color:#0B7E5F; background:linear-gradient(90deg,#E6F7EE,#D7F0E4); border:1.5px solid #57C292; }
-  .b-mid  { color:#2563EB; background:linear-gradient(90deg,#E8F1FE,#DCEAFB); border:1.5px solid #75AAEC; }
-  .b-down { color:#C25E09; background:linear-gradient(90deg,#FEF3E4,#FCE8CE); border:1.5px solid #F0AD57; }
+  .b-up   { color:var(--b-up-fg);   background:var(--b-up-bg);   border:1.5px solid var(--b-up-bd); }
+  .b-mid  { color:var(--b-mid-fg);  background:var(--b-mid-bg);  border:1.5px solid var(--b-mid-bd); }
+  .b-down { color:var(--b-down-fg); background:var(--b-down-bg); border:1.5px solid var(--b-down-bd); }
 
-  /* 环节大类箭头（首段平直圆角起笔 + 后续精密咬合流） */
-  .arrows { margin-bottom:12px; filter:drop-shadow(0 3px 6px rgba(15,55,48,0.12)); }
+  /* 环节大类箭头（首段平直圆角起笔 + 后续精密咬合流 + 四阶段独立色彩变量） */
+  .arrows { margin-bottom:12px; filter:drop-shadow(0 3px 6px rgba(15,40,60,0.13)); }
   .arrow {
     height:56px; color:#fff; font-size:21.5px; font-weight:800;
     display:flex; align-items:center; justify-content:center;
     letter-spacing:4px; padding-left:10px;
-    text-shadow:0 1px 2px rgba(0,0,0,0.16);
+    text-shadow:0 1px 2px rgba(0,0,0,0.18);
     clip-path:polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%, 17px 50%);
   }
   .arrow.ga1 {
-    border-radius:9px 0 0 9px; padding-left:0;
+    border-radius:9px 0 0 9px; padding-left:0; background:var(--ph1-ar);
     clip-path:polygon(0 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 0 100%);
   }
-  .arrow.ga3 { letter-spacing:5px; padding-left:11px; }
-  .a-teal { background:linear-gradient(95deg,#1BB89B 0%,#11967E 55%,#0A7563 100%); }
-  .a-blue { background:linear-gradient(95deg,#55A3EE 0%,#367ED8 55%,#235FB5 100%); }
+  .arrow.ga2 { background:var(--ph2-ar); }
+  .arrow.ga3 { letter-spacing:5px; padding-left:11px; background:var(--ph3-ar); }
+  .arrow.ga4 { background:var(--ph4-ar); }
 
   /* 行标（左侧竖排彩条） */
   .rail {
     writing-mode:vertical-rl; display:flex; align-items:center; justify-content:center;
     border-radius:8px; color:#fff; font-size:15px; font-weight:800; letter-spacing:6px; padding:10px 0;
-    box-shadow:0 2px 5px rgba(15,23,42,0.08);
+    box-shadow:0 2px 5px rgba(15,23,42,0.10);
   }
   .rail-head { background:transparent; color:#8A9892; font-size:13px; font-weight:700; letter-spacing:4px; box-shadow:none; }
-  .r-ent  { background:linear-gradient(180deg,#EDA909,#D69306); }
-  .r-prj  { background:linear-gradient(180deg,#EF8626,#D96E12); }
-  .r-dir  { background:linear-gradient(180deg,#5297E8,#3577C8); }
-  .r-feat { background:linear-gradient(180deg,#249A6C,#177952); }
-  .r-inv  { background:linear-gradient(180deg,#187359,#0F5440); }
+  .r-ent  { background:var(--rail-ent); }
+  .r-prj  { background:var(--rail-prj); }
+  .r-dir  { background:var(--rail-dir); }
+  .r-feat { background:var(--rail-feat); }
+  .r-inv  { background:var(--rail-inv); }
 
   /* 细分环节名称条（首段圆角 + 10级咬合箭头 + 图标） */
   .seg {
     height:54px; color:#fff; font-size:16.2px; font-weight:800;
     display:flex; align-items:center; justify-content:center;
     letter-spacing:1px; padding-left:7px;
-    text-shadow:0 1px 2px rgba(0,0,0,0.14);
+    text-shadow:0 1px 2px rgba(0,0,0,0.16);
     clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
   }
   .seg.seg-first {
@@ -131,34 +181,41 @@
     clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
   }
   .seg svg { width:19px; height:19px; margin-right:6px; flex:none; }
-  .c1, .c3 { background:linear-gradient(120deg,#20B89C 0%,#12947D 55%,#0B7664 100%); }
-  .c2, .c4 { background:linear-gradient(120deg,#5BA8F0 0%,#3980D8 55%,#2662B8 100%); }
+  .c1 { background:var(--ph1-ar); }
+  .c2 { background:var(--ph2-ar); }
+  .c3 { background:var(--ph3-ar); }
+  .c4 { background:var(--ph4-ar); }
 
-  /* 内容行（浅色底 + 白格 + 顶部类别色条 + 悬停微浮起） */
-  .dim { padding:10px; border-radius:10px; align-items:stretch; }
-  .dim-ent  { background:#FAF1D9; }
-  .dim-prj  { background:#FBEFE1; }
-  .dim-dir  { background:#E8F1FB; }
-  .dim-feat { background:#E9F5EE; }
-  .dim-inv  { background:#E1EFE7; }
+  /* 内容行（五大维度色彩底块 + 微渐变白格 + 顶部阶段色条 + 悬停微浮起） */
+  .dim { padding:10px; border-radius:10px; align-items:stretch; transition:background 0.2s ease; }
+  .dim-ent  { background:var(--dim-ent); }
+  .dim-prj  { background:var(--dim-prj); }
+  .dim-dir  { background:var(--dim-dir); }
+  .dim-feat { background:var(--dim-feat); }
+  .dim-inv  { background:var(--dim-inv); }
   .cell {
-    background:#fff; border:1px solid #DCE7E0; border-top-width:3px; border-radius:8px;
-    padding:11px 13px; font-size:13.8px; line-height:1.68; color:#374151; min-width:0;
-    box-shadow:0 1px 2px rgba(15,23,42,0.03);
+    background:#fff; border:1px solid var(--cell-bd); border-top-width:3.5px; border-radius:8px;
+    padding:11px 13px; font-size:13.8px; line-height:1.68; color:var(--cell-fg); min-width:0;
+    box-shadow:0 1px 3px rgba(15,23,42,0.04);
     transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     cursor:zoom-in;
   }
   .cell:hover {
     transform:translateY(-1.5px);
-    box-shadow:0 6px 16px rgba(15,23,42,0.10);
-    border-color:#8FC5AE;
+    box-shadow:0 6px 16px rgba(15,23,42,0.11);
+    border-color:var(--track-accent);
   }
-  .cat1, .cat3 { border-top-color:#17A88E; }
-  .cat2, .cat4 { border-top-color:#4E9BE8; }
-  .fcat1, .fcat3 { background:#FBFEFC; border-top-color:#9ED4C2; }
-  .fcat2, .fcat4 { background:#FAFCFF; border-top-color:#AECDF0; }
-  .lbl2 { font-weight:800; color:#166B43; }
-  .cell b { font-weight:800; color:#1F2937; }
+  .cat1 { border-top-color:var(--cat1-bd); background:var(--cat1-bg); }
+  .cat2 { border-top-color:var(--cat2-bd); background:var(--cat2-bg); }
+  .cat3 { border-top-color:var(--cat3-bd); background:var(--cat3-bg); }
+  .cat4 { border-top-color:var(--cat4-bd); background:var(--cat4-bg); }
+  .fcat1 { background:var(--fcat1-bg); border-top-color:var(--fcat1-bd); }
+  .fcat2 { background:var(--fcat2-bg); border-top-color:var(--fcat2-bd); }
+  .fcat3 { background:var(--fcat3-bg); border-top-color:var(--fcat3-bd); }
+  .fcat4 { background:var(--fcat4-bg); border-top-color:var(--fcat4-bd); }
+  .lbl2 { font-weight:800; color:var(--lbl2-fg); }
+  .cell b { font-weight:800; color:var(--cell-b); }
+  .cell b.lbl2 { color:var(--lbl2-fg); }
 
   /* 空值单元格（/ 或 无）高级居中斜纹底纹设计 */
   .cell:has(.empty-box) {
@@ -177,25 +234,25 @@
     box-shadow:0 1px 2px rgba(15,23,42,0.03);
   }
 
-  /* 代表企业：金色胶囊 */
+  /* 代表企业：主题化胶囊色块 */
   .chips { display:flex; flex-wrap:wrap; gap:5.5px; align-content:flex-start; }
   .pill {
-    background:linear-gradient(180deg,#FFFDF6 0%,#FFF8E4 100%);
-    border:1px solid #EAD596; border-radius:6px; padding:2.5px 8px;
-    font-size:12.5px; line-height:1.48; color:#6B5A22;
-    box-shadow:0 1px 1px rgba(180,140,30,0.06);
+    background:var(--pill-bg);
+    border:1px solid var(--pill-bd); border-radius:6px; padding:2.5px 8px;
+    font-size:12.5px; line-height:1.48; color:var(--pill-fg);
+    box-shadow:0 1px 1px rgba(15,23,42,0.04);
   }
-  .pill b { color:#7A5B00; }
-  .pill i { font-style:normal; color:#9E8640; font-size:11.5px; }
-  .pill-note { background:rgba(255,255,255,0.55); border:1px dashed #DEC684; border-radius:6px; padding:2.5px 8px; font-size:12px; line-height:1.48; color:#8A7638; }
+  .pill b { color:var(--pill-b); }
+  .pill i { font-style:normal; color:var(--pill-i); font-size:11.5px; }
+  .pill-note { background:var(--pill-note-bg); border:1px dashed var(--pill-note-bd); border-radius:6px; padding:2.5px 8px; font-size:12px; line-height:1.48; color:var(--pill-note-fg); }
 
   /* 重点项目 / 发展方向：条目列表 + 四色地域徽章 */
   .blts { display:flex; flex-direction:column; gap:6.5px; }
   .blt { display:flex; gap:6px; align-items:flex-start; }
   .mk { flex:none; font-size:11px; line-height:22px; }
-  .mk-a { color:#E67E22; }
+  .mk-a { color:var(--mk-a); }
   .mk-s { color:#E74C3C; }
-  .mk-d { color:#4A8FE2; font-size:10px; }
+  .mk-d { color:var(--mk-d); font-size:10px; }
   .geo {
     flex:none; font-size:10.5px; font-weight:800; color:#B05A0A; background:#FDEBD3; border:1px solid #F0C48A;
     border-radius:4px; padding:1px 5.5px; margin-top:3px; min-width:24px; text-align:center; letter-spacing:0.8px;
@@ -206,47 +263,47 @@
   .geo-cy { color:#0F5132; background:linear-gradient(105deg,#DCFCE7 0%,#FEF3C7 100%); border-color:#94D3AC; }
   .geo-yn { color:#3730A3; background:#EEF2FF; border-color:#A5B4FC; }
 
-  /* ===== 右侧：方向趋势（微图标 + 呼吸行距 + 关键指标浅金微标签） ===== */
+  /* ===== 右侧：方向趋势（微图标 + 呼吸行距 + 关键指标微标签） ===== */
   .rp {
-    background:linear-gradient(180deg,#FDF6E7 0%,#FBF0D9 100%);
-    border:2px solid #EFC77E; border-radius:14px; padding:14px;
+    background:var(--rp-bg);
+    border:2px solid var(--rp-bd); border-radius:14px; padding:14px;
     display:flex; flex-direction:column; gap:12px;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.85);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.75);
   }
   .rp-head {
-    background:linear-gradient(95deg,#F59E0B 0%,#EA580C 100%);
+    background:var(--rp-head);
     color:#fff; font-size:21px; font-weight:800; text-align:center; padding:10px;
     border-radius:9px; letter-spacing:4px;
-    box-shadow:0 3px 8px rgba(234,88,12,0.18);
+    box-shadow:0 3px 8px rgba(15,23,42,0.14);
   }
   .rp-block {
-    background:linear-gradient(180deg,#FFFFFF 0%,#FFFDF8 100%);
-    border:1px solid #F1DCAD; border-radius:10px; overflow:hidden; flex:1;
+    background:var(--rp-card-bg);
+    border:1px solid var(--rp-card-bd); border-radius:10px; overflow:hidden; flex:1;
     display:flex; flex-direction:column;
-    box-shadow:0 2px 6px rgba(160,110,30,0.06);
+    box-shadow:0 2px 6px rgba(15,23,42,0.05);
     transition:transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     cursor:zoom-in;
   }
   .rp-block:hover {
     transform:translateY(-1.5px);
-    box-shadow:0 6px 16px rgba(180,110,20,0.14);
-    border-color:#E5B45B;
+    box-shadow:0 6px 16px rgba(15,23,42,0.12);
+    border-color:var(--track-accent);
   }
   .rp-block h3 {
-    background:linear-gradient(90deg,#F59E0B 0%,#E67E22 100%);
+    background:var(--rp-h3);
     color:#fff; font-size:15.8px; font-weight:800; padding:7.5px 13px; letter-spacing:1px;
     display:flex; align-items:center; gap:7px;
   }
   .rp-block h3 svg.rp-ico { width:16px; height:16px; flex:none; opacity:0.95; }
   .rp-block .bd {
-    padding:11px 14px 10px; font-size:13.8px; line-height:1.74; color:#43351E;
+    padding:11px 14px 10px; font-size:13.8px; line-height:1.74; color:var(--rp-card-fg);
     text-align:justify; flex:1;
   }
   .rp-block .hl {
-    color:#9A3412; font-weight:800;
-    background:linear-gradient(180deg,#FEF3C7 0%,#FDE68A 100%);
+    color:var(--hl-fg); font-weight:800;
+    background:var(--hl-bg);
     padding:0.5px 5.5px; border-radius:4px;
-    border-bottom:1.5px solid #F59E0B;
+    border-bottom:1.5px solid var(--hl-bd);
     margin:0 1px;
     box-decoration-break:clone; -webkit-box-decoration-break:clone;
   }
@@ -255,11 +312,222 @@
   .legend { margin-top:14px; padding-top:10px; border-top:2px solid #E3E8EC; display:flex; gap:24px; font-size:13.8px; color:#475569; align-items:center; flex-wrap:wrap; }
   .lg { display:flex; align-items:center; gap:6px; }
   .chip { width:13px; height:13px; border-radius:3px; display:inline-block; }
-  .chp-ent { background:#E5A50A; } .chp-prj { background:#E67E22; } .chp-dir { background:#4A8FE2; }
-  .chp-feat { background:#1F8F63; } .chp-inv { background:#14664F; }
+  .chp-ent { background:var(--chp-ent); } .chp-prj { background:var(--chp-prj); } .chp-dir { background:var(--chp-dir); }
+  .chp-feat { background:var(--chp-feat); } .chp-inv { background:var(--chp-inv); }
   .lg .geo { margin-top:0; }
   .lg-zoom-tip { color:#0F766E; font-weight:700; background:#F0FDFA; border:1px solid #99F6E4; padding:2px 10px; border-radius:999px; font-size:12.5px; }
   .lg-note { margin-left:auto; color:#64748B; font-size:13px; }
+
+  /* ==========================================================================
+     多彩分轨模式（默认 & 独立单图）：八大赛道各自拥有专属的【中部矩阵色块 + 四阶段光谱 + 右侧趋势栏】
+     ========================================================================== */
+  /* 01 小分子化学药：深海科技蓝 × 青金琥珀 */
+  body:not([data-theme]) .canvas[data-seq="01"],
+  body[data-theme="multi"] .canvas[data-seq="01"] {
+    --track-grad: linear-gradient(180deg,#2563EB 0%,#1D4ED8 52%,#1E3A8A 100%);
+    --track-accent: #1D4ED8;
+    --ct-bg: linear-gradient(180deg,#F9FBFF 0%,#F2F7FD 100%); --ct-bd: #CFE0F5;
+    --ph1-ar: linear-gradient(95deg,#0EA5E9 0%,#0284C7 55%,#0369A1 100%);
+    --ph2-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1D4ED8 100%);
+    --ph3-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#3730A3 100%);
+    --ph4-ar: linear-gradient(95deg,#14B8A6 0%,#0D9488 55%,#0F766E 100%);
+    --cat1-bd: #0284C7; --cat1-bg: linear-gradient(180deg,#EFF8FF 0%,#FFFFFF 48%);
+    --cat2-bd: #2563EB; --cat2-bg: linear-gradient(180deg,#EFF4FF 0%,#FFFFFF 48%);
+    --cat3-bd: #4F46E5; --cat3-bg: linear-gradient(180deg,#F1F0FF 0%,#FFFFFF 48%);
+    --cat4-bd: #0D9488; --cat4-bg: linear-gradient(180deg,#EEFBF8 0%,#FFFFFF 48%);
+    --fcat1-bg: #EFF8FF; --fcat1-bd: #7DD3FC; --fcat2-bg: #EFF4FF; --fcat2-bd: #93C5FD;
+    --fcat3-bg: #F2F1FF; --fcat3-bd: #A5B4FC; --fcat4-bg: #EEFBF9; --fcat4-bd: #5EEAD4;
+    --dim-ent: #FCEFD2;  --rail-ent: linear-gradient(180deg,#F59E0B,#D97706);  --chp-ent: #D97706;
+    --dim-prj: #FCE8DC;  --rail-prj: linear-gradient(180deg,#F97316,#EA580C);  --chp-prj: #EA580C;
+    --dim-dir: #E1EDFD;  --rail-dir: linear-gradient(180deg,#3B82F6,#1D4ED8);  --chp-dir: #2563EB;
+    --dim-feat: #E0F3FA; --rail-feat: linear-gradient(180deg,#0EA5E9,#0369A1); --chp-feat: #0284C7;
+    --dim-inv: #E4EAF9;  --rail-inv: linear-gradient(180deg,#4F46E5,#312E81);  --chp-inv: #4338CA;
+    --lbl2-fg: #1E40AF;  --cell-bd: #D4E2F4;
+    --pill-bg: linear-gradient(180deg,#F7FAFF 0%,#EBF3FF 100%); --pill-bd: #B6D2F8; --pill-fg: #1E3A8A; --pill-b: #172554; --pill-i: #4768A8;
+    --rp-bg: linear-gradient(180deg,#EEF6FF 0%,#E3EFFD 100%); --rp-bd: #93C5FD;
+    --rp-head: linear-gradient(95deg,#1D4ED8 0%,#0284C7 100%); --rp-h3: linear-gradient(90deg,#2563EB 0%,#0369A1 100%);
+    --rp-card-bd: #BFDBFE; --rp-card-fg: #1E293B;
+  }
+
+  /* 02 抗体创新药：皇家紫罗兰 × 薰衣草玫金 */
+  body:not([data-theme]) .canvas[data-seq="02"],
+  body[data-theme="multi"] .canvas[data-seq="02"] {
+    --track-grad: linear-gradient(180deg,#7C3AED 0%,#6D28D9 52%,#4C1D95 100%);
+    --track-accent: #6D28D9;
+    --ct-bg: linear-gradient(180deg,#FCFAFF 0%,#F6F2FD 100%); --ct-bd: #DDD2F4;
+    --ph1-ar: linear-gradient(95deg,#8B5CF6 0%,#7C3AED 55%,#5B21B6 100%);
+    --ph2-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#3730A3 100%);
+    --ph3-ar: linear-gradient(95deg,#EC4899 0%,#DB2777 55%,#9D174D 100%);
+    --ph4-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1E40AF 100%);
+    --cat1-bd: #7C3AED; --cat1-bg: linear-gradient(180deg,#F5F0FF 0%,#FFFFFF 48%);
+    --cat2-bd: #4F46E5; --cat2-bg: linear-gradient(180deg,#F0F2FF 0%,#FFFFFF 48%);
+    --cat3-bd: #DB2777; --cat3-bg: linear-gradient(180deg,#FFF0F7 0%,#FFFFFF 48%);
+    --cat4-bd: #2563EB; --cat4-bg: linear-gradient(180deg,#EFF6FF 0%,#FFFFFF 48%);
+    --fcat1-bg: #F6F2FF; --fcat1-bd: #C4B5FD; --fcat2-bg: #F0F2FF; --fcat2-bd: #A5B4FC;
+    --fcat3-bg: #FDF2F8; --fcat3-bd: #F9A8D4; --fcat4-bg: #EFF6FF; --fcat4-bd: #93C5FD;
+    --dim-ent: #FCEFD6;  --rail-ent: linear-gradient(180deg,#F59E0B,#D97706);  --chp-ent: #D97706;
+    --dim-prj: #FCE7F1;  --rail-prj: linear-gradient(180deg,#EC4899,#BE185D);  --chp-prj: #DB2777;
+    --dim-dir: #EDE8FE;  --rail-dir: linear-gradient(180deg,#8B5CF6,#6D28D9);  --chp-dir: #7C3AED;
+    --dim-feat: #E6EBFE; --rail-feat: linear-gradient(180deg,#6366F1,#4338CA); --chp-feat: #4F46E5;
+    --dim-inv: #EAE2FA;  --rail-inv: linear-gradient(180deg,#7E22CE,#581C87);  --chp-inv: #6B21A8;
+    --lbl2-fg: #5B21B6;  --cell-bd: #E2D9F5;  --mk-a: #DB2777;  --mk-d: #7C3AED;
+    --pill-bg: linear-gradient(180deg,#FAF7FF 0%,#F2EBFE 100%); --pill-bd: #D0BFFA; --pill-fg: #4C1D95; --pill-b: #3B0764; --pill-i: #6D4EA8;
+    --rp-bg: linear-gradient(180deg,#F5F1FF 0%,#ECE5FE 100%); --rp-bd: #C4B5FD;
+    --rp-head: linear-gradient(95deg,#7C3AED 0%,#4F46E5 100%); --rp-h3: linear-gradient(90deg,#7C3AED 0%,#6D28D9 100%);
+    --rp-card-bd: #DDD6FE; --rp-card-fg: #2E1065;
+  }
+
+  /* 03 ADC创新药：瑰丽洋红 × 紫晶珊瑚（精准偶联多色块） */
+  body:not([data-theme]) .canvas[data-seq="03"],
+  body[data-theme="multi"] .canvas[data-seq="03"] {
+    --track-grad: linear-gradient(180deg,#DB2777 0%,#BE185D 52%,#831843 100%);
+    --track-accent: #BE185D;
+    --ct-bg: linear-gradient(180deg,#FFFBFD 0%,#FDF4F8 100%); --ct-bd: #F3CFE0;
+    --ph1-ar: linear-gradient(95deg,#EC4899 0%,#DB2777 55%,#9D174D 100%);
+    --ph2-ar: linear-gradient(95deg,#A855F7 0%,#9333EA 55%,#6B21A8 100%);
+    --ph3-ar: linear-gradient(95deg,#F43F5E 0%,#E11D48 55%,#9F1239 100%);
+    --ph4-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#3730A3 100%);
+    --cat1-bd: #DB2777; --cat1-bg: linear-gradient(180deg,#FFF0F6 0%,#FFFFFF 48%);
+    --cat2-bd: #9333EA; --cat2-bg: linear-gradient(180deg,#F8F0FF 0%,#FFFFFF 48%);
+    --cat3-bd: #E11D48; --cat3-bg: linear-gradient(180deg,#FFF0F3 0%,#FFFFFF 48%);
+    --cat4-bd: #4F46E5; --cat4-bg: linear-gradient(180deg,#F0F2FF 0%,#FFFFFF 48%);
+    --fcat1-bg: #FDF2F8; --fcat1-bd: #F9A8D4; --fcat2-bg: #FAF5FF; --fcat2-bd: #D8B4FE;
+    --fcat3-bg: #FFF1F2; --fcat3-bd: #FDA4AF; --fcat4-bg: #EEF2FF; --fcat4-bd: #A5B4FC;
+    --dim-ent: #FDF0D5;  --rail-ent: linear-gradient(180deg,#F59E0B,#D97706);  --chp-ent: #D97706;
+    --dim-prj: #FDE5EC;  --rail-prj: linear-gradient(180deg,#F43F5E,#BE123C);  --chp-prj: #E11D48;
+    --dim-dir: #F4E7FE;  --rail-dir: linear-gradient(180deg,#A855F7,#7E22CE);  --chp-dir: #9333EA;
+    --dim-feat: #FCE7F3; --rail-feat: linear-gradient(180deg,#EC4899,#9D174D); --chp-feat: #DB2777;
+    --dim-inv: #EDE7FB;  --rail-inv: linear-gradient(180deg,#6366F1,#4338CA);  --chp-inv: #4F46E5;
+    --lbl2-fg: #9D174D;  --cell-bd: #F2D4E2;  --mk-a: #E11D48;  --mk-d: #9333EA;
+    --pill-bg: linear-gradient(180deg,#FFF7FA 0%,#FDEBF2 100%); --pill-bd: #F5B8D0; --pill-fg: #831843; --pill-b: #500724; --pill-i: #9D486C;
+    --rp-bg: linear-gradient(180deg,#FDF2F7 0%,#FCE6F0 100%); --rp-bd: #F4B2CE;
+    --rp-head: linear-gradient(95deg,#DB2777 0%,#9333EA 100%); --rp-h3: linear-gradient(90deg,#DB2777 0%,#BE185D 100%);
+    --rp-card-bd: #FBCFE8; --rp-card-fg: #4A0E2E;
+  }
+
+  /* 04 多肽创新药（含环肽）：翡翠青碧 × 碧海晴空 */
+  body:not([data-theme]) .canvas[data-seq="04"],
+  body[data-theme="multi"] .canvas[data-seq="04"] {
+    --track-grad: linear-gradient(180deg,#0D9488 0%,#0F766E 52%,#115E59 100%);
+    --track-accent: #0F766E;
+    --ct-bg: linear-gradient(180deg,#F9FEFD 0%,#F1FAF8 100%); --ct-bd: #C6E7E2;
+    --ph1-ar: linear-gradient(95deg,#14B8A6 0%,#0D9488 55%,#0F766E 100%);
+    --ph2-ar: linear-gradient(95deg,#06B6D4 0%,#0891B2 55%,#0E7490 100%);
+    --ph3-ar: linear-gradient(95deg,#10B981 0%,#059669 55%,#047857 100%);
+    --ph4-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1D4ED8 100%);
+    --cat1-bd: #0D9488; --cat1-bg: linear-gradient(180deg,#EEFCF9 0%,#FFFFFF 48%);
+    --cat2-bd: #0891B2; --cat2-bg: linear-gradient(180deg,#ECFAFE 0%,#FFFFFF 48%);
+    --cat3-bd: #059669; --cat3-bg: linear-gradient(180deg,#ECFDF5 0%,#FFFFFF 48%);
+    --cat4-bd: #2563EB; --cat4-bg: linear-gradient(180deg,#EFF6FF 0%,#FFFFFF 48%);
+    --fcat1-bg: #F0FDFA; --fcat1-bd: #5EEAD4; --fcat2-bg: #ECFEFF; --fcat2-bd: #67E8F9;
+    --fcat3-bg: #ECFDF5; --fcat3-bd: #6EE7B7; --fcat4-bg: #EFF6FF; --fcat4-bd: #93C5FD;
+    --dim-ent: #FBF0D4;  --rail-ent: linear-gradient(180deg,#EAB308,#CA8A04);  --chp-ent: #CA8A04;
+    --dim-prj: #FCEAE0;  --rail-prj: linear-gradient(180deg,#F97316,#EA580C);  --chp-prj: #EA580C;
+    --dim-dir: #DFF3FC;  --rail-dir: linear-gradient(180deg,#06B6D4,#0E7490);  --chp-dir: #0891B2;
+    --dim-feat: #DEF7F2; --rail-feat: linear-gradient(180deg,#14B8A6,#0F766E); --chp-feat: #0D9488;
+    --dim-inv: #DCF2E8;  --rail-inv: linear-gradient(180deg,#10B981,#047857);  --chp-inv: #059669;
+    --lbl2-fg: #0F766E;  --cell-bd: #CCE8E3;
+    --pill-bg: linear-gradient(180deg,#F3FCFA 0%,#E4F8F4 100%); --pill-bd: #9EE2D5; --pill-fg: #115E59; --pill-b: #042F2E; --pill-i: #3D857D;
+    --rp-bg: linear-gradient(180deg,#EDFCF9 0%,#DFF7F2 100%); --rp-bd: #84DFCF;
+    --rp-head: linear-gradient(95deg,#0D9488 0%,#0284C7 100%); --rp-h3: linear-gradient(90deg,#0D9488 0%,#0F766E 100%);
+    --rp-card-bd: #A7F3D0; --rp-card-fg: #134E4A;
+  }
+
+  /* 05 核药：高能琥珀鎏金 × 钛钢深蓝 */
+  body:not([data-theme]) .canvas[data-seq="05"],
+  body[data-theme="multi"] .canvas[data-seq="05"] {
+    --track-grad: linear-gradient(180deg,#D97706 0%,#B45309 52%,#78350F 100%);
+    --track-accent: #B45309;
+    --ct-bg: linear-gradient(180deg,#FFFDFA 0%,#FDF8EE 100%); --ct-bd: #EDD9B4;
+    --ph1-ar: linear-gradient(95deg,#F59E0B 0%,#D97706 55%,#B45309 100%);
+    --ph2-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1E3A8A 100%);
+    --ph3-ar: linear-gradient(95deg,#EA580C 0%,#C2410C 55%,#9A3412 100%);
+    --ph4-ar: linear-gradient(95deg,#0D9488 0%,#0F766E 55%,#115E59 100%);
+    --cat1-bd: #D97706; --cat1-bg: linear-gradient(180deg,#FFF8EB 0%,#FFFFFF 48%);
+    --cat2-bd: #2563EB; --cat2-bg: linear-gradient(180deg,#EFF5FF 0%,#FFFFFF 48%);
+    --cat3-bd: #EA580C; --cat3-bg: linear-gradient(180deg,#FFF3EB 0%,#FFFFFF 48%);
+    --cat4-bd: #0D9488; --cat4-bg: linear-gradient(180deg,#EEFBF8 0%,#FFFFFF 48%);
+    --fcat1-bg: #FFFBEB; --fcat1-bd: #FCD34D; --fcat2-bg: #EFF6FF; --fcat2-bd: #93C5FD;
+    --fcat3-bg: #FFF7ED; --fcat3-bd: #FDBA74; --fcat4-bg: #F0FDFA; --fcat4-bd: #5EEAD4;
+    --dim-ent: #FDEFC8;  --rail-ent: linear-gradient(180deg,#EAB308,#A16207);  --chp-ent: #CA8A04;
+    --dim-prj: #FDE6D5;  --rail-prj: linear-gradient(180deg,#EA580C,#9A3412);  --chp-prj: #EA580C;
+    --dim-dir: #E3EEFC;  --rail-dir: linear-gradient(180deg,#3B82F6,#1E40AF);  --chp-dir: #2563EB;
+    --dim-feat: #F9ECD8; --rail-feat: linear-gradient(180deg,#D97706,#92400E); --chp-feat: #B45309;
+    --dim-inv: #E0F2EE;  --rail-inv: linear-gradient(180deg,#0D9488,#115E59);  --chp-inv: #0F766E;
+    --lbl2-fg: #9A3412;  --cell-bd: #EADAC0;
+    --pill-bg: linear-gradient(180deg,#FFFDF2 0%,#FEF3C7 100%); --pill-bd: #F2CB76; --pill-fg: #78350F; --pill-b: #451A03; --pill-i: #925B1E;
+    --rp-bg: linear-gradient(180deg,#FEF5E1 0%,#FCEAC8 100%); --rp-bd: #EEBD68;
+    --rp-head: linear-gradient(95deg,#D97706 0%,#9A3412 100%); --rp-h3: linear-gradient(90deg,#D97706 0%,#B45309 100%);
+  }
+
+  /* 06 细胞/基因疗法：前沿电光青 × 星际靛蓝 */
+  body:not([data-theme]) .canvas[data-seq="06"],
+  body[data-theme="multi"] .canvas[data-seq="06"] {
+    --track-grad: linear-gradient(180deg,#0284C7 0%,#0369A1 52%,#1E3A8A 100%);
+    --track-accent: #0369A1;
+    --ct-bg: linear-gradient(180deg,#F9FDFF 0%,#F0F7FD 100%); --ct-bd: #C8E1F5;
+    --ph1-ar: linear-gradient(95deg,#06B6D4 0%,#0284C7 55%,#0369A1 100%);
+    --ph2-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#312E81 100%);
+    --ph3-ar: linear-gradient(95deg,#8B5CF6 0%,#7C3AED 55%,#5B21B6 100%);
+    --ph4-ar: linear-gradient(95deg,#0EA5E9 0%,#2563EB 55%,#1E40AF 100%);
+    --cat1-bd: #0284C7; --cat1-bg: linear-gradient(180deg,#EDFAFF 0%,#FFFFFF 48%);
+    --cat2-bd: #4F46E5; --cat2-bg: linear-gradient(180deg,#F0F2FF 0%,#FFFFFF 48%);
+    --cat3-bd: #7C3AED; --cat3-bg: linear-gradient(180deg,#F5F0FF 0%,#FFFFFF 48%);
+    --cat4-bd: #2563EB; --cat4-bg: linear-gradient(180deg,#EFF6FF 0%,#FFFFFF 48%);
+    --fcat1-bg: #F0F9FF; --fcat1-bd: #7DD3FC; --fcat2-bg: #EEF2FF; --fcat2-bd: #A5B4FC;
+    --fcat3-bg: #F5F3FF; --fcat3-bd: #C4B5FD; --fcat4-bg: #EFF6FF; --fcat4-bd: #93C5FD;
+    --dim-ent: #FCEFD4;  --rail-ent: linear-gradient(180deg,#F59E0B,#D97706);  --chp-ent: #D97706;
+    --dim-prj: #FCE9DF;  --rail-prj: linear-gradient(180deg,#F97316,#C2410C);  --chp-prj: #EA580C;
+    --dim-dir: #E6E9FE;  --rail-dir: linear-gradient(180deg,#6366F1,#3730A3);  --chp-dir: #4F46E5;
+    --dim-feat: #DFF3FD; --rail-feat: linear-gradient(180deg,#0EA5E9,#0369A1); --chp-feat: #0284C7;
+    --dim-inv: #E5E6FA;  --rail-inv: linear-gradient(180deg,#7C3AED,#4C1D95);  --chp-inv: #6D28D9;
+    --lbl2-fg: #075985;  --cell-bd: #CDE0F2;  --mk-d: #4F46E5;
+    --pill-bg: linear-gradient(180deg,#F4FAFF 0%,#E6F3FE 100%); --pill-bd: #A9D4FA; --pill-fg: #0C4A6E; --pill-b: #082F49; --pill-i: #3B769E;
+    --rp-bg: linear-gradient(180deg,#EDF6FF 0%,#E1EEFE 100%); --rp-bd: #93C5FD;
+    --rp-head: linear-gradient(95deg,#0284C7 0%,#4F46E5 100%); --rp-h3: linear-gradient(90deg,#0369A1 0%,#4338CA 100%);
+    --rp-card-bd: #BFDBFE; --rp-card-fg: #0F172A;
+  }
+
+  /* 07 疫苗：生命森绿 × 碧青晴空（在原版基础上增强四段色彩层次） */
+  body:not([data-theme]) .canvas[data-seq="07"],
+  body[data-theme="multi"] .canvas[data-seq="07"] {
+    --track-grad: linear-gradient(180deg,#2FA36B 0%,#238957 52%,#17663E 100%);
+    --track-accent: #1C7A4A;
+    --ph1-ar: linear-gradient(95deg,#1BB89B 0%,#11967E 55%,#0A7563 100%);
+    --ph2-ar: linear-gradient(95deg,#55A3EE 0%,#367ED8 55%,#235FB5 100%);
+    --ph3-ar: linear-gradient(95deg,#22C55E 0%,#16A34A 55%,#15803D 100%);
+    --ph4-ar: linear-gradient(95deg,#0EA5E9 0%,#0284C7 55%,#0369A1 100%);
+    --cat3-bd: #16A34A; --cat3-bg: linear-gradient(180deg,#F0FDF4 0%,#FFFFFF 45%);
+    --cat4-bd: #0284C7; --cat4-bg: linear-gradient(180deg,#F0F9FF 0%,#FFFFFF 45%);
+  }
+
+  /* 08 血液制品：丹砂绯红 × 暖金琥珀 */
+  body:not([data-theme]) .canvas[data-seq="08"],
+  body[data-theme="multi"] .canvas[data-seq="08"] {
+    --track-grad: linear-gradient(180deg,#DC2626 0%,#B91C1C 52%,#7F1D1D 100%);
+    --track-accent: #B91C1C;
+    --ct-bg: linear-gradient(180deg,#FFFCFC 0%,#FDF5F5 100%); --ct-bd: #F0CFCF;
+    --ph1-ar: linear-gradient(95deg,#EF4444 0%,#DC2626 55%,#991B1B 100%);
+    --ph2-ar: linear-gradient(95deg,#F97316 0%,#EA580C 55%,#9A3412 100%);
+    --ph3-ar: linear-gradient(95deg,#E11D48 0%,#BE123C 55%,#881337 100%);
+    --ph4-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1E3A8A 100%);
+    --cat1-bd: #DC2626; --cat1-bg: linear-gradient(180deg,#FFF1F1 0%,#FFFFFF 48%);
+    --cat2-bd: #EA580C; --cat2-bg: linear-gradient(180deg,#FFF4ED 0%,#FFFFFF 48%);
+    --cat3-bd: #BE123C; --cat3-bg: linear-gradient(180deg,#FFF1F5 0%,#FFFFFF 48%);
+    --cat4-bd: #2563EB; --cat4-bg: linear-gradient(180deg,#EFF5FF 0%,#FFFFFF 48%);
+    --fcat1-bg: #FEF2F2; --fcat1-bd: #FCA5A5; --fcat2-bg: #FFF7ED; --fcat2-bd: #FDBA74;
+    --fcat3-bg: #FFF1F2; --fcat3-bd: #FDA4AF; --fcat4-bg: #EFF6FF; --fcat4-bd: #93C5FD;
+    --dim-ent: #FDF0D2;  --rail-ent: linear-gradient(180deg,#F59E0B,#B45309);  --chp-ent: #D97706;
+    --dim-prj: #FDE5E5;  --rail-prj: linear-gradient(180deg,#EF4444,#B91C1C);  --chp-prj: #DC2626;
+    --dim-dir: #E6EEFC;  --rail-dir: linear-gradient(180deg,#3B82F6,#1D4ED8);  --chp-dir: #2563EB;
+    --dim-feat: #FCE8EC; --rail-feat: linear-gradient(180deg,#E11D48,#9F1239); --chp-feat: #BE123C;
+    --dim-inv: #FAEBDD;  --rail-inv: linear-gradient(180deg,#C2410C,#7C2D12);  --chp-inv: #9A3412;
+    --lbl2-fg: #991B1B;  --cell-bd: #EED2D2;  --mk-a: #DC2626;
+    --pill-bg: linear-gradient(180deg,#FFF8F8 0%,#FEECEC 100%); --pill-bd: #F3BABA; --pill-fg: #7F1D1D; --pill-b: #450A0A; --pill-i: #9B4444;
+    --rp-bg: linear-gradient(180deg,#FEF2F2 0%,#FCE4E4 100%); --rp-bd: #F5B2B2;
+    --rp-head: linear-gradient(95deg,#DC2626 0%,#9A3412 100%); --rp-h3: linear-gradient(90deg,#DC2626 0%,#B91C1C 100%);
+    --rp-card-bd: #FECACA; --rp-card-fg: #450A0A;
+  }
 
   .search-hit {
     outline:2.5px solid #F59E0B !important;
@@ -453,7 +721,9 @@
   .tb-btn:hover { background: rgba(47,163,107,0.32); color:#fff; border-color:rgba(110,231,183,0.45); }
   .tb-btn.active { background: #2FA36B; color: #fff; border-color: #6EE7B7; font-weight:800; box-shadow:0 2px 8px rgba(47,163,107,0.38); }
   .tb-dot { width:7.5px; height:7.5px; border-radius:50%; display:inline-block; flex:none; box-shadow:0 0 0 1px rgba(255,255,255,0.45); }
-  body.classic-theme .tb-dot { background:#34D399 !important; }
+  body[data-theme="emerald"] .tb-dot { background:#34D399 !important; }
+  .tm-btn-swatches { display:inline-flex; align-items:center; gap:2.5px; margin-right:1px; }
+  .tm-btn-swatches i { width:7px; height:7px; border-radius:2px; display:inline-block; box-shadow:0 0 0 1px rgba(255,255,255,0.42); }
   @media (max-width: 1480px) {
     .topbar { padding: 7px 12px; gap: 6px; }
     .tb-row { gap: 4.5px; }
@@ -729,9 +999,294 @@
   .hud-btn:hover { background: #2FA36B; border-color: #6EE7B7; color: #fff; }
   .hud-label { font-weight: 800; padding: 0 6px; color: #A7F3D0; letter-spacing: 0.8px; }
 
+  /* ==========================================================================
+     全局配色方案库（一键切换全图【中部五维矩阵色块 + 四阶段咬合箭头 + 胶囊 + 右侧趋势栏】）
+     ========================================================================== */
+
+  /* 方案 2：锦绣绚彩（vivid）—— 四段光谱 × 五维高饱和撞色块 */
+  body[data-theme="vivid"] .canvas {
+    --track-grad: linear-gradient(180deg,#059669 0%,#0284C7 50%,#4F46E5 100%);
+    --track-accent: #0284C7;
+    --ct-bg: linear-gradient(180deg,#FAFCFF 0%,#F3F7FC 100%); --ct-bd: #C9DAEE;
+    --b-up-fg: #047857;   --b-up-bg: linear-gradient(90deg,#D1FAE5,#A7F3D0);   --b-up-bd: #34D399;
+    --b-mid-fg: #3730A3;  --b-mid-bg: linear-gradient(90deg,#E0E7FF,#C7D2FE);  --b-mid-bd: #818CF8;
+    --b-down-fg: #BE123C; --b-down-bg: linear-gradient(90deg,#FFE4E6,#FECDD3); --b-down-bd: #FB7185;
+    --ph1-ar: linear-gradient(95deg,#10B981 0%,#059669 55%,#047857 100%);
+    --ph2-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1D4ED8 100%);
+    --ph3-ar: linear-gradient(95deg,#8B5CF6 0%,#7C3AED 55%,#5B21B6 100%);
+    --ph4-ar: linear-gradient(95deg,#F97316 0%,#EA580C 55%,#C2410C 100%);
+    --cat1-bd: #059669; --cat1-bg: linear-gradient(180deg,#E6FBF2 0%,#FFFFFF 54%);
+    --cat2-bd: #2563EB; --cat2-bg: linear-gradient(180deg,#E8F1FF 0%,#FFFFFF 54%);
+    --cat3-bd: #7C3AED; --cat3-bg: linear-gradient(180deg,#F1EBFF 0%,#FFFFFF 54%);
+    --cat4-bd: #EA580C; --cat4-bg: linear-gradient(180deg,#FFF0E5 0%,#FFFFFF 54%);
+    --fcat1-bg: linear-gradient(180deg,#E3FAF0 0%,#F7FEFA 100%); --fcat1-bd: #34D399;
+    --fcat2-bg: linear-gradient(180deg,#E5EFFF 0%,#F7FAFF 100%); --fcat2-bd: #60A5FA;
+    --fcat3-bg: linear-gradient(180deg,#EFE8FF 0%,#FAF7FF 100%); --fcat3-bd: #A78BFA;
+    --fcat4-bg: linear-gradient(180deg,#FFEDE0 0%,#FFF9F5 100%); --fcat4-bd: #FB923C;
+    --dim-ent: #FDE2A8;  --rail-ent: linear-gradient(180deg,#F59E0B,#B45309);  --chp-ent: #D97706;
+    --dim-prj: #FDD2DF;  --rail-prj: linear-gradient(180deg,#F43F5E,#BE123C);  --chp-prj: #E11D48;
+    --dim-dir: #CFE4FE;  --rail-dir: linear-gradient(180deg,#3B82F6,#1D4ED8);  --chp-dir: #2563EB;
+    --dim-feat: #C7F2DF; --rail-feat: linear-gradient(180deg,#10B981,#047857); --chp-feat: #059669;
+    --dim-inv: #E1D4FE;  --rail-inv: linear-gradient(180deg,#8B5CF6,#5B21B6);  --chp-inv: #7C3AED;
+    --lbl2-fg: #1D4ED8;  --cell-bd: #CFDCEB;  --mk-a: #E11D48;  --mk-d: #2563EB;
+    --pill-bg: linear-gradient(180deg,#FFFBEB 0%,#FEF0C7 100%); --pill-bd: #F5C469; --pill-fg: #78350F; --pill-b: #451A03; --pill-i: #9A5B13;
+    --rp-bg: linear-gradient(180deg,#FFF1F2 0%,#FFE8D6 100%); --rp-bd: #FB923C;
+    --rp-head: linear-gradient(95deg,#E11D48 0%,#EA580C 55%,#D97706 100%);
+    --rp-h3: linear-gradient(90deg,#E11D48 0%,#EA580C 100%);
+    --rp-card-bd: #FDBA74; --rp-card-fg: #3B1810;
+  }
+
+  /* 方案 3：科技深海（ocean）—— 政务蓝金 × 冰晶青靛色块 */
+  body[data-theme="ocean"] .canvas {
+    --track-grad: linear-gradient(180deg,#0284C7 0%,#1D4ED8 52%,#1E3A8A 100%);
+    --track-accent: #1D4ED8;
+    --ct-bg: linear-gradient(180deg,#F7FBFF 0%,#EDF5FE 100%); --ct-bd: #BFD8F5;
+    --b-up-fg: #0369A1;   --b-up-bg: linear-gradient(90deg,#E0F2FE,#BAE6FD);   --b-up-bd: #38BDF8;
+    --b-mid-fg: #1D4ED8;  --b-mid-bg: linear-gradient(90deg,#DBEAFE,#BFDBFE);  --b-mid-bd: #60A5FA;
+    --b-down-fg: #0F766E; --b-down-bg: linear-gradient(90deg,#CCFBF1,#99F6E4); --b-down-bd: #2DD4BF;
+    --ph1-ar: linear-gradient(95deg,#0EA5E9 0%,#0284C7 55%,#0369A1 100%);
+    --ph2-ar: linear-gradient(95deg,#3B82F6 0%,#2563EB 55%,#1E40AF 100%);
+    --ph3-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#312E81 100%);
+    --ph4-ar: linear-gradient(95deg,#14B8A6 0%,#0D9488 55%,#115E59 100%);
+    --cat1-bd: #0284C7; --cat1-bg: linear-gradient(180deg,#E8F7FF 0%,#FFFFFF 52%);
+    --cat2-bd: #2563EB; --cat2-bg: linear-gradient(180deg,#E8F0FF 0%,#FFFFFF 52%);
+    --cat3-bd: #4F46E5; --cat3-bg: linear-gradient(180deg,#ECEBFF 0%,#FFFFFF 52%);
+    --cat4-bd: #0D9488; --cat4-bg: linear-gradient(180deg,#E6FAF6 0%,#FFFFFF 52%);
+    --fcat1-bg: #EBF8FF; --fcat1-bd: #7DD3FC; --fcat2-bg: #EBF2FF; --fcat2-bd: #93C5FD;
+    --fcat3-bg: #EEEDFF; --fcat3-bd: #A5B4FC; --fcat4-bg: #E8FBF8; --fcat4-bd: #5EEAD4;
+    --dim-ent: #FCE9BE;  --rail-ent: linear-gradient(180deg,#F59E0B,#B45309);  --chp-ent: #D97706;
+    --dim-prj: #D0EEFC;  --rail-prj: linear-gradient(180deg,#0EA5E9,#0369A1);  --chp-prj: #0284C7;
+    --dim-dir: #D4E5FE;  --rail-dir: linear-gradient(180deg,#2563EB,#1E3A8A);  --chp-dir: #1D4ED8;
+    --dim-feat: #DDE0FD; --rail-feat: linear-gradient(180deg,#6366F1,#3730A3); --chp-feat: #4F46E5;
+    --dim-inv: #CCF0EC;  --rail-inv: linear-gradient(180deg,#0D9488,#115E59);  --chp-inv: #0F766E;
+    --lbl2-fg: #1E40AF;  --cell-bd: #C6DCF4;  --mk-a: #0284C7;  --mk-d: #2563EB;
+    --pill-bg: linear-gradient(180deg,#F2F8FF 0%,#E2EEFF 100%); --pill-bd: #9EC5F8; --pill-fg: #1E3A8A; --pill-b: #0F2557; --pill-i: #3E66A8;
+    --rp-bg: linear-gradient(180deg,#E8F3FF 0%,#DAEAFB 100%); --rp-bd: #7CB8F6;
+    --rp-head: linear-gradient(95deg,#1E3A8A 0%,#1D4ED8 55%,#0284C7 100%);
+    --rp-h3: linear-gradient(90deg,#1D4ED8 0%,#0284C7 100%);
+    --rp-card-bd: #B2D4FA; --rp-card-fg: #0F172A;
+  }
+
+  /* 方案 4：紫金智库（royal）—— 投研紫珀 × 茱萸粉紫藤色块 */
+  body[data-theme="royal"] .canvas {
+    --track-grad: linear-gradient(180deg,#7C3AED 0%,#5B21B6 52%,#3B0764 100%);
+    --track-accent: #6D28D9;
+    --ct-bg: linear-gradient(180deg,#FCFAFF 0%,#F5EFFD 100%); --ct-bd: #D9CBF4;
+    --b-up-fg: #6D28D9;   --b-up-bg: linear-gradient(90deg,#EDE9FE,#DDD6FE);   --b-up-bd: #A78BFA;
+    --b-mid-fg: #BE185D;  --b-mid-bg: linear-gradient(90deg,#FCE7F3,#FBCFE8);  --b-mid-bd: #F472B6;
+    --b-down-fg: #B45309; --b-down-bg: linear-gradient(90deg,#FEF3C7,#FDE68A); --b-down-bd: #FBBF24;
+    --ph1-ar: linear-gradient(95deg,#8B5CF6 0%,#7C3AED 55%,#5B21B6 100%);
+    --ph2-ar: linear-gradient(95deg,#6366F1 0%,#4F46E5 55%,#3730A3 100%);
+    --ph3-ar: linear-gradient(95deg,#EC4899 0%,#DB2777 55%,#9D174D 100%);
+    --ph4-ar: linear-gradient(95deg,#D97706 0%,#B45309 55%,#92400E 100%);
+    --cat1-bd: #7C3AED; --cat1-bg: linear-gradient(180deg,#F3ECFF 0%,#FFFFFF 52%);
+    --cat2-bd: #4F46E5; --cat2-bg: linear-gradient(180deg,#ECEFFF 0%,#FFFFFF 52%);
+    --cat3-bd: #DB2777; --cat3-bg: linear-gradient(180deg,#FFEBF5 0%,#FFFFFF 52%);
+    --cat4-bd: #D97706; --cat4-bg: linear-gradient(180deg,#FFF5E5 0%,#FFFFFF 52%);
+    --fcat1-bg: #F4EEFF; --fcat1-bd: #C4B5FD; --fcat2-bg: #EEF0FF; --fcat2-bd: #A5B4FC;
+    --fcat3-bg: #FDF0F7; --fcat3-bd: #F9A8D4; --fcat4-bg: #FFF7EB; --fcat4-bd: #FCD34D;
+    --dim-ent: #FDE7BD;  --rail-ent: linear-gradient(180deg,#F59E0B,#B45309);  --chp-ent: #D97706;
+    --dim-prj: #FCD5E8;  --rail-prj: linear-gradient(180deg,#EC4899,#9D174D);  --chp-prj: #DB2777;
+    --dim-dir: #E5DAFE;  --rail-dir: linear-gradient(180deg,#8B5CF6,#5B21B6);  --chp-dir: #7C3AED;
+    --dim-feat: #DBE3FD; --rail-feat: linear-gradient(180deg,#6366F1,#3730A3); --chp-feat: #4F46E5;
+    --dim-inv: #EED5FA;  --rail-inv: linear-gradient(180deg,#A855F7,#6B21A8);  --chp-inv: #9333EA;
+    --lbl2-fg: #5B21B6;  --cell-bd: #DFD2F5;  --mk-a: #DB2777;  --mk-d: #7C3AED;
+    --pill-bg: linear-gradient(180deg,#FAF5FF 0%,#F0E5FE 100%); --pill-bd: #CBB5FA; --pill-fg: #4C1D95; --pill-b: #2E1065; --pill-i: #6D48A8;
+    --rp-bg: linear-gradient(180deg,#F5EEFF 0%,#FCEAF4 100%); --rp-bd: #C4B5FD;
+    --rp-head: linear-gradient(95deg,#6D28D9 0%,#9333EA 52%,#DB2777 100%);
+    --rp-h3: linear-gradient(90deg,#7C3AED 0%,#C026D3 100%);
+    --rp-card-bd: #DDD6FE; --rp-card-fg: #2E1065;
+  }
+
+  /* 方案 5：丹霞蜀韵（danxia）—— 川渝竹青 × 蜀锦丹砂鎏金色块 */
+  body[data-theme="danxia"] .canvas {
+    --track-grad: linear-gradient(180deg,#C2410C 0%,#9A3412 52%,#7C2D12 100%);
+    --track-accent: #B45309;
+    --ct-bg: linear-gradient(180deg,#FFFDF9 0%,#FBF5EA 100%); --ct-bd: #E8D5B7;
+    --b-up-fg: #15803D;   --b-up-bg: linear-gradient(90deg,#DCFCE7,#BBF7D0);   --b-up-bd: #4ADE80;
+    --b-mid-fg: #1E40AF;  --b-mid-bg: linear-gradient(90deg,#DBEAFE,#BFDBFE);  --b-mid-bd: #60A5FA;
+    --b-down-fg: #9A3412; --b-down-bg: linear-gradient(90deg,#FFEDD5,#FED7AA); --b-down-bd: #FB923C;
+    --ph1-ar: linear-gradient(95deg,#16A34A 0%,#15803D 55%,#14532D 100%);
+    --ph2-ar: linear-gradient(95deg,#2563EB 0%,#1E40AF 55%,#1E3A8A 100%);
+    --ph3-ar: linear-gradient(95deg,#EA580C 0%,#C2410C 55%,#7C2D12 100%);
+    --ph4-ar: linear-gradient(95deg,#D97706 0%,#B45309 55%,#78350F 100%);
+    --cat1-bd: #15803D; --cat1-bg: linear-gradient(180deg,#ECFDF3 0%,#FFFFFF 52%);
+    --cat2-bd: #1E40AF; --cat2-bg: linear-gradient(180deg,#EBF2FF 0%,#FFFFFF 52%);
+    --cat3-bd: #C2410C; --cat3-bg: linear-gradient(180deg,#FFF0E8 0%,#FFFFFF 52%);
+    --cat4-bd: #B45309; --cat4-bg: linear-gradient(180deg,#FFF6E5 0%,#FFFFFF 52%);
+    --fcat1-bg: #EEFBF2; --fcat1-bd: #86EFAC; --fcat2-bg: #EEF3FF; --fcat2-bd: #93C5FD;
+    --fcat3-bg: #FFF2EB; --fcat3-bd: #FDBA74; --fcat4-bg: #FFF8EB; --fcat4-bd: #FCD34D;
+    --dim-ent: #FCE5B4;  --rail-ent: linear-gradient(180deg,#D97706,#92400E);  --chp-ent: #B45309;
+    --dim-prj: #FCD8CC;  --rail-prj: linear-gradient(180deg,#EA580C,#9A3412);  --chp-prj: #C2410C;
+    --dim-dir: #D8E5F8;  --rail-dir: linear-gradient(180deg,#2563EB,#1E3A8A);  --chp-dir: #1E40AF;
+    --dim-feat: #D3EEDD; --rail-feat: linear-gradient(180deg,#16A34A,#14532D); --chp-feat: #15803D;
+    --dim-inv: #F3DFC8;  --rail-inv: linear-gradient(180deg,#B45309,#78350F);  --chp-inv: #92400E;
+    --lbl2-fg: #9A3412;  --cell-bd: #E6D5BE;  --mk-a: #C2410C;  --mk-d: #1E40AF;
+    --pill-bg: linear-gradient(180deg,#FFFDF5 0%,#FCEFC7 100%); --pill-bd: #E6C17A; --pill-fg: #78350F; --pill-b: #451A03; --pill-i: #8F5B22;
+    --rp-bg: linear-gradient(180deg,#FDF2E4 0%,#FAE5CE 100%); --rp-bd: #E9B37A;
+    --rp-head: linear-gradient(95deg,#9A3412 0%,#C2410C 52%,#D97706 100%);
+    --rp-h3: linear-gradient(90deg,#C2410C 0%,#B45309 100%);
+    --rp-card-bd: #F2C99B; --rp-card-fg: #3E1F0D;
+  }
+
+  /* 方案 7：星曜暗夜（dark）—— LED大屏深色指挥舱 × 霓虹多维玻璃色块 */
+  @media screen {
+    body[data-theme="dark"],
+    body[data-theme="dark"] .stage-viewport {
+      background: radial-gradient(circle at 50% 15%, #122036 0%, #080E1A 100%);
+    }
+    body[data-theme="dark"] .canvas {
+      --track-grad: linear-gradient(180deg,#0EA5E9 0%,#2563EB 50%,#6D28D9 100%);
+      --track-accent: #38BDF8;
+      --canvas-bg: #0C1524;
+      --title-fg: #F1F5F9;
+      --sub-bg: rgba(56,189,248,0.12);
+      --sub-bd: rgba(56,189,248,0.35);
+      --ct-bg: linear-gradient(180deg,#101C30 0%,#0E182A 100%);
+      --ct-bd: #233856;
+      --b-up-fg: #6EE7B7;   --b-up-bg: rgba(16,185,129,0.18);   --b-up-bd: #10B981;
+      --b-mid-fg: #93C5FD;  --b-mid-bg: rgba(59,130,246,0.20);  --b-mid-bd: #3B82F6;
+      --b-down-fg: #FDBA74; --b-down-bg: rgba(249,115,22,0.20); --b-down-bd: #F97316;
+      --ph1-ar: linear-gradient(95deg,#0D9488 0%,#059669 55%,#047857 100%);
+      --ph2-ar: linear-gradient(95deg,#2563EB 0%,#1D4ED8 55%,#1E3A8A 100%);
+      --ph3-ar: linear-gradient(95deg,#7C3AED 0%,#6D28D9 55%,#4C1D95 100%);
+      --ph4-ar: linear-gradient(95deg,#EA580C 0%,#C2410C 55%,#9A3412 100%);
+      --cat1-bd: #2DD4BF; --cat1-bg: linear-gradient(180deg,#142A36 0%,#132136 52%);
+      --cat2-bd: #60A5FA; --cat2-bg: linear-gradient(180deg,#152844 0%,#132136 52%);
+      --cat3-bd: #A78BFA; --cat3-bg: linear-gradient(180deg,#212246 0%,#132136 52%);
+      --cat4-bd: #FB923C; --cat4-bg: linear-gradient(180deg,#2B2332 0%,#132136 52%);
+      --fcat1-bg: linear-gradient(180deg,#132A35 0%,#121F33 100%); --fcat1-bd: #2DD4BF;
+      --fcat2-bg: linear-gradient(180deg,#152742 0%,#121F33 100%); --fcat2-bd: #60A5FA;
+      --fcat3-bg: linear-gradient(180deg,#202044 0%,#121F33 100%); --fcat3-bd: #A78BFA;
+      --fcat4-bg: linear-gradient(180deg,#292130 0%,#121F33 100%); --fcat4-bd: #FB923C;
+      --dim-ent: rgba(245,158,11,0.17);  --rail-ent: linear-gradient(180deg,#F59E0B,#B45309);  --chp-ent: #FBBF24;
+      --dim-prj: rgba(244,63,94,0.17);   --rail-prj: linear-gradient(180deg,#F43F5E,#BE123C);  --chp-prj: #FB7185;
+      --dim-dir: rgba(59,130,246,0.19);  --rail-dir: linear-gradient(180deg,#3B82F6,#1D4ED8);  --chp-dir: #60A5FA;
+      --dim-feat: rgba(16,185,129,0.17); --rail-feat: linear-gradient(180deg,#10B981,#047857); --chp-feat: #34D399;
+      --dim-inv: rgba(139,92,246,0.19);  --rail-inv: linear-gradient(180deg,#8B5CF6,#5B21B6);  --chp-inv: #A78BFA;
+      --cell-bd: #253B59;   --cell-fg: #CBD5E1;   --cell-b: #F8FAFC;   --lbl2-fg: #5EEAD4;
+      --pill-bg: linear-gradient(180deg,#1C2E4A 0%,#16243B 100%);
+      --pill-bd: #35527A;   --pill-fg: #E2E8F0;   --pill-b: #FDE68A;   --pill-i: #93C5FD;
+      --pill-note-bg: rgba(30,41,59,0.75); --pill-note-bd: #475569; --pill-note-fg: #94A3B8;
+      --mk-a: #FB923C;      --mk-d: #60A5FA;
+      --rp-bg: linear-gradient(180deg,#122036 0%,#0E1A2D 100%);
+      --rp-bd: #2B4870;
+      --rp-head: linear-gradient(95deg,#0284C7 0%,#4F46E5 55%,#7C3AED 100%);
+      --rp-h3: linear-gradient(90deg,#1E40AF 0%,#0369A1 100%);
+      --rp-card-bg: linear-gradient(180deg,#16263E 0%,#132035 100%);
+      --rp-card-bd: #284266;
+      --rp-card-fg: #E2E8F0;
+      --hl-fg: #FDE68A;
+      --hl-bg: rgba(245,158,11,0.22);
+      --hl-bd: #F59E0B;
+      box-shadow: 0 14px 48px rgba(0,0,0,0.62);
+    }
+    body[data-theme="dark"] .ct,
+    body[data-theme="dark"] .rp { box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); }
+    body[data-theme="dark"] .rail-head { color: #94A3B8; }
+    body[data-theme="dark"] .cell:has(.empty-box) {
+      background: repeating-linear-gradient(-45deg,#111D30 0px,#111D30 7px,#16243B 7px,#16243B 14px);
+    }
+    body[data-theme="dark"] .empty-badge {
+      background: rgba(15,23,42,0.85); border-color: #334155; color: #64748B;
+    }
+    body[data-theme="dark"] .geo-sc { color:#6EE7B7; background:rgba(16,185,129,0.20); border-color:#059669; }
+    body[data-theme="dark"] .geo-cq { color:#FCD34D; background:rgba(245,158,11,0.20); border-color:#D97706; }
+    body[data-theme="dark"] .geo-cy { color:#A7F3D0; background:linear-gradient(105deg,rgba(16,185,129,0.24) 0%,rgba(245,158,11,0.24) 100%); border-color:#10B981; }
+    body[data-theme="dark"] .geo-yn { color:#C7D2FE; background:rgba(99,102,241,0.24); border-color:#6366F1; }
+    body[data-theme="dark"] .legend { border-top-color: #1E324D; color: #94A3B8; }
+    body[data-theme="dark"] .lg-zoom-tip { background: rgba(20,184,166,0.16); border-color: #0D9488; color: #5EEAD4; }
+    body[data-theme="dark"] .lg-note { color: #64748B; }
+    body[data-theme="dark"] .search-hit { background: rgba(245,158,11,0.28) !important; color: #FEF08A !important; }
+    body[data-theme="dark"] .search-hit-current { background: rgba(239,68,68,0.35) !important; color: #FFFFFF !important; }
+  }
+
+  /* 悬浮配色方案选择器（脱离 .tb-row 渲染于 body 顶层，绝不被工具栏裁切） */
+  .theme-menu {
+    position: fixed;
+    z-index: 9600;
+    width: 288px;
+    background: linear-gradient(180deg, #10241C 0%, #0C1B15 100%);
+    border: 1px solid rgba(110, 231, 183, 0.38);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(255,255,255,0.06) inset;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    color: #F1F5F9;
+    backdrop-filter: blur(12px);
+  }
+  .theme-menu.open { display: flex; animation: tmPop 0.14s ease-out; }
+  @keyframes tmPop {
+    from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .tm-head {
+    font-size: 11.2px;
+    font-weight: 800;
+    color: #6EE7B7;
+    padding: 3px 8px 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    margin-bottom: 2px;
+    letter-spacing: 0.6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tm-head span { color: #94A3B8; font-weight: 600; font-size: 10.5px; }
+  .tm-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 7px 9px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #E2E8F0;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.14s ease;
+  }
+  .tm-item:hover {
+    background: rgba(47, 163, 107, 0.22);
+    border-color: rgba(110, 231, 183, 0.30);
+  }
+  .tm-item.active {
+    background: rgba(47, 163, 107, 0.34);
+    border-color: #6EE7B7;
+    box-shadow: 0 2px 10px rgba(47, 163, 107, 0.25);
+  }
+  .tm-swatches {
+    display: grid;
+    grid-template-columns: repeat(2, 13px);
+    grid-template-rows: repeat(2, 13px);
+    gap: 2.5px;
+    padding: 3px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.10);
+    flex: none;
+  }
+  .tm-swatches i {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12);
+  }
+  .tm-info { flex: 1; min-width: 0; }
+  .tm-name { font-size: 12.6px; font-weight: 800; color: #FFFFFF; line-height: 1.25; }
+  .tm-desc { font-size: 10.8px; color: #A7F3D0; opacity: 0.82; line-height: 1.3; margin-top: 1.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tm-check { font-size: 13px; font-weight: 900; color: #6EE7B7; opacity: 0; flex: none; }
+  .tm-item.active .tm-check { opacity: 1; }
+  @media print {
+    .theme-menu { display: none !important; }
+  }
+
 </style>
 </head>
-<body>
+<body data-theme="multi">
 
 <div class="topbar">
   <div class="tb-row tb-row-nav">
@@ -748,7 +1303,7 @@
       <button type="button" class="search-go-btn" onclick="triggerSearchNow()" title="搜索并自动跳转定位 (Enter)">定位</button>
       <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="清空搜索 (Esc)">✕</button>
     </div>
-    <button class="tb-btn active" id="btnTheme" onclick="toggleClassicTheme()" title="一键切换八赛道专属配色 / 经典统一翠绿">🎨 多彩分轨</button>
+    <button class="tb-btn active" id="btnTheme" onclick="toggleThemeMenu(event)" title="切换全图与布局中间色块配色方案（共7套主题）">🎨 <span class="tm-btn-swatches" id="curThemeSwatches"><i style="background:#2563EB;"></i><i style="background:#DB2777;"></i><i style="background:#D97706;"></i></span><span id="curThemeLabel">多彩分轨</span> ▾</button>
     <button class="tb-btn active" id="btnFit" onclick="toggleFit(true)">🗖 自适应屏宽</button>
     <div class="zoom-box" title="自由调节画面缩放比例">
       <button class="zoom-step" onclick="stepZoom(-10)">−</button>
@@ -780,7 +1335,7 @@
 
 <div class="stage-viewport" id="viewport">
   <div class="poster-slot" id="slot-0" style="display:block;">
-<div class="canvas" id="poster-0" data-track="小分子化学药" data-seq="01" style="--track-grad:linear-gradient(180deg,#2563EB 0%,#1D4ED8 52%,#1E3A8A 100%);--track-accent:#1D4ED8;">
+<div class="canvas" id="poster-0" data-track="小分子化学药" data-seq="01">
   <div class="strip">
     <div class="strip-seq">01</div>
     <span class="strip-txt" style="letter-spacing:14px;">小分子化药</span>
@@ -890,7 +1445,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-1" style="display:none;">
-<div class="canvas" id="poster-1" data-track="抗体创新药" data-seq="02" style="--track-grad:linear-gradient(180deg,#7C3AED 0%,#6D28D9 52%,#4C1D95 100%);--track-accent:#6D28D9;">
+<div class="canvas" id="poster-1" data-track="抗体创新药" data-seq="02">
   <div class="strip">
     <div class="strip-seq">02</div>
     <span class="strip-txt" style="letter-spacing:14px;">抗体创新药</span>
@@ -1000,7 +1555,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-2" style="display:none;">
-<div class="canvas" id="poster-2" data-track="ADC创新药" data-seq="03" style="--track-grad:linear-gradient(180deg,#DB2777 0%,#BE185D 52%,#831843 100%);--track-accent:#BE185D;">
+<div class="canvas" id="poster-2" data-track="ADC创新药" data-seq="03">
   <div class="strip">
     <div class="strip-seq">03</div>
     <span class="strip-txt" style="letter-spacing:12px;">ADC创新药</span>
@@ -1110,7 +1665,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-3" style="display:none;">
-<div class="canvas" id="poster-3" data-track="多肽创新药（含环肽）" data-seq="04" style="--track-grad:linear-gradient(180deg,#059669 0%,#047857 52%,#064E3B 100%);--track-accent:#047857;">
+<div class="canvas" id="poster-3" data-track="多肽创新药（含环肽）" data-seq="04">
   <div class="strip">
     <div class="strip-seq">04</div>
     <span class="strip-txt" style="letter-spacing:14px;">多肽创新药</span>
@@ -1220,7 +1775,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-4" style="display:none;">
-<div class="canvas" id="poster-4" data-track="核药" data-seq="05" style="--track-grad:linear-gradient(180deg,#D97706 0%,#B45309 52%,#78350F 100%);--track-accent:#B45309;">
+<div class="canvas" id="poster-4" data-track="核药" data-seq="05">
   <div class="strip">
     <div class="strip-seq">05</div>
     <span class="strip-txt" style="letter-spacing:24px;">核　　药</span>
@@ -1330,7 +1885,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-5" style="display:none;">
-<div class="canvas" id="poster-5" data-track="细胞/基因疗法" data-seq="06" style="--track-grad:linear-gradient(180deg,#0891B2 0%,#0E7490 52%,#164E63 100%);--track-accent:#0E7490;">
+<div class="canvas" id="poster-5" data-track="细胞/基因疗法" data-seq="06">
   <div class="strip">
     <div class="strip-seq">06</div>
     <span class="strip-txt" style="letter-spacing:10px;">细胞基因疗法</span>
@@ -1440,7 +1995,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-6" style="display:none;">
-<div class="canvas" id="poster-6" data-track="疫苗" data-seq="07" style="--track-grad:linear-gradient(180deg,#2FA36B 0%,#1E8452 52%,#145A38 100%);--track-accent:#1E8452;">
+<div class="canvas" id="poster-6" data-track="疫苗" data-seq="07">
   <div class="strip">
     <div class="strip-seq">07</div>
     <span class="strip-txt" style="letter-spacing:26px;">疫　　苗</span>
@@ -1550,7 +2105,7 @@
 </div>
 </div>
 <div class="poster-slot" id="slot-7" style="display:none;">
-<div class="canvas" id="poster-7" data-track="血液制品" data-seq="08" style="--track-grad:linear-gradient(180deg,#DC2626 0%,#B91C1C 52%,#7F1D1D 100%);--track-accent:#B91C1C;">
+<div class="canvas" id="poster-7" data-track="血液制品" data-seq="08">
   <div class="strip">
     <div class="strip-seq">08</div>
     <span class="strip-txt" style="letter-spacing:16px;">血液制品</span>
@@ -1911,16 +2466,28 @@
   <button class="hud-btn" onclick="stepPoster(-1)" title="快捷键 ←">◀ 上一赛道</button>
   <span class="hud-label" id="hudTrackLabel">01 / 08 · 小分子化学药</span>
   <button class="hud-btn" onclick="stepPoster(1)" title="快捷键 →">下一赛道 ▶</button>
-  <button class="hud-btn" onclick="toggleClassicTheme()" title="切换多彩/经典翠绿">🎨 配色</button>
+  <button class="hud-btn" id="hudThemeBtn" onclick="toggleThemeMenu(event)" title="切换全图与中部色块配色方案">🎨 配色</button>
   <button class="hud-btn" onclick="toggleImmersive(false)" title="快捷键 Esc">退出沉浸</button>
 </div>
 
+<div class="theme-menu" id="themeMenu" role="menu" aria-label="配色方案选择"></div>
+
 <script>
 const TRACK_NAMES = JSON.parse(document.getElementById('tracksMeta').textContent);
+const MASTER_THEMES = [
+  { id: 'multi',   name: '多彩分轨', desc: '八大赛道专属中部色块与四段光谱', swatches: ['#2563EB', '#DB2777', '#D97706', '#10B981'] },
+  { id: 'vivid',   name: '锦绣绚彩', desc: '四段光谱 × 五维高饱和撞色矩阵', swatches: ['#059669', '#2563EB', '#7C3AED', '#F43F5E'] },
+  { id: 'ocean',   name: '科技深海', desc: '政务蓝金 × 冰晶青靛中部色块',   swatches: ['#0284C7', '#2563EB', '#F59E0B', '#0D9488'] },
+  { id: 'royal',   name: '紫金智库', desc: '投研紫珀 × 茱萸粉紫藤中部色块', swatches: ['#7C3AED', '#EC4899', '#F59E0B', '#4F46E5'] },
+  { id: 'danxia',  name: '丹霞蜀韵', desc: '川渝竹青 × 蜀锦丹砂鎏金色块',   swatches: ['#15803D', '#C2410C', '#D97706', '#1E40AF'] },
+  { id: 'emerald', name: '经典森绿', desc: '标准原版青绿蓝金清爽图式',       swatches: ['#1BB89B', '#55A3EE', '#EDA909', '#E67E22'] },
+  { id: 'dark',    name: '星曜暗夜', desc: 'LED大屏深色指挥舱 × 霓虹玻璃色块', swatches: ['#0F172A', '#2DD4BF', '#60A5FA', '#FB923C'] }
+];
 let fitMode = true;
 let customScale = 1;
 let currentIdx = 0; // -1 means all
-let classicTheme = false;
+let currentTheme = 'multi';
+let themeAnchorEl = null;
 let immersiveMode = false;
 
 // 快速定位与搜索状态
@@ -2125,15 +2692,99 @@ function stepZoom(deltaPct) {
   setCustomZoom(Math.round((curPct + deltaPct) / 5) * 5);
 }
 
-function toggleClassicTheme() {
-  classicTheme = !classicTheme;
-  document.body.classList.toggle('classic-theme', classicTheme);
-  const btn = document.getElementById('btnTheme');
-  if (btn) {
-    btn.textContent = classicTheme ? '🌿 经典翠绿' : '🎨 多彩分轨';
-    btn.classList.toggle('active', !classicTheme);
+function renderThemeMenu() {
+  const menu = document.getElementById('themeMenu');
+  if (!menu) return;
+  const itemsHtml = MASTER_THEMES.map(t => {
+    const activeCls = t.id === currentTheme ? ' active' : '';
+    const dots = t.swatches.map(c => `<i style="background:${c};"></i>`).join('');
+    return `<button type="button" class="tm-item${activeCls}" data-theme-id="${t.id}" onclick="setMasterTheme('${t.id}')">` +
+      `<span class="tm-swatches">${dots}</span>` +
+      `<span class="tm-info"><div class="tm-name">${t.name}</div><div class="tm-desc">${t.desc}</div></span>` +
+      `<span class="tm-check">✓</span>` +
+      `</button>`;
+  }).join('');
+  menu.innerHTML = `<div class="tm-head">🎨 全图与中部矩阵色块方案<span>共 7 套</span></div>` + itemsHtml;
+}
+
+function updateThemeButtonUI() {
+  const meta = MASTER_THEMES.find(t => t.id === currentTheme) || MASTER_THEMES[0];
+  const lbl = document.getElementById('curThemeLabel');
+  if (lbl) lbl.textContent = meta.name;
+  const sw = document.getElementById('curThemeSwatches');
+  if (sw) {
+    sw.innerHTML = meta.swatches.slice(0, 3).map(c => `<i style="background:${c};"></i>`).join('');
+  }
+  const hudBtn = document.getElementById('hudThemeBtn');
+  if (hudBtn) hudBtn.textContent = '🎨 ' + meta.name;
+  document.querySelectorAll('#themeMenu .tm-item').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeId === currentTheme);
+  });
+}
+
+function setMasterTheme(themeId, persist = true) {
+  const meta = MASTER_THEMES.find(t => t.id === themeId) || MASTER_THEMES[0];
+  currentTheme = meta.id;
+  document.body.setAttribute('data-theme', currentTheme);
+  updateThemeButtonUI();
+  closeThemeMenu();
+  if (persist) {
+    try { localStorage.setItem('biopharm_poster_theme', currentTheme); } catch (e) {}
   }
 }
+
+function positionThemeMenu(anchor) {
+  const menu = document.getElementById('themeMenu');
+  if (!menu || !anchor) return;
+  const rect = anchor.getBoundingClientRect();
+  const menuW = 288;
+  const menuH = menu.offsetHeight || 355;
+  let left = rect.left;
+  if (left + menuW > window.innerWidth - 12) {
+    left = Math.max(12, window.innerWidth - menuW - 12);
+  }
+  let top = rect.bottom + 7;
+  if (top + menuH > window.innerHeight - 12 && rect.top > menuH + 12) {
+    top = rect.top - menuH - 8;
+  }
+  menu.style.left = Math.round(left) + 'px';
+  menu.style.top = Math.round(top) + 'px';
+}
+
+function toggleThemeMenu(evt) {
+  if (evt) evt.stopPropagation();
+  const menu = document.getElementById('themeMenu');
+  if (!menu) return;
+  const anchor = (evt && evt.currentTarget) ? evt.currentTarget : document.getElementById('btnTheme');
+  const isSameOpen = menu.classList.contains('open') && themeAnchorEl === anchor;
+  if (isSameOpen) {
+    closeThemeMenu();
+    return;
+  }
+  themeAnchorEl = anchor;
+  if (!menu.innerHTML.trim()) renderThemeMenu();
+  menu.classList.add('open');
+  positionThemeMenu(anchor);
+}
+
+function closeThemeMenu() {
+  const menu = document.getElementById('themeMenu');
+  if (menu) menu.classList.remove('open');
+}
+
+function cycleMasterTheme() {
+  const idx = MASTER_THEMES.findIndex(t => t.id === currentTheme);
+  const next = MASTER_THEMES[(idx + 1) % MASTER_THEMES.length];
+  setMasterTheme(next.id);
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('themeMenu');
+  if (!menu || !menu.classList.contains('open')) return;
+  if (!menu.contains(e.target) && e.target.id !== 'btnTheme' && !e.target.closest('#btnTheme') && e.target.id !== 'hudThemeBtn') {
+    closeThemeMenu();
+  }
+});
 
 function toggleImmersive(forceState) {
   immersiveMode = (typeof forceState === 'boolean') ? forceState : !immersiveMode;
@@ -2191,8 +2842,13 @@ document.addEventListener('keydown', (e) => {
     selectPoster(Number(e.key) - 1);
   } else if (e.key === '0') {
     selectAllPosters();
-  } else if (e.key === 'Escape' && immersiveMode) {
-    toggleImmersive(false);
+  } else if (e.key === 'Escape') {
+    const tMenu = document.getElementById('themeMenu');
+    if (tMenu && tMenu.classList.contains('open')) {
+      closeThemeMenu();
+    } else if (immersiveMode) {
+      toggleImmersive(false);
+    }
   }
 });
 
@@ -2487,12 +3143,26 @@ function highlightKeyword(kw) {
   runSearch(kw, true);
 }
 
-window.addEventListener('resize', applyScale);
+window.addEventListener('resize', () => {
+  applyScale();
+  const menu = document.getElementById('themeMenu');
+  if (menu && menu.classList.contains('open') && themeAnchorEl) {
+    positionThemeMenu(themeAnchorEl);
+  }
+});
 window.addEventListener('DOMContentLoaded', () => {
   const vp = document.getElementById('viewport');
   if (vp) vp.addEventListener('scroll', syncPanBarState, { passive: true });
   const firstSlot = document.getElementById('slot-0');
   if (firstSlot) firstSlot.classList.add('single-active');
+
+  renderThemeMenu();
+  let savedTheme = 'multi';
+  try {
+    const st = localStorage.getItem('biopharm_poster_theme');
+    if (st && MASTER_THEMES.some(t => t.id === st)) savedTheme = st;
+  } catch (e) {}
+  setMasterTheme(savedTheme, false);
 
   // 绑定搜索框中文输入法合成感知 + 防抖实时定位 + 回车上下跳转
   const sInput = document.getElementById('searchInput');
