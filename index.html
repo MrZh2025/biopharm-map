@@ -1284,6 +1284,671 @@
     .theme-menu { display: none !important; }
   }
 
+  /* ==========================================================================
+     产业透视分析全景视图 (Insight View)
+     ========================================================================== */
+  .insight-view {
+    width: 100%;
+    max-width: 1840px;
+    margin: 0 auto;
+    padding: 24px 28px 60px;
+    color: #1E293B;
+    animation: ivFadeIn 0.22s ease-out;
+  }
+  @keyframes ivFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 顶部宏观导读横幅 */
+  .iv-hero {
+    background: linear-gradient(135deg, #0F2A1E 0%, #163829 55%, #102B3F 100%);
+    border-radius: 16px;
+    padding: 28px 34px 22px;
+    color: #FFFFFF;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.22);
+    border: 1px solid rgba(110,231,183,0.32);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .iv-hero::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(16,185,129,0.18) 0%, rgba(59,130,246,0) 70%);
+    pointer-events: none;
+  }
+  .iv-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3.5px 12px;
+    border-radius: 999px;
+    background: rgba(16,185,129,0.22);
+    border: 1px solid #34D399;
+    color: #A7F3D0;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .iv-hero-title {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    color: #FFFFFF;
+  }
+  .iv-hero-desc {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #E2E8F0;
+    max-width: 1380px;
+    margin-bottom: 20px;
+  }
+  .iv-hero-desc b { color: #6EE7B7; }
+
+  /* 4大子导航切换按钮 */
+  .iv-hero-tabs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .iv-tab {
+    background: rgba(255,255,255,0.10);
+    color: #E2E8F0;
+    border: 1px solid rgba(255,255,255,0.22);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .iv-tab:hover {
+    background: rgba(47,163,107,0.32);
+    border-color: #6EE7B7;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+  .iv-tab.active {
+    background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    border-color: #A7F3D0;
+    box-shadow: 0 4px 14px rgba(16,185,129,0.38);
+  }
+
+  /* 面板容器与区段头部 */
+  .iv-panel {
+    display: none;
+    animation: ivFadeIn 0.22s ease-out;
+  }
+  .iv-panel.active { display: block; }
+  .iv-sec-head {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 5px solid #10B981;
+    padding-left: 14px;
+  }
+  .iv-sec-head h2 {
+    font-size: 21px;
+    font-weight: 900;
+    color: #0F172A;
+    letter-spacing: 0.8px;
+  }
+  .iv-sec-tip {
+    font-size: 13.2px;
+    color: #64748B;
+    font-weight: 600;
+  }
+
+  /* ==========================================
+     TAB 1: 技术融合卡片网格
+     ========================================== */
+  .iv-fusion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  .iv-fcard {
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: 0 3px 12px rgba(15,23,42,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+  }
+  .iv-fcard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(15,23,42,0.11);
+    border-color: #10B981;
+  }
+  .iv-fcard-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .iv-fcard-tag {
+    font-size: 11.8px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid;
+    letter-spacing: 0.5px;
+  }
+  .iv-fcard-stage {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #64748B;
+  }
+  .iv-fcard-title {
+    font-size: 17.5px;
+    font-weight: 900;
+    color: #0F172A;
+    line-height: 1.35;
+  }
+  .iv-fcard-formula {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 8px 11px;
+    font-size: 12.5px;
+  }
+  .iv-f-node {
+    font-weight: 800;
+    color: #1E293B;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    padding: 2.5px 8.5px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .iv-f-op {
+    font-weight: 900;
+    color: #10B981;
+    font-size: 13px;
+  }
+  .iv-fcard-body p {
+    font-size: 13.5px;
+    line-height: 1.72;
+    color: #334155;
+    margin-bottom: 10px;
+    text-align: justify;
+  }
+  .iv-fcard-points {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+    line-height: 1.62;
+    border-top: 1px dashed #E2E8F0;
+    padding-top: 10px;
+    color: #475569;
+  }
+  .iv-fcard-points b { color: #0F172A; }
+
+  /* ==========================================
+     TAB 2: 川渝区域分工卡片
+     ========================================== */
+  .iv-regional-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .iv-city-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-top: 5px solid;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .iv-city-head {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .iv-city-badge {
+    align-self: flex-start;
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 2px 9px;
+    border-radius: 999px;
+    letter-spacing: 0.8px;
+  }
+  .iv-city-badge.sc { background: #E6FBF2; color: #047857; border: 1px solid #6EE7B7; }
+  .iv-city-badge.cq { background: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; }
+  .iv-city-badge.sc-all { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; }
+  .iv-city-head h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #0F172A;
+    line-height: 1.35;
+  }
+  .iv-city-summary {
+    font-size: 13.5px;
+    line-height: 1.68;
+    color: #475569;
+    font-weight: 600;
+  }
+  .iv-city-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid #F1F5F9;
+    padding-top: 12px;
+    font-size: 13.2px;
+    line-height: 1.72;
+    color: #334155;
+  }
+  .iv-city-list li {
+    position: relative;
+    padding-left: 15px;
+  }
+  .iv-city-list li::before {
+    content: "▪";
+    position: absolute;
+    left: 0; top: 0;
+    color: #10B981;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .iv-city-list b { color: #0F172A; }
+
+  /* ==========================================
+     TAB 3: 8x10 成熟度矩阵沙盘与详情抽屉
+     ========================================== */
+  .iv-legend-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 14px;
+    font-size: 12.8px;
+    color: #334155;
+  }
+  .iv-lg-item { display: inline-flex; align-items: center; gap: 6px; }
+  .iv-dot {
+    width: 11px; height: 11px; border-radius: 50%; display: inline-block;
+  }
+  .iv-dot.strong  { background: #10B981; }
+  .iv-dot.base    { background: #3B82F6; }
+  .iv-dot.weak    { background: #F97316; }
+  .iv-dot.special { background: #94A3B8; }
+  .iv-lg-tip { margin-left: auto; color: #047857; font-weight: 800; }
+
+  .iv-table-wrap {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    overflow-x: auto;
+    box-shadow: 0 4px 18px rgba(15,23,42,0.06);
+    margin-bottom: 18px;
+  }
+  .iv-matrix-tbl {
+    width: 100%;
+    min-width: 1180px;
+    border-collapse: collapse;
+    font-size: 12.8px;
+  }
+  .iv-matrix-tbl th {
+    background: #F1F5F9;
+    color: #1E293B;
+    font-weight: 800;
+    padding: 9px 8px;
+    border: 1px solid #E2E8F0;
+    text-align: center;
+  }
+  .iv-matrix-tbl th.th-track { width: 140px; background: #E2E8F0; text-align: left; padding-left: 14px; font-size: 13.5px; }
+  .iv-matrix-tbl th.th-ph1 { background: #E0F2FE; color: #0369A1; }
+  .iv-matrix-tbl th.th-ph2 { background: #EDE9FE; color: #5B21B6; }
+  .iv-matrix-tbl th.th-ph3 { background: #DCFCE7; color: #15803D; }
+  .iv-matrix-tbl th.th-ph4 { background: #FFEDD5; color: #9A3412; }
+  .iv-matrix-tbl tr.tr-sub th { font-size: 11.8px; background: #F8FAFC; padding: 6px 4px; }
+
+  .iv-matrix-tbl td {
+    border: 1px solid #E2E8F0;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .iv-matrix-tbl td.td-track {
+    font-weight: 900;
+    color: #0F172A;
+    text-align: left;
+    padding-left: 12px;
+    background: #FAFBFD;
+    font-size: 13.2px;
+    white-space: nowrap;
+  }
+  .iv-cell-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 5px 6px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: all 0.15s ease;
+    background: #F8FAFC;
+    color: #334155;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+  .iv-cell-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(15,23,42,0.12);
+    z-index: 2;
+  }
+  .iv-cell-btn.cell-strong {
+    background: linear-gradient(180deg, #F0FDF4 0%, #DCFCE7 100%);
+    border-color: #86EFAC;
+    color: #14532D;
+  }
+  .iv-cell-btn.cell-base {
+    background: linear-gradient(180deg, #F0F9FF 0%, #DBEAFE 100%);
+    border-color: #93C5FD;
+    color: #1E3A8A;
+  }
+  .iv-cell-btn.cell-weak {
+    background: linear-gradient(180deg, #FFF7ED 0%, #FFEDD5 100%);
+    border-color: #FDBA74;
+    color: #9A3412;
+  }
+  .iv-cell-btn.cell-special {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #64748B;
+  }
+  .iv-cell-tag {
+    font-size: 10.5px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+  .cell-strong .iv-cell-tag  { background: #16A34A; color: #FFFFFF; }
+  .cell-base .iv-cell-tag    { background: #2563EB; color: #FFFFFF; }
+  .cell-weak .iv-cell-tag    { background: #EA580C; color: #FFFFFF; }
+  .cell-special .iv-cell-tag { background: #94A3B8; color: #FFFFFF; }
+
+  /* 抽屉式详情面板 */
+  .iv-detail-drawer {
+    display: none;
+    background: #FFFFFF;
+    border: 2px solid #10B981;
+    border-radius: 14px;
+    padding: 22px 26px;
+    box-shadow: 0 10px 32px rgba(15,23,42,0.14);
+    animation: ivFadeIn 0.16s ease-out;
+  }
+  .iv-detail-drawer.open { display: block; }
+  .iv-dd-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1.5px solid #E2E8F0;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .iv-dd-badge {
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+    color: #fff;
+  }
+  .iv-dd-badge.strong  { background: #10B981; }
+  .iv-dd-badge.base    { background: #3B82F6; }
+  .iv-dd-badge.weak    { background: #F97316; }
+  .iv-dd-badge.special { background: #94A3B8; }
+  .iv-dd-title {
+    font-size: 19px;
+    font-weight: 900;
+    color: #0F172A;
+    flex: 1;
+  }
+  .iv-dd-close {
+    background: rgba(0,0,0,0.06);
+    border: none;
+    border-radius: 50%;
+    width: 28px; height: 28px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #64748B;
+  }
+  .iv-dd-close:hover { background: #EF4444; color: #fff; }
+  .iv-dd-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .iv-dd-sec {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 13px 16px;
+  }
+  .iv-dd-sec h4 {
+    font-size: 13.8px;
+    font-weight: 800;
+    color: #0F172A;
+    margin-bottom: 8px;
+  }
+  .iv-dd-sec p {
+    font-size: 13.2px;
+    line-height: 1.72;
+    color: #334155;
+  }
+  .iv-dd-sec.highlight {
+    background: #FFFBEB;
+    border-color: #FCD34D;
+  }
+  .iv-dd-sec.highlight h4 { color: #92400E; }
+  .iv-dd-sec.highlight p { color: #78350F; font-weight: 600; }
+  .iv-dd-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .iv-dd-tag {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    padding: 2.5px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #1E293B;
+  }
+
+  /* ==========================================
+     TAB 4: 微笑曲线与三大对策
+     ========================================== */
+  .iv-smile-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .iv-smile-diagram {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 26px 28px;
+    box-shadow: 0 4px 18px rgba(15,23,42,0.06);
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    gap: 20px;
+    align-items: center;
+  }
+  .iv-sd-node {
+    background: #F8FAFC;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+  }
+  .iv-sd-node.high {
+    border-color: #10B981;
+    background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
+  }
+  .iv-sd-icon { font-size: 30px; display: block; margin-bottom: 6px; }
+  .iv-sd-node h4 { font-size: 16.5px; font-weight: 900; color: #0F172A; margin-bottom: 6px; }
+  .iv-sd-node p { font-size: 12.6px; line-height: 1.6; color: #475569; margin-bottom: 8px; }
+  .iv-sd-score { font-size: 12px; font-weight: 800; color: #059669; }
+  .iv-sd-curve {
+    position: relative;
+    padding: 10px 0;
+    text-align: center;
+  }
+  .iv-sd-curve svg {
+    width: 100%;
+    height: 120px;
+  }
+  .iv-sd-dip-label {
+    margin-top: 8px;
+    background: #FEF2F2;
+    border: 1px dashed #FCA5A5;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    line-height: 1.58;
+    color: #991B1B;
+    display: inline-block;
+  }
+
+  .iv-strategies {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 18px;
+  }
+  .iv-strat-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 3px 14px rgba(15,23,42,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .iv-strat-badge {
+    align-self: flex-start;
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #EDE9FE;
+    color: #6D28D9;
+    border: 1px solid #DDD6FE;
+  }
+  .iv-strat-card h3 {
+    font-size: 16.8px;
+    font-weight: 900;
+    color: #0F172A;
+    line-height: 1.35;
+  }
+  .iv-strat-card p {
+    font-size: 13.5px;
+    line-height: 1.76;
+    color: #334155;
+    text-align: justify;
+  }
+  .iv-strat-card b { color: #10B981; }
+
+  /* 暗夜模式适配 */
+  body[data-theme="dark"] .insight-view { color: #F1F5F9; }
+  body[data-theme="dark"] .iv-fcard,
+  body[data-theme="dark"] .iv-city-card,
+  body[data-theme="dark"] .iv-legend-bar,
+  body[data-theme="dark"] .iv-table-wrap,
+  body[data-theme="dark"] .iv-detail-drawer,
+  body[data-theme="dark"] .iv-smile-diagram,
+  body[data-theme="dark"] .iv-strat-card {
+    background: #111D30;
+    border-color: #243854;
+    color: #E2E8F0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.42);
+  }
+  body[data-theme="dark"] .iv-sec-head h2,
+  body[data-theme="dark"] .iv-fcard-title,
+  body[data-theme="dark"] .iv-city-head h3,
+  body[data-theme="dark"] .iv-dd-title,
+  body[data-theme="dark"] .iv-sd-node h4,
+  body[data-theme="dark"] .iv-strat-card h3 {
+    color: #F8FAFC;
+  }
+  body[data-theme="dark"] .iv-sec-tip,
+  body[data-theme="dark"] .iv-fcard-stage,
+  body[data-theme="dark"] .iv-city-summary,
+  body[data-theme="dark"] .iv-fcard-points,
+  body[data-theme="dark"] .iv-city-list,
+  body[data-theme="dark"] .iv-legend-bar,
+  body[data-theme="dark"] .iv-sd-node p,
+  body[data-theme="dark"] .iv-strat-card p {
+    color: #94A3B8;
+  }
+  body[data-theme="dark"] .iv-fcard-body p,
+  body[data-theme="dark"] .iv-fcard-points b,
+  body[data-theme="dark"] .iv-city-list b,
+  body[data-theme="dark"] .iv-dd-sec p {
+    color: #CBD5E1;
+  }
+  body[data-theme="dark"] .iv-fcard-formula,
+  body[data-theme="dark"] .iv-sd-node,
+  body[data-theme="dark"] .iv-dd-sec {
+    background: #16263E;
+    border-color: #294266;
+  }
+  body[data-theme="dark"] .iv-f-node,
+  body[data-theme="dark"] .iv-dd-tag {
+    background: #1F3352;
+    border-color: #385682;
+    color: #E2E8F0;
+  }
+  body[data-theme="dark"] .iv-matrix-tbl th { background: #17273F; border-color: #294266; color: #E2E8F0; }
+  body[data-theme="dark"] .iv-matrix-tbl td { border-color: #294266; }
+  body[data-theme="dark"] .iv-matrix-tbl td.td-track { background: #132238; color: #F1F5F9; }
+  body[data-theme="dark"] .iv-cell-btn { background: #16263E; color: #CBD5E1; }
+  body[data-theme="dark"] .iv-cell-btn.cell-strong { background: rgba(16,185,129,0.18); border-color: #059669; color: #6EE7B7; }
+  body[data-theme="dark"] .iv-cell-btn.cell-base   { background: rgba(59,130,246,0.18); border-color: #2563EB; color: #93C5FD; }
+  body[data-theme="dark"] .iv-cell-btn.cell-weak   { background: rgba(249,115,22,0.20); border-color: #EA580C; color: #FDBA74; }
+  body[data-theme="dark"] .iv-cell-btn.cell-special{ background: #1A283C; border-color: #334764; color: #64748B; }
+  body[data-theme="dark"] .iv-dd-sec.highlight { background: rgba(245,158,11,0.15); border-color: #B45309; }
+  body[data-theme="dark"] .iv-dd-sec.highlight h4 { color: #FDE68A; }
+  body[data-theme="dark"] .iv-dd-sec.highlight p  { color: #FCD34D; }
+
 </style>
 </head>
 <body data-theme="multi">
@@ -1303,6 +1968,7 @@
       <button type="button" class="search-go-btn" onclick="triggerSearchNow()" title="搜索并自动跳转定位 (Enter)">定位</button>
       <button type="button" class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="清空搜索 (Esc)">✕</button>
     </div>
+    <button class="tb-btn" id="btnInsight" onclick="toggleInsightView()" title="深度透视：技术演进与赛道跨界融合 ｜ 川渝区域分工与补链招商">💡 产业透视</button>
     <button class="tb-btn active" id="btnTheme" onclick="toggleThemeMenu(event)" title="切换全图与布局中间色块配色方案（共7套主题）">🎨 <span class="tm-btn-swatches" id="curThemeSwatches"><i style="background:#2563EB;"></i><i style="background:#DB2777;"></i><i style="background:#D97706;"></i></span><span id="curThemeLabel">多彩分轨</span> ▾</button>
     <button class="tb-btn active" id="btnFit" onclick="toggleFit(true)">🗖 自适应屏宽</button>
     <div class="zoom-box" title="自由调节画面缩放比例">
@@ -2124,9 +2790,392 @@
   </div>
 </div>
 </div>
+  
+<div id="insightView" class="insight-view" style="display:none;">
+  <div class="iv-container">
+
+    <!-- 顶部宏观导读横幅 -->
+    <div class="iv-hero">
+      <div class="iv-hero-badge">🧬 十五五生物医药产业图谱 · 战略与演进透视</div>
+      <h1 class="iv-hero-title">技术跨界融合图谱 ＆ 川渝区域分工招商沙盘</h1>
+      <p class="iv-hero-desc">
+        从“孤立赛道分类”走向“关联规律洞察”：系统解构小分子、抗体、多肽、核素在“十五五”时期的<b>交织演进形态（XDC/RDC/PDC/mRNA）</b>，
+        并立足川渝双城经济圈，全景透视<b>8大细分赛道 × 10大产业链环节</b>的长板优势、中间断点与补链招引靶向。
+      </p>
+      <div class="iv-hero-tabs">
+        <button class="iv-tab active" onclick="switchInsightTab('fusion')">🧬 赛道跨界融合与技术演进</button>
+        <button class="iv-tab" onclick="switchInsightTab('regional')">🏔️ 川渝区域分工与长板分布</button>
+        <button class="iv-tab" onclick="switchInsightTab('matrix')">📊 8×10 全产业链成熟度与补链沙盘</button>
+        <button class="iv-tab" onclick="switchInsightTab('smile')">📈 川渝“微笑曲线”诊断与三大招投对策</button>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         TAB 1: 技术演进与赛道跨界融合全景
+         ========================================================================= -->
+    <div class="iv-panel active" id="tab-fusion">
+      <div class="iv-sec-head">
+        <h2>🧬 技术代际演进与“跨界融合”全景图</h2>
+        <span class="iv-sec-tip">核心规律：现代生物医药已告别单一形态竞争，迈入“精准递送 + 复合形态”的跨学科技术大爆炸</span>
+      </div>
+
+      <!-- 融合演进交互卡片网格 -->
+      <div class="iv-fusion-grid">
+        
+        <!-- 1. ADC 创新药 -->
+        <div class="iv-fcard" data-fusion="adc">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#FCE7F3; color:#BE185D; border-color:#FBCFE8;">小分子 × 抗体 复合演进</span>
+            <span class="iv-fcard-stage">当前处于全球爆发期</span>
+          </div>
+          <h3 class="iv-fcard-title">① ADC 偶联药物：靶向“生物导弹”</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">抗体创新药 (mAb/双抗)</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">化学连接子 (Linker)</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">小分子高活毒素 (Payload)</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>利用抗体极高的特异性结合肿瘤细胞表面抗原，通过化学稳定/可裂解连接子将超高活性小分子毒素（微管蛋白抑制剂/拓扑异构酶I抑制剂，毒性为传统化疗药百倍以上）精准输送至细胞内部，兼具抗体靶向性与化疗高致死性。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>传统单抗红海出清 $
+ightarrow$ 定点偶联、双抗ADC、双载荷ADC（DAR值可控）全面演进；适应症从晚期末线向一线/新辅助前移。</div>
+              <div><b>川渝标杆：</b><b>科伦博泰</b>（超118亿美元出海默沙东）、<b>百利天恒</b>（双抗ADC获BMS最高84亿美元授权）、康弘药业、康诺亚。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. RDC 创新核药 -->
+        <div class="iv-fcard" data-fusion="rdc">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#FEF3C7; color:#B45309; border-color:#FDE68A;">核素 × 多肽/抗体 复合演进</span>
+            <span class="iv-fcard-stage">前沿百亿级爆发蓝海</span>
+          </div>
+          <h3 class="iv-fcard-title">② RDC 核药：诊疗一体化精准内照射</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">医用同位素 (177Lu/225Ac/68Ga)</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">双功能螯合剂 (Chelator)</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">多肽 / 环肽 / 纳米抗体配体</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>将放射性核素的高能粒子辐射杀伤能力（内照射）与多肽、环肽、单抗配体的快速穿透与高亲和力结合。配体负责精准寻靶，螯合剂牢固结合放射性核素，实现“同靶点换核素、显像与治疗一体化”。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>由非特异性无机核素（如131I）向 RDC（受体靶向核素药物）跃迁；核素从 β 射线向电离密度更高、DNA双链断裂更彻底的 α 核素（225Ac/212Pb）演进。</div>
+              <div><b>川渝标杆：</b><b>乐山夹江堆产同位素基地 + 绵阳器产加速器</b>自主底座；<b>纽瑞特、通瑞生物、国通新药、华西海圻核药GLP</b>。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PDC / XDC -->
+        <div class="iv-fcard" data-fusion="xdc">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#DCFCE7; color:#15803D; border-color:#BBF7D0;">多肽 × 载荷/小核酸 复合演进</span>
+            <span class="iv-fcard-stage">胞内递送技术突破极</span>
+          </div>
+          <h3 class="iv-fcard-title">③ PDC / XDC：突破大分子实体瘤穿透瓶颈</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">多肽 / 复杂环肽</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">可裂解连接链</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">化学毒素 / siRNA / 反义寡核苷酸</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>相比抗体（分子量~150kDa），多肽分子量极小（仅几kDa），在肿瘤组织中的渗透率和穿透速率高出数十倍，且免疫原性极低、可化学全固相合成放大。以多肽作为归巢元件，将寡核苷酸或化疗分子送入胞内不可成药靶点。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>从简单线状短肽向高稳定度立体环肽演进；从肿瘤向代谢（MASH/心肾获益）及非肿瘤慢病领域拓展。</div>
+              <div><b>川渝标杆：</b><b>成都先导</b>（全球领先环肽DEL库高通量筛选）、<b>圣诺生物</b>（多肽固液相合成放大）、<b>多瑞药业</b>。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. CGT 与 mRNA 疫苗底层递送合流 -->
+        <div class="iv-fcard" data-fusion="cgt-mrna">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#E0F2FE; color:#0369A1; border-color:#BAE6FD;">核酸 × 纳米脂质(LNP) 递送演进</span>
+            <span class="iv-fcard-stage">未来产业新范式</span>
+          </div>
+          <h3 class="iv-fcard-title">④ CGT 与 mRNA：从体外细胞工程走向体内原位重编程</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">mRNA / sgRNA / 质粒</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">可电离脂质纳米颗粒 (LNP) / AAV</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">体内靶向 T细胞/肝/肺组织</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>mRNA疫苗的成熟极大验证了LNP（脂质纳米微球）的工业级递送与生产安全性。CGT正借此技术跳过昂贵复杂的体外细胞单采与繁琐回输流程，直接向体内注射LNP-mRNA，在患者体内原位产生CAR-T细胞（In vivo CAR-T），使治疗成本从数百万元暴降至万元级。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>病毒载体（AAV/LV） $
+ightarrow$ 组织靶向非病毒LNP；自体“一人一批”细胞制备 $
+ightarrow$ 通用现货型/体内重编程。</div>
+              <div><b>川渝标杆：</b><b>四川大学华西医院</b>国家生物治疗转化大设施、<b>威斯津生物</b>（mRNA/LNP递送）、<b>优赛诺</b>（通用型异体CAR-T）、<b>至善唯新</b>（rAAV）。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 口服 GLP-1 与“肽改小分子” -->
+        <div class="iv-fcard" data-fusion="glp1">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#FEF3C7; color:#78350F; border-color:#FDE68A;">多肽药理机制 $
+ightarrow$ 小分子化学实现</span>
+            <span class="iv-fcard-stage">消费医疗与严肃慢病王牌</span>
+          </div>
+          <h3 class="iv-fcard-title">⑤ 代谢革命：多肽作用机制向小分子口服化反哺</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">多肽靶点机制验证 (GLP-1/GIP)</span>
+            <span class="iv-f-op">演进为</span>
+            <span class="iv-f-node">非肽类口服非水解小分子</span>
+            <span class="iv-f-op">=</span>
+            <span class="iv-f-node">极低成本 + 每日口服 + 全球千亿市场</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>注射型多肽（司美格鲁肽、替尔泊肽）验证了千亿美元级代谢减重市场，但多肽口服易被胃肠道蛋白酶降解且生物利用度极低（＜1%）。跨国药企与国内龙头利用计算化学将多肽空间构象转化为非肽小分子（如礼来orforglipron、恒瑞口服制剂），彻底摆脱冷链注射与产能限制。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>单靶点注射多肽 $
+ightarrow$ 双/三靶点超长效注射多肽 $
+ightarrow$ 非肽类高活性口服小分子；由降糖向减重、MASH、心肾保护全面渗透。</div>
+              <div><b>川渝标杆：</b><b>成都先导</b>小分子筛选、<b>成都博腾/药友制药</b>原料药一体化、<b>重庆宸安生物</b>。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. 疫苗技术向肿瘤自免治疗跨界 -->
+        <div class="iv-fcard" data-fusion="vax-cross">
+          <div class="iv-fcard-top">
+            <span class="iv-fcard-tag" style="background:#EDE9FE; color:#5B21B6; border-color:#DDD6FE;">预防性接种 $
+ightarrow$ 个体化治疗</span>
+            <span class="iv-fcard-stage">免疫学新前沿</span>
+          </div>
+          <h3 class="iv-fcard-title">⑥ 疫苗新边疆：从传染病预防跨入肿瘤治疗性新抗原</h3>
+          <div class="iv-fcard-formula">
+            <span class="iv-f-node">患者肿瘤全外显子测序 (WES)</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">AI 新抗原靶点预测算法</span>
+            <span class="iv-f-op">+</span>
+            <span class="iv-f-node">mRNA / 复合新佐剂疫苗表达</span>
+          </div>
+          <div class="iv-fcard-body">
+            <p><b>融合演进逻辑：</b>传统疫苗以预防传染病为主（灭活、减毒、重组蛋白）。随着新型复合佐剂（如AS01、Matrix-M）和mRNA平台的突破，疫苗开始具备激活强效CD8+细胞毒性T细胞杀伤肿瘤的能力，与PD-1/双抗联用成为防止肿瘤术后复发的杀手锏。</p>
+            <div class="iv-fcard-points">
+              <div><b>代际跃迁：</b>由公共卫生预防二类苗，演进为高单价、个性化定制的“疫苗+药物”全链条肿瘤生物治疗方案。</div>
+              <div><b>川渝标杆：</b><b>迈科康生物</b>（新型佐剂标杆）、<b>威斯克/威斯津生物</b>、<b>重庆智飞生物</b>。</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         TAB 2: 川渝区域分工与长板分布
+         ========================================================================= -->
+    <div class="iv-panel" id="tab-regional">
+      <div class="iv-sec-head">
+        <h2>🏔️ 川渝双城经济圈：产业空间分工与长板高地分布</h2>
+        <span class="iv-sec-tip">核心规律：已形成“成都策源创新研发 + 重庆绿色制造与西南流通枢纽 + 川南川东特色腹地”的互补分工格局</span>
+      </div>
+
+      <div class="iv-regional-overview">
+        <!-- 成都核心 -->
+        <div class="iv-city-card" style="border-top-color:#10B981;">
+          <div class="iv-city-head">
+            <span class="iv-city-badge sc">创新策源高地</span>
+            <h3>成 都市 (创新研发 · 临床转化 · ADC/核药集群)</h3>
+          </div>
+          <p class="iv-city-summary">全国顶尖的生物医药研发高地与新药创新策源极，拥有完备的临床前安评、临床转化与新分子管线集群。</p>
+          <ul class="iv-city-list">
+            <li><b>源头发现与评价支柱：</b><b>成都先导</b>（万亿级DEL化合物筛选库，全球三大平台之一）；<b>华西海圻</b>（国家成都新药安全性评价中心，西部唯一中美双GLP认证机构）；<b>成都达硕</b>（年供SPF实验动物超400万只，西部最大底座）。</li>
+            <li><b>国内顶尖ADC创新集群：</b>集聚<b>科伦博泰</b>（核心管线出海默沙东破百亿美元）、<b>百利天恒</b>（双抗ADC最高84亿美元授权BMS）、<b>康诺亚、康弘药业、科弈药业、微芯新域</b>。</li>
+            <li><b>中国核医疗第一战略策源极：</b><b>纽瑞特医疗、通瑞生物、国通新药、云克药业、温江远大核药基地</b>，构筑治疗性RDC核药全国最密集管线群。</li>
+            <li><b>血液制品与多肽支柱：</b><b>天坛生物/成都蓉生</b>（国内最大血制企业主力基地）、<b>远大蜀阳生物</b>（全谱系血制出海）；<b>圣诺生物</b>（多肽API/制剂国家级龙头）。</li>
+            <li><b>临床顶尖支撑：</b><b>四川大学华西医院</b>国家生物治疗转化医学重大科技基础设施、华西细胞治疗研究院。</li>
+          </ul>
+        </div>
+
+        <!-- 重庆核心 -->
+        <div class="iv-city-card" style="border-top-color:#3B82F6;">
+          <div class="iv-city-head">
+            <span class="iv-city-badge cq">放大制造与流通中枢</span>
+            <h3>重 庆 市 (中间体/API放大量产 · 绿色CDMO · 商业推广枢纽)</h3>
+          </div>
+          <p class="iv-city-summary">具备雄厚的化学原料药工程放大、绿色CDMO代工、大分子原液产能及覆盖西南辐射全国的医药流通网络。</p>
+          <ul class="iv-city-list">
+            <li><b>绿色原料药与CDMO龙头：</b><b>博腾股份</b>（长寿基地拥有通过FDA/EMA零缺陷认证的商业化小分子与多肽API平台）；<b>重庆皓元、福安药业、药友制药</b>（制剂中美双报主力）。</li>
+            <li><b>大分子抗体原液规模产能：</b><b>智翔金泰</b>拥有多条2000L级大型生物反应器原液产线，拥有首款国产自免IL-17抗体（赛立奇单抗）与全球首款狂犬双抗。</li>
+            <li><b>国内顶尖疫苗推广与研发巨头：</b><b>智飞生物</b>拥有国内规模最大、下沉最深（覆盖全国数万家接种点）的疫苗学术推广服务网络，并加速自研管线转型。</li>
+            <li><b>西南医药商业流通与特药DTP龙头：</b><b>重药控股</b>（全国前五强医药流通巨头，近80万㎡现代医药物流仓网，<b>231家DTP专业药房矩阵</b>，深度承接高值创新药院外放量）。</li>
+            <li><b>药用高硼硅玻璃包材领跑者：</b><b>正川股份</b>（国内药用玻璃管及中硼硅瓶制造龙头，打破外资包材垄断）。</li>
+          </ul>
+        </div>
+
+        <!-- 四川全域协同基地 -->
+        <div class="iv-city-card" style="border-top-color:#F59E0B;">
+          <div class="iv-city-head">
+            <span class="iv-city-badge sc-all">全域腹地协同</span>
+            <h3>四川省域腹地 ＆ 西南战略资源协同</h3>
+          </div>
+          <p class="iv-city-summary">提供不可替代的医用同位素堆产底座、特色原料药产能与战略实验动物资源，形成全产业链闭环。</p>
+          <ul class="iv-city-list">
+            <li><b>乐山夹江：中国医用同位素堆产第一基地</b> —— 核动力院<b>海同同位素基地</b>，实现 177Lu、99Mo、131I 等核心堆产核素自主可控，彻底打破“无米下锅”进口卡脖子局面。</li>
+            <li><b>绵阳科技城：回旋加速器与放疗装置高地</b> —— 依托中物院研究堆，集聚<b>玖谊源</b>（国产医用回旋加速器领军者）、<b>中广核绵阳</b>、<b>中玖闪光</b>（FLASH放疗系统），构建器产核素与高端放疗装备高地。</li>
+            <li><b>川南特色基地：</b><b>内江汇宇制药</b>（抗肿瘤注射剂与原料药一体化，高端规范市场出口龙头）。</li>
+            <li><b>云贵战略协同：</b>联动<b>云南沃森生物</b>（疫苗制造链主）、<b>云南白药</b>医药商业网，以及云南、贵州（贵州天勤）丰富的<b>实验猕猴资源与SPF级动物繁殖基地</b>，保障西南大动物安评原料不断链。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         TAB 3: 8×10 全产业链成熟度与补链沙盘
+         ========================================================================= -->
+    <div class="iv-panel" id="tab-matrix">
+      <div class="iv-sec-head">
+        <h2>📊 8大赛道 × 10大产业链环节：成熟度与补链招商全景沙盘</h2>
+        <span class="iv-sec-tip">点击任意单元格，即可查看该环节的【现状诊断】、【代表企业】及【精准补链招引靶向】</span>
+      </div>
+
+      <!-- 图例与操作提示 -->
+      <div class="iv-legend-bar">
+        <div class="iv-lg-item"><span class="iv-dot strong"></span> 🟢 优势长板：全国/西部领先，具备链主龙头或国家级平台支撑</div>
+        <div class="iv-lg-item"><span class="iv-dot base"></span> 🔵 具备基础：本地有企业布局但规模偏小，需扩产与技术升级</div>
+        <div class="iv-lg-item"><span class="iv-dot weak"></span> 🟠 薄弱短板：本地产能稀缺、高度依赖长三角或外资，为<b>招商补链核心靶点</b></div>
+        <div class="iv-lg-item"><span class="iv-dot special"></span> ⚪ 行业特殊：受强监管或物理半衰期决定无该常规零售环节</div>
+        <div class="iv-lg-tip">🔍 点击表格中任意方块，查看招投详情</div>
+      </div>
+
+      <!-- 8x10 成熟度矩阵表格 -->
+      <div class="iv-table-wrap">
+        <table class="iv-matrix-tbl" id="matrixTable">
+          <thead>
+            <tr>
+              <th class="th-track">细分赛道</th>
+              <th colspan="3" class="th-ph1">研发基础设施 (上游)</th>
+              <th colspan="3" class="th-ph2">药物开发 (中游)</th>
+              <th class="th-ph3">制造</th>
+              <th colspan="3" class="th-ph4">销售 (下游)</th>
+            </tr>
+            <tr class="tr-sub">
+              <th></th>
+              <th>耗材</th><th>仪器</th><th>实验动物</th>
+              <th>CRO</th><th>原料药</th><th>制剂(管线)</th>
+              <th>CMO</th>
+              <th>CSO</th><th>流通</th><th>零售</th>
+            </tr>
+          </thead>
+          <tbody id="matrixTableBody">
+            <!-- 由 JS 自动根据 MATURITY_DATA 渲染 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 单元格详情弹窗抽屉 -->
+      <div class="iv-detail-drawer" id="matrixDrawer">
+        <div class="iv-dd-head">
+          <div class="iv-dd-badge" id="ddBadge">优势长板</div>
+          <h3 class="iv-dd-title" id="ddTitle">小分子化学药 · 原料药</h3>
+          <button class="iv-dd-close" onclick="closeDrawer()">✕</button>
+        </div>
+        <div class="iv-dd-body">
+          <div class="iv-dd-sec">
+            <h4>📌 环节现状与川渝定位</h4>
+            <p id="ddDesc"></p>
+          </div>
+          <div class="iv-dd-sec">
+            <h4>🏢 本地代表企业与配套支撑</h4>
+            <div class="iv-dd-tags" id="ddEnterprises"></div>
+          </div>
+          <div class="iv-dd-sec highlight" id="ddRecruitBox">
+            <h4>🎯 “十五五”招投策略与精准补链招引靶标</h4>
+            <p id="ddRecruit"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         TAB 4: 川渝“微笑曲线”诊断与三大招投对策
+         ========================================================================= -->
+    <div class="iv-panel" id="tab-smile">
+      <div class="iv-sec-head">
+        <h2>📈 川渝生物医药“微笑曲线”诊断与三大招投突围对策</h2>
+        <span class="iv-sec-tip">直击痛点：研发策源力拔尖、终端药商网络发达，但“中间商业化代工”与“上游核心工具耗材”仍存塌陷</span>
+      </div>
+
+      <div class="iv-smile-wrap">
+        <!-- 曲线图示卡片 -->
+        <div class="iv-smile-diagram">
+          <div class="iv-sd-col left">
+            <div class="iv-sd-node high">
+              <span class="iv-sd-icon">🔬</span>
+              <h4>源头策源端 (强)</h4>
+              <p>DEL筛选库（先导）、双GLP安评（华西海圻）、ADC管线群（科伦/百利）、核素自主保供（乐山/绵阳）</p>
+              <div class="iv-sd-score">全国第一梯队 ★★★★★</div>
+            </div>
+          </div>
+
+          <div class="iv-sd-curve">
+            <svg viewBox="0 0 500 160" preserveAspectRatio="none">
+              <path d="M 30,30 Q 250,150 470,30" fill="none" stroke="#EF4444" stroke-width="4.5" stroke-dasharray="6,4"></path>
+              <circle cx="30" cy="30" r="8" fill="#10B981"></circle>
+              <circle cx="250" cy="140" r="10" fill="#EF4444"></circle>
+              <circle cx="470" cy="30" r="8" fill="#3B82F6"></circle>
+            </svg>
+            <div class="iv-sd-dip-label">
+              <b>⚠️ 中段断点与外流痛点：</b><br>
+              ADC高活偶联灌装CMO缺失<br>
+              Protein A/填料/质谱依赖长三角与外资<br>
+              “研发在川渝，代工放量流向无锡/苏州”
+            </div>
+          </div>
+
+          <div class="iv-sd-col right">
+            <div class="iv-sd-node high">
+              <span class="iv-sd-icon">🚚</span>
+              <h4>商业流通端 (强)</h4>
+              <p>重药控股全国前五、近80万㎡冷链仓网、231家DTP药房、双机场航空核药温控物流</p>
+              <div class="iv-sd-score">西部枢纽标杆 ★★★★★</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三大突围策略卡片 -->
+        <div class="iv-strategies">
+          <div class="iv-strat-card">
+            <div class="iv-strat-badge">策略一 · 链主牵引</div>
+            <h3>链主订单牵引耗材国产化：以采购换落地</h3>
+            <p>依托科伦博泰、百利天恒、康诺亚、智翔金泰等百亿级抗体/ADC商业化原液生产订单，制定“本地耗材与培养基供应链替代清单”。针对<b>Protein A亲和介质、无血清培养基、商业化一次性反应袋</b>，通过“承诺首台套/首批次采购协议 + 联合验证补贴”，定向招引长三角成熟耗材龙头（如纳微、奥浦迈、乐纯生物）在川渝建设第二生产与验证基地，化解上游断供风险。</p>
+          </div>
+
+          <div class="iv-strat-card">
+            <div class="iv-strat-badge">策略二 · 园区重资产托底</div>
+            <h3>代建高活/辐安重资产厂房：补齐ADC偶联与CGT商业化代工</h3>
+            <p>针对ADC“高活性毒素（OEB4/5级密闭）+ 抗体偶联 + 冻干无菌灌装”极高的厂房投资门槛，以及核药甲级辐安车间极严的环评壁垒，由<b>成都天府国际生物城、重庆国际生物城政府产业基金出资代建高标准重资产厂房</b>，采取“企业轻资产拎包入驻 + 租金转股权 + 阶段性回购”模式，定向招引或合资设立专业化 ADC/CGT/RDC CMO，彻底扭转本地优质管线代工外流的被动局面。</p>
+          </div>
+
+          <div class="iv-strat-card">
+            <div class="iv-strat-badge">策略三 · 空运枢纽升级</div>
+            <h3>打造成渝世界级医药航空港：构筑核素与活细胞极速交付圈</h3>
+            <p>发挥成都天府、双流双国际机场与重庆江北国际机场“世界级机场群”优势，设立全国领先的<b>放射性医用同位素与CGT深冷专区保税货运通道</b>。联合川航、国航开辟直飞全国主要省会城市的“核药晨间直飞专线”，将短半衰期（如68Ga数小时、177Lu数天）核药与活细胞药物的配送半径扩展至全国2000公里，将四川打造为辐射全国乃至亚太的核医疗航空供药中枢。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </div>
 
 <script id="tracksMeta" type="application/json">["小分子化学药", "抗体创新药", "ADC创新药", "多肽创新药（含环肽）", "核药", "细胞/基因疗法", "疫苗", "血液制品"]</script>
+<script id="matrixDataMeta" type="application/json">{"小分子化学药": {"耗材": {"rating": "base", "text": "药玻包材（渝正川股份）优势突出，但化学药高端色谱填料、色谱柱与高纯试剂本地制造薄弱，需招引填料龙头落户。", "enterprises": ["正川股份 (渝)", "赛多利斯成都基地 (川)", "纳微科技", "赛分科技", "阿拉丁", "山东药玻"], "recruitment": "定向招引长三角/京津冀高端反相硅胶色谱填料、手性分离填料与高纯试剂龙头（如纳微科技、阿拉丁、泰坦科技）在成渝设立第二基地；推进四川正川股份中硼硅玻璃扩产。"}, "仪器": {"rating": "base", "text": "拥有赛多利斯成都基地及川渝药检共享平台，但本土高端HPLC/LC-MS整机制造企业少，需培育在线PAT与色谱仪器制造。", "enterprises": ["赛多利斯成都基地 (川)", "安捷伦", "赛默飞", "岛津", "福立仪器", "聚光科技"], "recruitment": "以天府国际生物城、重庆国际生物城共性检测平台为依托，招引国产高效液相色谱（HPLC）、三重四极杆质谱（LC-MS/MS）与在线PAT过程分析仪器制造企业。"}, "实验动物": {"rating": "strong", "text": "成都达硕（年供超400万只，西部最大）+华西海圻GLP基地，形成川渝互补支撑。", "enterprises": ["华西海圻 (川)", "成都达硕 (川)", "昭衍新药", "药康生物", "百奥赛图", "维通利华"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "成都先导万亿级DEL库全球领先，叠加华西海圻中美双GLP与天府生物城27个共性技术平台。", "enterprises": ["华西海圻 (川)", "成都先导 (川)", "药明康德", "康龙化成", "美迪西", "泰格医药"], "recruitment": ""}, "原料药": {"rating": "strong", "text": "科伦/川宁、博腾（FDA零缺陷）、福安、华邦构成川渝原料药—中间体强集群。", "enterprises": ["博腾股份 (渝)", "科伦药业 (川)", "华海药业", "普洛药业", "九洲药业", "联邦制药"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "科伦、苑东、倍特、康弘、重庆药友（中美双报）形成仿创结合与出海主力集群。", "enterprises": ["康弘药业 (川)", "药友制药 (渝)", "苑东生物 (川)", "倍特药业 (川)", "恒瑞医药", "中国生物制药", "翰森制药"], "recruitment": ""}, "CMO": {"rating": "strong", "text": "重庆博腾（长寿基地）与重庆国际生物城、成都医学城构建起西部领先小分子CDMO产能。", "enterprises": ["博腾股份 (渝)", "药明康德", "凯莱英", "九洲药业", "皓元医药"], "recruitment": ""}, "CSO": {"rating": "base", "text": "依托重药控股、国控四川、科伦医贸及麦德凯DTP开展准入推广，独立第三方创新药CSO仍可扩容。", "enterprises": ["重药控股 (渝)", "四川麦德凯 (川)", "国药控股四川 (川)", "康哲药业", "上海医药", "国药控股", "九州通", "亿腾医药"], "recruitment": ""}, "流通": {"rating": "strong", "text": "重药控股（全国前五）+国控四川+成渝双药品进口口岸，物流辐射力强。", "enterprises": ["重药控股 (渝)", "国药控股四川 (川)", "国药控股", "上海医药", "华润医药", "九州通"], "recruitment": ""}, "零售": {"rating": "strong", "text": "重药231家DTP矩阵、四川麦德凯（在售创新药200+）及一心堂/健之佳川渝高密度网络。", "enterprises": ["重药控股 (渝)", "四川麦德凯 (川)", "益丰药房", "老百姓", "大参林", "一心堂", "京东健康"], "recruitment": ""}}, "抗体创新药": {"耗材": {"rating": "weak", "text": "赛多利斯提供本地服务，但Protein A亲和介质、商业化一次性反应袋高度依赖长三角与进口，属核心补链靶点。", "enterprises": ["智翔金泰 (渝)", "赛多利斯成都基地 (川)", "奥浦迈", "纳微科技", "乐纯生物", "东富龙", "洁特生物"], "recruitment": "【核心短板招商】百利天恒、康诺亚、智翔金泰抗体产能加速爬坡，急需定向招引Protein A亲和层析介质（纳微科技）、无血清细胞培养基（奥浦迈、多宁生物）及一次性生物反应袋（乐纯生物）。"}, "仪器": {"rating": "weak", "text": "智翔金泰等产线装备以进口+外省（东富龙/楚天）采购为主，川渝本土大规模生物反应器制造空白。", "enterprises": ["智翔金泰 (渝)", "赛多利斯成都基地 (川)", "赛多利斯", "Cytiva", "东富龙", "楚天科技", "多宁生物"], "recruitment": "招引万升级不锈钢生物反应器及深层过滤、连续流离心装备制造企业（如东富龙、森松国际、楚天科技）设立西南技术服务与备件中心。"}, "实验动物": {"rating": "strong", "text": "华西海圻灵长类安评（2027新基地投用）+成都达硕抗体专用动物模型，西部领先。", "enterprises": ["华西海圻 (川)", "成都达硕 (川)", "智翔金泰 (渝)", "药康生物", "百奥赛图", "昭衍新药", "维通利华"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "华西海圻双GLP安评+华西医院国家生物治疗转化医学重大科技基础设施强力支撑。", "enterprises": ["华西海圻 (川)", "智翔金泰 (渝)", "华西医院 (川)", "药明生物", "康龙化成", "昭衍新药", "美迪西", "百奥赛图"], "recruitment": ""}, "原料药": {"rating": "strong", "text": "重庆智翔金泰2000L级商业化原液线、成都康诺亚原液基地、百利天恒形成双城原液产能。", "enterprises": ["百利天恒 (川)", "康诺亚 (川)", "智翔金泰 (渝)", "药明生物", "复宏汉霖", "百济神州"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "康诺亚司普奇拜单抗、智翔金泰赛立奇/斯乐韦米双抗、百利天恒双抗ADC、康弘康柏西普领跑全国。", "enterprises": ["百利天恒 (川)", "康诺亚 (川)", "智翔金泰 (渝)", "康弘药业 (川)", "恒瑞医药", "百济神州", "信达生物"], "recruitment": ""}, "CMO": {"rating": "base", "text": "博腾拓展生物大分子/ADC CDMO，川渝园区正规划抗体CDMO集群，万升级第三方商业化代工仍待做强。", "enterprises": ["博腾股份 (渝)", "药明生物", "药明合联", "迈百瑞", "三星生物", "东曜药业"], "recruitment": "支持重庆智翔金泰、博腾股份扩建万升级大分子商业化代工产能；引进合见生物、药明生物设立西南生物药CMO分中心，留住本地优质管线代工产值。"}, "CSO": {"rating": "base", "text": "药企采取“自建团队+康哲/药友战略合作+麦德凯DTP”双轨模式，本土专科生物药CSO偏少。", "enterprises": ["智翔金泰 (渝)", "康弘药业 (川)", "四川麦德凯 (川)", "药友制药 (渝)", "康哲药业", "上海医药", "国药控股", "亿腾医药", "智翔金泰＋康哲/药友"], "recruitment": ""}, "流通": {"rating": "strong", "text": "重药控股近80万㎡冷链仓网+成都进口口岸保税仓+国控四川全程温控网络。", "enterprises": ["重药控股 (渝)", "国药控股四川 (川)", "国药控股", "上海医药", "华润医药", "九州通"], "recruitment": ""}, "零售": {"rating": "strong", "text": "四川麦德凯、重药和平DTP药房（H1增35%）与双通道定点药店高效承接高值抗体院外放量。", "enterprises": ["重药控股 (渝)", "四川麦德凯 (川)", "益丰药房", "老百姓", "上海医药", "京东健康"], "recruitment": ""}}, "ADC创新药": {"耗材": {"rating": "weak", "text": "定点偶联试剂、GMP级Linker-Payload试剂耗材及一次性反应袋本地供给薄弱，急需围绕ADC链主靶向招商。", "enterprises": ["华西医院 (川)", "奥浦迈", "百普赛斯", "皓元医药", "洁特生物", "山东药玻"], "recruitment": "【核心短板招商】定向招引高活性Payload毒素原料、新型水溶性连接子（Linker）、双载荷工具分子研发企业（如键凯科技、皓元医药）设立联合实验室。"}, "仪器": {"rating": "weak", "text": "ADC偶联与DAR值质谱表征高端设备依赖进口，主要依托两省市药检院与华西共享平台。", "enterprises": ["华西医院 (川)", "华大智造", "东富龙", "楚天科技", "汉邦科技", "聚光科技"], "recruitment": ""}, "实验动物": {"rating": "strong", "text": "华西海圻ADC毒理经验丰富，成都达硕双资质平台+四川维通利华+云贵实验猴资源形成大西南强底座。", "enterprises": ["华西海圻 (川)", "成都达硕 (川)", "昭衍新药", "南模生物", "药康生物", "维通利华"], "recruitment": ""}, "CRO": {"rating": "base", "text": "成都先导+华西肿瘤GCP临床资源深厚，但本土专注ADC偶联表征与肿瘤MRCT的专科CRO相对稀缺。", "enterprises": ["华西海圻 (川)", "成都先导 (川)", "华西医院 (川)", "药明康德", "康龙化成", "泰格医药", "昭衍新药", "皓元医药"], "recruitment": ""}, "原料药": {"rating": "base", "text": "重庆博腾、重庆皓元基地、内江汇宇、成都西岭源/摩诃大龙布局高活Payload-Linker，规模化外供能力继续爬坡。", "enterprises": ["博腾股份 (渝)", "药明康德", "皓元医药", "键凯科技", "凯莱英"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "成都已形成国内顶尖ADC集群：科伦博泰（默沙东百亿美元合作）、百利天恒（BMS 84亿美元合作）、康诺亚、康弘双载荷ADC、科弈、微芯新域。", "enterprises": ["科伦博泰 (川)", "百利天恒 (川)", "康诺亚 (川)", "康弘药业 (川)", "荣昌生物", "映恩生物", "恒瑞医药"], "recruitment": ""}, "CMO": {"rating": "weak", "text": "突出短板！高活毒素之外的“抗体+偶联+无菌冻干灌装”一体化ADC CDMO高度集中于无锡/苏州，川渝亟待补齐。", "enterprises": ["博腾股份 (渝)", "药明合联", "东曜药业", "凯莱英", "迈百瑞"], "recruitment": "【首要招商攻坚】成都科伦博泰、百利天恒ADC集群缺乏本地商业化偶联冻干一体化灌装产线，由园区代建高活密闭车间（OEB4/5级），定向招商药明合联、迈百瑞、东曜药业落地西南ADC CMO基地！"}, "CSO": {"rating": "weak", "text": "西南独立肿瘤专科CSO承接力有限，科伦博泰、百利天恒均自建600+人销售团队。", "enterprises": ["重药控股 (渝)", "科伦博泰 (川)", "百利天恒 (川)", "康哲药业", "亿腾医药", "泰凌医药"], "recruitment": "培育或引进专注三甲肿瘤医院特药学术推广的专科化CSO服务机构，对接华西、四川省肿瘤医院、重庆市肿瘤医院临床网络。"}, "流通": {"rating": "strong", "text": "重药控股、四川科伦医贸、云南白药商业板块构建高值抗肿瘤药全程冷链直配网。", "enterprises": ["重药控股 (渝)", "国药控股", "上海医药", "华润医药", "九州通"], "recruitment": ""}, "零售": {"rating": "base", "text": "一心堂、重庆桐君阁、四川德仁堂及麦德凯DTP承接双通道处方，院外输注协同中心仍需扩面。", "enterprises": ["老百姓大药房", "大参林", "益丰药房", "一心堂"], "recruitment": ""}}, "多肽创新药（含环肽）": {"耗材": {"rating": "weak", "text": "成都郑源生化提供保护氨基酸，但固相合成树脂（如蓝晓类）、缩合试剂与高端制备纯化硅胶填料本土配套不足。", "enterprises": ["昊帆生物", "蓝晓科技", "纳微科技"], "recruitment": "招引固相多肽合成载体树脂龙头（如蓝晓科技）、新型缩合偶联试剂与制备纯化球形硅胶供应商，配套圣诺生物、多瑞药业产业链需求。"}, "仪器": {"rating": "base", "text": "成都格莱高科技具备多肽合成、裂解与制备纯化系统本土制造能力，重庆尚缺对应装备主体。", "enterprises": ["CEM", "安捷伦"], "recruitment": ""}, "实验动物": {"rating": "base", "text": "依托成都达硕、华西海圻、海枫生物、格林豪斯开展代谢与减重模型评价。", "enterprises": ["华西海圻 (川)", "成都达硕 (川)", "维通利华／Charles River", "集萃药康"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "成都先导拥有全球稀缺的万亿级环肽DEL筛选平台，配合华西海圻、海枫生物形成特色发现评价链。", "enterprises": ["华西海圻 (川)", "成都先导 (川)", "药明康德", "Medpace"], "recruitment": ""}, "原料药": {"rating": "strong", "text": "成都圣诺生物（国内多肽API核心龙头）+金堂多瑞药业+重庆博腾多肽API平台，深度嵌入全球供应链。", "enterprises": ["博腾股份 (渝)", "圣诺生物 (川)", "Bachem", "诺泰生物"], "recruitment": ""}, "制剂（管线）": {"rating": "base", "text": "成都诺和晟泰（多肽创新药）、圣诺生物复杂制剂、重庆宸安生物（司美格鲁肽类似药）稳步推进。", "enterprises": ["圣诺生物 (川)", "诺和诺德", "礼来", "强生／Protagonist"], "recruitment": ""}, "CMO": {"rating": "strong", "text": "圣诺生物（大邑基地API+制剂CDMO）与重庆博腾多肽CDMO形成川渝双引擎。", "enterprises": ["博腾股份 (渝)", "圣诺生物 (川)", "Bachem", "药明康德／合全药业", "凯莱英"], "recruitment": ""}, "CSO": {"rating": "weak", "text": "川渝尚无专注代谢/多肽领域的知名独立CSO主体，慢病与减重消费医疗院外推广生态待培育。", "enterprises": ["IQVIA Contract Sales"], "recruitment": "培育适应减重消费医疗与严重代谢慢病双重属性的“互联网医院处方+O2O冷链特药配送+数字化体重管理”创新商业化推广平台。"}, "流通": {"rating": "strong", "text": "国药控股四川医药、重庆医药集团及和平物流具备成熟的胰岛素/GLP-1冷链配送网络。", "enterprises": ["国药控股四川 (川)", "国药控股", "重庆医药集团"], "recruitment": ""}, "零售": {"rating": "base", "text": "四川德仁堂、重庆和平药房/和平新健康DTP及O2O电商承接GLP-1院外自费与续方需求。", "enterprises": ["京东健康／京东大药房", "重庆医药旗下专业药房网络"], "recruitment": ""}}, "核药": {"耗材": {"rating": "weak", "text": "尚无独立大型核药耗材专精企业，一次性合成卡套与屏蔽耗材多随绵阳玖谊源、成都德力斯装备配套，需培育GMP级无菌卡匣专项产能。", "enterprises": ["玖谊源 (川)", "纽瑞特 (川)", "通瑞生物 (川)", "北京派特生物", "吉蕊科技", "诺宇生物"], "recruitment": "【核心短板招商】针对乐山/绵阳堆产器产同位素及通瑞、国通核药CMO，专项招引和培育医用一次性全自动无菌合成卡套、管路耗材及防辐射热室配件制造企业，填补西南空白。"}, "仪器": {"rating": "strong", "text": "全国高地！绵阳玖谊源（医用回旋加速器）、中广核技（30MeV加速器）、成都德力斯（热室）、中玖闪光（FLASH放疗）、中硼医疗（BNCT）、永新医疗（SPECT）。", "enterprises": ["玖谊源 (川)", "联影医疗", "楚天科技", "中核安科锐", "明峰医疗", "永新医疗", "中硼医疗"], "recruitment": ""}, "实验动物": {"rating": "strong", "text": "华西海圻（核药GLP资质）、药明康德成都分子影像中心、中物院二所放射性安评平台，稀缺牌照齐全。", "enterprises": ["华西海圻 (川)", "昭衍新药", "益诺思", "药明康德", "中科灵瑞"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "通瑞生物、国通新药（核药CRDMO新锐）+华西海圻核药GLP，具备高壁垒甲级辐安证与标记临床前一体化能力。", "enterprises": ["华西海圻 (川)", "通瑞生物 (川)", "国通新药 (川)", "米度生物", "药明康德", "益诺思", "昭衍新药"], "recruitment": ""}, "原料药": {"rating": "strong", "text": "全国唯一“堆产+器产”双主路线战略腹地：乐山夹江海同同位素（核动力院）、中国绵阳研究堆（中物院）、中广核绵阳、玖谊源、纽瑞特实现医用同位素自主可控。", "enterprises": ["玖谊源 (川)", "纽瑞特 (川)", "中国绵阳研究堆 (川)", "海同同位素 (川)", "中国同辐", "秦山核电「和福一号」", "国电投核素同创", "中广核同位素"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "纽瑞特、通瑞生物、云克药业、欣科药业、九院二所、温江远大核药基地构筑诊断+治疗（177Lu/225Ac RDC）重磅集群。", "enterprises": ["纽瑞特 (川)", "通瑞生物 (川)", "中国同辐", "东诚药业", "远大医药", "先通药业", "蓝纳成"], "recruitment": ""}, "CMO": {"rating": "strong", "text": "温江通瑞生物、绵阳国通新药、九院二所具备极高准入壁垒的核药委托研发生产与临床供药能力。", "enterprises": ["通瑞生物 (川)", "国通新药 (川)", "米度生物"], "recruitment": ""}, "CSO": {"rating": "base", "text": "远大医药、成都普尔伟业、云克药业开展核医学科准入与学术推广，需进一步联动商保支付。", "enterprises": ["远大医药", "百洋医药", "上海医药/国药控股/九州通", "成都普尔伟业"], "recruitment": ""}, "流通": {"rating": "strong", "text": "川航物流（双流/天府双国际机场均具核素航空运输资质）+中国同辐/东诚药业四川核药房网络+普尔伟业直配。", "enterprises": ["中国同辐", "东诚药业", "东航物流", "川航物流", "世达国际物流", "国药/上药四川", "成都普尔伟业"], "recruitment": "依托川航物流和天府/双流双机场，建设面向全国的“核素航空极速达物流中枢”，开辟早间直飞航线，打通68Ga、177Lu核药全国半衰期配送网络。"}, "零售": {"rating": "special", "text": "放射性药品受严格辐射安全监管，实行“核药房—医院核医学科”闭环直配使用，无社会零售药房环节。", "enterprises": [], "recruitment": ""}}, "细胞/基因疗法": {"耗材": {"rating": "weak", "text": "天府生物城四川卡澈布局无血清培养基，但GMP级磁珠、细胞因子、sgRNA编辑原料及密闭管路耗材本土供给仍薄弱。", "enterprises": ["倍谙基", "百普赛斯", "金斯瑞", "华龛生物"], "recruitment": "【核心短板招商】定向招引GMP级无血清培养基、分选磁珠、重组细胞因子（近岸蛋白、义翘神州）及新型组织特异性靶向LNP辅料供应商设立分部。"}, "仪器": {"rating": "weak", "text": "华西规模化制备中心等为设备使用平台，川渝本土CGT全密闭自动化细胞制备一体机与深冷装备制造主体稀缺。", "enterprises": ["华西医院 (川)", "华龛生物", "海尔生物医疗"], "recruitment": "招引国产全密闭全自动化细胞制备一体机（如纳昂达、赛动智造）及气相液氮超低温深冷存储运输装备企业落户。"}, "实验动物": {"rating": "base", "text": "成都药康（集萃药康子公司）与成都达硕提供免疫缺陷鼠，CGT专用重度免疫缺陷与人源化模型需持续扩品。", "enterprises": ["成都达硕 (川)", "药康生物", "百奥赛图"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "华西医院（临床转化/IIT研究全国顶尖）+华西海圻（细胞/类器官安评）+华西细胞治疗研究院+成都云测。", "enterprises": ["华西海圻 (川)", "华西医院 (川)", "昭衍新药", "诺禾致源", "和元生物"], "recruitment": ""}, "原料药": {"rating": "base", "text": "至善唯新（rAAV三质粒平台）、威斯津（mRNA/LNP递送）、新生命/云测细胞库具备特色，商业级第三方GMP病毒载体大产能仍待扩建。", "enterprises": ["华西医院 (川)", "至善唯新 (川)", "威斯津 (川)", "和元生物", "云舟生物", "中源协和", "厦门赛诺邦格"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "优赛诺（异体CAR-T获美国IND）、至善唯新（法布雷AAV基因治疗）、康德赛（DC/巨噬细胞）、睿健（iPSC帕金森II期）、康景、弘基等多元管线活跃。", "enterprises": ["至善唯新 (川)", "优赛诺 (川)", "传奇", "驯鹿", "药明巨诺", "科济", "沙砾", "香雪生命科学", "星奕昂"], "recruitment": ""}, "CMO": {"rating": "weak", "text": "康景区域制备中心与华西平台聚焦临床样品与中试，持有商业化生产许可的大型第三方CGT CDMO仍集中于长三角。", "enterprises": ["华西医院 (川)", "和元生物", "云舟生物", "华龛生物"], "recruitment": "【核心短板招商】依托华西转化医学大设施，招引金斯瑞蓬勃生物、和元生物设立质粒/慢病毒/AAV商业级GMP载体与细胞中试放大CDMO基地。"}, "CSO": {"rating": "weak", "text": "国内已上市CAR-T多由药企自建或华东医药等代理，川渝本土独立CGT商业化CSO机构尚属空白。", "enterprises": ["华东医药", "药明巨诺", "传奇", "驯鹿"], "recruitment": ""}, "流通": {"rating": "weak", "text": "新生命、康景具备样本液氮冻存经验，但商业化CGT成品药“单采—制备—气相液氮深冷回输”全链认证物流网待完善。", "enterprises": ["上药云健康", "顺丰医药", "海尔生物医疗"], "recruitment": ""}, "零售": {"rating": "base", "text": "国控四川专业药房等纳入惠蓉保/商保特药服务网，承担院外签约直付并衔接华西等认证治疗中心回输。", "enterprises": ["国药控股四川 (川)", "上药云健康“益药·药房”", "镁信健康"], "recruitment": ""}}, "疫苗": {"耗材": {"rating": "weak", "text": "西南疫苗专用无血清培养基、一次性反应袋及除病毒滤器制造薄弱，主要依托跨国企业成都分部与玉溪沃森内部配套。", "enterprises": ["沃森生物 (滇黔)", "南格尔 (川)", "赛多利斯成都基地 (川)", "山东药玻", "湖南华强", "洁特生物", "奥浦迈", "百普赛斯"], "recruitment": "招引疫苗专用新型复合佐剂（对标AS01/Matrix-M）、mRNA原料酶与帽类似物供应商在蓉设立研发生产中心，与迈科康、威斯津协同。"}, "仪器": {"rating": "weak", "text": "四川程邦提供疫苗洁净工程与局部工艺设备，高端生物反应器、层析与高速灌装线仍依赖外采。", "enterprises": ["华大智造", "东富龙", "楚天科技", "聚光科技"], "recruitment": ""}, "实验动物": {"rating": "strong", "text": "华西海圻GLP安评、成都达硕、四川维通利华提供充足SPF级动物与攻毒效力评价支撑。", "enterprises": ["华西海圻 (川)", "成都达硕 (川)", "昭衍新药", "南模生物", "药康生物", "维通利华"], "recruitment": ""}, "CRO": {"rating": "strong", "text": "华西海圻+成都先导+格林泰科+里来生物+臻拓+诺为泰+海枫生物形成完整临床前至国际临床CRO矩阵。", "enterprises": ["华西海圻 (川)", "成都先导 (川)", "泰格医药", "昭衍新药", "药明康德", "康龙化成", "普蕊斯"], "recruitment": ""}, "原料药": {"rating": "base", "text": "成都迈科康生物为国内新型疫苗佐剂标杆企业（对标AS01/Matrix-M），但mRNA核心原料酶与帽类似物本地配套仍少。", "enterprises": ["迈科康 (川)", "奥浦迈", "百普赛斯", "键凯科技"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "重庆智飞生物、云南沃森生物两大巨头领衔，叠加成都欧林（金葡菌疫苗）、康华（人二倍体狂苗）、威斯克、威斯津（mRNA）、迈科康重组带疱等强劲集群。", "enterprises": ["智飞生物 (渝)", "沃森生物 (滇黔)", "威斯津 (川)", "欧林生物 (川)", "康泰生物", "康希诺", "华兰疫苗"], "recruitment": ""}, "CMO": {"rating": "weak", "text": "行业以智飞、沃森、欧林等自建GMP车间为主，西南第三方商业化疫苗CDMO平台稀缺，mRNA/LNP共享产线可补位。", "enterprises": ["药明海德", "药明生物", "勃林格殷格翰生物药业"], "recruitment": "支持智飞、沃森自建产能对外开放，并前瞻布局mRNA疫苗多联苗公共灌装代工产线，承接中小Biotech临床样品中试生产。"}, "CSO": {"rating": "strong", "text": "重庆智飞生物拥有国内规模最大、覆盖最广的疫苗商业化学术推广网络。", "enterprises": ["智飞生物 (渝)"], "recruitment": ""}, "流通": {"rating": "strong", "text": "重药控股、四川科伦医贸、国药西南、蜀丰药业、药易购构建起符合《疫苗管理法》的全程冷链与电子追溯配送网。", "enterprises": ["重药控股 (渝)", "国药控股", "上海医药", "华润医药", "九州通"], "recruitment": ""}, "零售": {"rating": "special", "text": "依规由疾控中心向接种门诊供应，无传统药品零售；线上平台与DTP药房正在拓展成人疫苗预约接种导流服务。", "enterprises": [], "recruitment": ""}}, "血液制品": {"耗材": {"rating": "strong", "text": "成都南格尔生物为国内一次性血浆袋与采浆管路耗材领军企业，本地化机耗一体优势显著。", "enterprises": ["南格尔", "海尔血液技术", "上海达华医疗", "陕西正源科技"], "recruitment": ""}, "仪器": {"rating": "strong", "text": "成都南格尔智能单采血浆机在国内浆站市占率领先，正推进自动化纯化产线装备升级。", "enterprises": ["南格尔", "海尔血液技术", "陕西正源科技"], "recruitment": ""}, "实验动物": {"rating": "special", "text": "传统人血浆提取制品直接源于健康献浆员血浆，不涉及常规实验动物药效模型（仅重组血制品早期少量涉及）。", "enterprises": [], "recruitment": ""}, "CRO": {"rating": "weak", "text": "除成都凡微析提供生物分析外，省内专注新型层析血制品及重组血制品临床开发的专业CRO服务较少。", "enterprises": ["中科院血液病医院", "泰格医药", "药明康德", "上海凌先医药", "北京精诚通医药", "成都凡微析医药", "合肥科颖医药"], "recruitment": "培育专注新型层析提取血制品（高纯静丙、重组凝血因子、重组白蛋白）的专科生物分析与临床评价CRO，服务蜀阳生物与成都蓉生升级。"}, "原料药": {"rating": "strong", "text": "天坛生物旗下成都蓉生与远大蜀阳生物两大头部企业扎根成都，拥有丰富的川内及西部单采血浆站网络。", "enterprises": ["蜀阳生物 (川)", "天坛生物", "上海莱士", "华兰生物", "华润博雅", "派林生物", "卫光生物", "禾元生物"], "recruitment": ""}, "制剂（管线）": {"rating": "strong", "text": "成都蓉生（国内血制龙头主力基地，含重组凝血因子Ⅷ、高纯静丙）+远大蜀阳生物（十余品种全谱系+出海认证）双强坐镇。", "enterprises": ["蜀阳生物 (川)", "天坛生物", "上海莱士", "华兰生物", "华润博雅", "派林生物", "卫光生物", "禾元生物"], "recruitment": ""}, "CMO": {"rating": "base", "text": "传统血制品受牌照限制严格自产；面向新兴重组白蛋白/凝血因子Biotech的第三方高表达发酵纯化CDMO可前瞻布局。", "enterprises": ["蜀阳生物 (川)", "天坛生物", "上海莱士", "华兰生物", "华润博雅", "派林生物", "卫光生物", "禾元生物"], "recruitment": ""}, "CSO": {"rating": "strong", "text": "成都兴科蓉医药（06833.HK）是国内稀缺的进口人血白蛋白及血液制品专业综合营销推广上市公司。", "enterprises": ["兴科蓉医药 (川)", "国药控股", "华润医药商业", "上海医药", "九州通"], "recruitment": ""}, "流通": {"rating": "base", "text": "国控四川、重药控股等具备GSP 2-8℃冷链与UDI全链路追溯资质，院内直配体系稳固。", "enterprises": ["国药控股", "华润医药商业", "上海医药", "九州通"], "recruitment": ""}, "零售": {"rating": "base", "text": "国大、华润、德仁堂、重药和平等具备血液制品经营范围与独立冷链的DTP药房稳定承接院外白蛋白处方。", "enterprises": ["国大药房", "华润零售", "老百姓", "益丰", "上药云健康益药", "思派大药房", "医保全新", "德轩堂"], "recruitment": ""}}}</script>
+<script>
+window.INSIGHT_MATRIX_DATA = JSON.parse(document.getElementById('matrixDataMeta').textContent);
+</script>
 
 <div class="cm-overlay" id="cellModal" onclick="if(event.target===this)closeCellModal()">
   <div class="cm-card" role="dialog" aria-modal="true">
@@ -2530,6 +3579,15 @@ function setActivePanBtn(secKey) {
 
 function selectPoster(idx, skipAnim) {
   clearSectionSpotlight();
+  if (insightMode) {
+    insightMode = false;
+    const iv = document.getElementById('insightView');
+    if (iv) iv.style.display = 'none';
+    const btnI = document.getElementById('btnInsight');
+    if (btnI) btnI.classList.remove('active');
+    const pb = document.getElementById('panbar');
+    if (pb) pb.style.display = 'flex';
+  }
   currentIdx = idx;
   document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.toggle('active', Number(b.dataset.idx) === idx));
   document.getElementById('btnAll').classList.remove('active');
@@ -2559,6 +3617,15 @@ function stepPoster(delta) {
 
 function selectAllPosters() {
   clearSectionSpotlight();
+  if (insightMode) {
+    insightMode = false;
+    const iv = document.getElementById('insightView');
+    if (iv) iv.style.display = 'none';
+    const btnI = document.getElementById('btnInsight');
+    if (btnI) btnI.classList.remove('active');
+    const pb = document.getElementById('panbar');
+    if (pb) pb.style.display = 'flex';
+  }
   currentIdx = -1;
   document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.remove('active'));
   document.getElementById('btnAll').classList.add('active');
@@ -3115,6 +4182,142 @@ window.addEventListener('DOMContentLoaded', () => {
   updateHudLabel();
   applyScale();
 });
+
+// =============================================================================
+// 产业透视交互控制器
+// =============================================================================
+let insightMode = false;
+
+function toggleInsightView(forceState) {
+  insightMode = (typeof forceState === 'boolean') ? forceState : !insightMode;
+  const btn = document.getElementById('btnInsight');
+  const iv = document.getElementById('insightView');
+  const panbar = document.getElementById('panbar');
+  const slots = document.querySelectorAll('.poster-slot');
+
+  if (btn) btn.classList.toggle('active', insightMode);
+
+  if (insightMode) {
+    // 隐藏所有常规海报槽位与定位条
+    slots.forEach(s => s.style.display = 'none');
+    document.querySelectorAll('.tb-btn[data-idx]').forEach(b => b.classList.remove('active'));
+    const btnAll = document.getElementById('btnAll');
+    if (btnAll) btnAll.classList.remove('active');
+    if (panbar) panbar.style.display = 'none';
+
+    if (iv) {
+      iv.style.display = 'block';
+      if (!window._matrixRendered) {
+        renderMatrixTable();
+        window._matrixRendered = true;
+      }
+    }
+    const vp = document.getElementById('viewport');
+    if (vp) vp.scrollTop = 0;
+    const hudLbl = document.getElementById('hudTrackLabel');
+    if (hudLbl) hudLbl.textContent = '💡 深度透视 · 技术融合与川渝分工';
+  } else {
+    if (iv) iv.style.display = 'none';
+    if (panbar) panbar.style.display = 'flex';
+    // 还原选中第一个赛道
+    selectPoster(currentIdx >= 0 ? currentIdx : 0);
+  }
+}
+
+function switchInsightTab(tabId) {
+  document.querySelectorAll('.iv-tab').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('onclick').includes(tabId));
+  });
+  document.querySelectorAll('.iv-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + tabId);
+  });
+}
+
+// 8x10 沙盘渲染与单元格点击抽屉
+function renderMatrixTable() {
+  const tbody = document.getElementById('matrixTableBody');
+  if (!tbody || !window.INSIGHT_MATRIX_DATA) return;
+
+  const data = window.INSIGHT_MATRIX_DATA;
+  const stages = ["耗材", "仪器", "实验动物", "CRO", "原料药", "制剂（管线）", "CMO", "CSO", "流通", "零售"];
+  const tracks = [
+    "小分子化学药", "抗体创新药", "ADC创新药", "多肽创新药（含环肽）",
+    "核药", "细胞/基因疗法", "疫苗", "血液制品"
+  ];
+
+  const ratingLabelMap = {
+    strong: "优势长板",
+    base: "具备基础",
+    weak: "薄弱短板",
+    special: "行业特殊"
+  };
+
+  let rowsHtml = '';
+  tracks.forEach(tname => {
+    rowsHtml += `<tr><td class="td-track">${tname}</td>`;
+    stages.forEach(sname => {
+      const cell = (data[tname] && data[tname][sname]) ? data[tname][sname] : { rating: "base", text: "" };
+      const ratingCls = 'cell-' + cell.rating;
+      const tagText = ratingLabelMap[cell.rating] || "具备基础";
+      rowsHtml += `<td>` +
+        `<button type="button" class="iv-cell-btn ${ratingCls}" onclick="openDrawer('${tname}', '${sname}')" title="点击查看 ${tname} · ${sname} 招投详情">` +
+        `<span class="iv-cell-tag">${tagText}</span>` +
+        `</button></td>`;
+    });
+    rowsHtml += `</tr>`;
+  });
+  tbody.innerHTML = rowsHtml;
+}
+
+function openDrawer(trackName, stageName) {
+  const drawer = document.getElementById('matrixDrawer');
+  if (!drawer || !window.INSIGHT_MATRIX_DATA) return;
+
+  const cell = window.INSIGHT_MATRIX_DATA[trackName] && window.INSIGHT_MATRIX_DATA[trackName][stageName];
+  if (!cell) return;
+
+  const ratingLabelMap = {
+    strong: "🟢 优势长板",
+    base: "🔵 具备基础",
+    weak: "🟠 薄弱补链",
+    special: "⚪ 行业特殊"
+  };
+
+  const badgeEl = document.getElementById('ddBadge');
+  badgeEl.className = 'iv-dd-badge ' + cell.rating;
+  badgeEl.textContent = ratingLabelMap[cell.rating] || "具备基础";
+
+  document.getElementById('ddTitle').textContent = `${trackName} · ${stageName}`;
+  document.getElementById('ddDesc').textContent = cell.text || "暂无环节详细说明。";
+
+  // 本地代表企业标签
+  const entWrap = document.getElementById('ddEnterprises');
+  if (cell.enterprises && cell.enterprises.length) {
+    entWrap.innerHTML = cell.enterprises.map(e => `<span class="iv-dd-tag">${e}</span>`).join('');
+  } else {
+    entWrap.innerHTML = `<span class="iv-dd-tag" style="color:#94A3B8;">暂无本地代表企业标的</span>`;
+  }
+
+  // 招商与投资策略
+  const recruitBox = document.getElementById('ddRecruitBox');
+  const recruitP = document.getElementById('ddRecruit');
+  if (cell.recruitment) {
+    recruitBox.style.display = 'block';
+    recruitP.textContent = cell.recruitment;
+  } else {
+    recruitBox.style.display = 'block';
+    recruitP.textContent = `支持本地具备资质企业做强产能规模，通过产业引导基金与创新药“双通道”政策打通院内外准入。`;
+  }
+
+  drawer.classList.add('open');
+  drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeDrawer() {
+  const drawer = document.getElementById('matrixDrawer');
+  if (drawer) drawer.classList.remove('open');
+}
+
 </script>
 
 </body>
